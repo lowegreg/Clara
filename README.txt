@@ -1,2 +1,2 @@
 README
--Welcome To Clara a Digital Kitchener Innocation Lab master piece
+-Welcome To Clara a Digital Kitchener Innovation Lab master piece
