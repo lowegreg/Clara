@@ -1,0 +1,674 @@
+[
+  {
+    "Title": "2011 Census DA Population By Age",
+    "API": "https://opendata.arcgis.com/datasets/d1656d3c7abb4c7da20fab83c77caec7_0.geojson",
+    "Category": "Other",
+    "Update": "",
+    "Description": "Refers to the first language learned at home in childhood and still understood by the individual"
+  },
+  {
+    "Title": "2011 Census: Mother Tongue by Dissemination Area (DA)",
+    "API": "https://opendata.arcgis.com/datasets/9545dd19af5d43399020c962a8542f67_0.geojson",
+    "Category": "Other",
+    "Update": "",
+    "Description": "Total Population by Age Groups for City of Kitchener. "
+  },
+  {
+    "Title": "Addresses",
+    "API": "https://opendata.arcgis.com/datasets/98e0a9aa3f8e447380f27fdc1c170d02_0.geojson",
+    "Category": "Other",
+    "Update": "daily",
+    "Description": "Points that represent the locations of all valid addresses in the City of Kitchener. All points are positioned within the land parcel and when possible on top of the building footprint to which they apply. Some properties have more than one address."
+  },
+  {
+    "Title": "All Way Stop Intersection",
+    "API": "https://opendata.arcgis.com/datasets/c81e86bc04c3444e9b6f44fdf6eb0000_18.geojson",
+    "Category": "R&T",
+    "Update": "",
+    "Description": "Intersections with all way stop signs."
+  },
+  {
+    "Title": "Arenas and Outdoor Ice Rinks",
+    "API": "https://opendata.arcgis.com/datasets/ccfc9baba7074501a99ae74bafb9a72b_0.geojson",
+    "Category": "P&OA",
+    "Update": "",
+    "Description": "Sports arena locations, owned by City of Kitchener or private ownership."
+  },
+  {
+    "Title": "Baseball Court",
+    "API": "https://opendata.arcgis.com/datasets/9d179b57e2e74af386412e2ee3e9c845_0.geojson",
+    "Category": "P&OA",
+    "Update": "",
+    "Description": "Basketball Court locations. Owned by Kitchener or under private ownership"
+  },
+  {
+    "Title": "Baseball Diamonds",
+    "API": "https://opendata.arcgis.com/datasets/346376900b9a47678132096e27b0f764_0.geojson",
+    "Category": "POA",
+    "Update": "",
+    "Description": "Baseball Diamond locations."
+  },
+  {
+    "Title": "Benchmarks",
+    "API": "https://opendata.arcgis.com/datasets/3fb6eec581ff41a59cd5c099093789b9_0.geojson",
+    "Category": "Other",
+    "Update": "",
+    "Description": "Location of benchmarks (geodetic control) features. A benchmark is a fixed permanent structure which has a measured vertical position above mean sea level, expressed as an \"elevation\", referenced from mean sea level at 0.00 metres. These elevations are set by professional land surveyors for various levels of government and form a network across North America. "
+  },
+  {
+    "Title": "Bike Racks",
+    "API": "https://opendata.arcgis.com/datasets/608ccedfccc44e4488b346db81fbb3b6_0.geojson",
+    "Category": "Other",
+    "Update": "",
+    "Description": "Locations of bike racks, bike lockers,fix-it stands and Community Bike Share bikes. The private ownership records are the Community Bike Share bikes."
+  },
+  {
+    "Title": "Bridge",
+    "API": "https://opendata.arcgis.com/datasets/86aff44f9aae4a19b85a5131607c500a_0.geojson",
+    "Category": "Facilities",
+    "Update": "",
+    "Description": "Locations of bridges."
+  },
+  {
+    "Title": "Building Permits",
+    "API": "https://opendata.arcgis.com/datasets/b8b90e23c17a4b7abac1f4b8d11b654a_0.geojson",
+    "Category": "Other",
+    "Update": "daily",
+    "Description": "A Building Permit is a legal document obtained by the owner or contractor allowing construction, demolition or change of use to a building or part thereof as regulated by the Building Code Act and Building Code. Building Permits are issued by the Chief Building Official."
+  },
+  {
+    "Title": "Buildings",
+    "API": "https://opendata.arcgis.com/datasets/793d2d4983984faab326dbbe2a61e1d0_0.geojson",
+    "Category": "Facilites",
+    "Update": "daily",
+    "Description": "Building footprints drawn from aerial imagery, building surveys or site plans. "
+  },
+  {
+    "Title": "Buildings City Owned",
+    "API": "https://opendata.arcgis.com/datasets/b7bd5bc3372146aabcc4bd7c29f67f18_0.geojson",
+    "Category": "Facilities",
+    "Update": "",
+    "Description": "Location of buildings owned by the City of Kitchener. Building footprints drawn from aerial imagery, building surveys or site plans"
+  },
+  {
+    "Title": "Business Directory",
+    "API": "https://opendata.arcgis.com/datasets/9b9c871eafce491da8a3d926a8a44ef2_0.geojson",
+    "Category": "Other",
+    "Update": "",
+    "Description": "List of businesses currently operating in the City of Kitchener. "
+  },
+  {
+    "Title": "Business Licenses Non Temporary",
+    "API": "https://opendata.arcgis.com/datasets/f14396db450949c58b86665871104858_0.geojson",
+    "Category": "Other",
+    "Update": "daily",
+    "Description": "List of non-temporary Business Licenses issued. Does not include: Special sale, charitable/Civic Celeb/Special Event, Refreshment Vehicle, Street Vendor, Circus/Vendor/Market/Fireworks and People License"
+  },
+  {
+    "Title": "Business Park",
+    "API": "https://opendata.arcgis.com/datasets/739ee6518bcc4ed58c7ed465054bc51e_0.geojson",
+    "Category": "Facilities",
+    "Update": "",
+    "Description": "There are 4 municipally-developed business parks in Kitchener which comprise of 498 acres of land. "
+  },
+  {
+    "Title": "Community Centres",
+    "API": "https://opendata.arcgis.com/datasets/ee79576976d4474e88b0b189f534173a_0.geojson",
+    "Category": "Facilities",
+    "Update": "",
+    "Description": "The City of Kitchener operates 14 community centres, where unique collaboration between staff, volunteers, community organizations, seniors groups and neighbourhood associations ensures quality recreational services and programming is provided to citizens in every corner of the city. "
+  },
+  {
+    "Title": "Community Gardens",
+    "API": "https://opendata.arcgis.com/datasets/b35d2d768bbb4abb84bf4cef61e43e2c_0.geojson",
+    "Category": "P&OA",
+    "Update": "",
+    "Description": "Locations of community gardens in the City of Kitchener."
+  },
+  {
+    "Title": "Community Improvement Plan",
+    "API": "https://opendata.arcgis.com/datasets/505ea54e57ad469690132f6b72d1507b_0.geojson",
+    "Category": "Other",
+    "Update": "",
+    "Description": "Boundary of area in which municipal incentives are available. "
+  },
+  {
+    "Title": "Development Charges",
+    "API": "https://opendata.arcgis.com/datasets/3511089e4b8d46f58e7abc35dff0f8d3_0.geojson",
+    "Category": "Other",
+    "Update": "",
+    "Description": "Boundary of applicable development-charge rates."
+  },
+  {
+    "Title": "Dog Parks",
+    "API": "https://opendata.arcgis.com/datasets/2523f52eaa0f4159b7bdc7c351fc9ae5_0.geojson",
+    "Category": "POA",
+    "Update": "",
+    "Description": "Location of leash free dog parks."
+  },
+  {
+    "Title": "Downtown Boundary",
+    "API": "https://opendata.arcgis.com/datasets/ff0487c0100d471ab81e48496dfc4cd0_0.geojson",
+    "Category": "Other",
+    "Update": "",
+    "Description": "There are 4 districts within downtown Kitchener. Also includes downtown boundary. "
+  },
+  {
+    "Title": "Education Facility",
+    "API": "https://opendata.arcgis.com/datasets/c08d9f90472d474bbdec752bd3ad62de_0.geojson",
+    "Category": "Facilities",
+    "Update": "",
+    "Description": "Education Facilities in the City of Kitchener including locations of elementary, secondary, college, university and alternative schools. "
+  },
+  {
+    "Title": "Emergency Services",
+    "API": "https://opendata.arcgis.com/datasets/42fba35888bb473697e970a0b0459757_0.geojson",
+    "Category": "Transportation",
+    "Update": "",
+    "Description": "Emergency Service locations. The health, safety and well being of all Kitchener residents - from young children to older adults - are among our top priorities."
+  },
+  {
+    "Title": "Golf Course",
+    "API": "https://opendata.arcgis.com/datasets/19bb5a6f0cac49d48dc4f662c6ad1135_0.geojson",
+    "Category": "Golf",
+    "Update": "",
+    "Description": "Golf course locations in Kitchener."
+  },
+  {
+    "Title": "Government Service",
+    "API": "https://opendata.arcgis.com/datasets/2c0bb2b7bbbd48ed8a0173fda4c7e324_0.geojson",
+    "Category": "Facilities",
+    "Update": "",
+    "Description": "Location of various government services"
+  },
+  {
+    "Title": "Heritage Properties",
+    "API": "https://opendata.arcgis.com/datasets/eaeaa5c47c8c4afa908822ecccc37eb3_0.geojson",
+    "Category": "Facilities",
+    "Update": "",
+    "Description": "Designated heritage properties."
+  },
+  {
+    "Title": "Hospitals",
+    "API": "https://opendata.arcgis.com/datasets/df144ed65c864469ab40160767cb8176_0.geojson",
+    "Category": "Facilities",
+    "Update": "",
+    "Description": "We support our community partners in their efforts to ensure the health and welfare of our citizens is in good hands: Grand River Hospital (http://www.grhosp.on.ca/) St. Mary's Hospital (http://www.smgh.ca/) "
+  },
+  {
+    "Title": "Landmarks",
+    "API": "https://opendata.arcgis.com/datasets/5dbeed2b0f5e4905934436709b4ac7f8_0.geojson",
+    "Category": "Other",
+    "Update": "",
+    "Description": "Location of various landmarks within the City of Kitchener."
+  },
+  {
+    "Title": "Leaf Collection",
+    "API": "https://opendata.arcgis.com/datasets/f424c92c683e40e6953b3a1fc8ccdc38_0.geojson",
+    "Category": "Fleet",
+    "Update": "daily",
+    "Description": "During the months of October and November, the city's annual  leaf collection program (http://www.kitchener.ca/en/livinginkitchener/leafcollectionlandingpage.asp) provides residents with options for disposing of the loose leaves that pile up on their properties. "
+  },
+  {
+    "Title": "Leaf Drop Sites",
+    "API": "https://opendata.arcgis.com/datasets/f60aeae87ba243bc8f1b1bdd94669fc6_0.geojson",
+    "Category": "P&OA",
+    "Update": "daily",
+    "Description": "Drop-off sites, located in neighbourhoods across the city, are open seven days a week during daylight hours until Friday, Dec. 4. Leaves are piled loose in these locations for collection. However, any leaves in plastic bags should be de-bagged at the site. Drop-off locations are for leaves only."
+  },
+  {
+    "Title": "Libraries",
+    "API": "https://opendata.arcgis.com/datasets/413adeea9c9543b68a0fb8d3b6a059c8_0.geojson",
+    "Category": "Facilities",
+    "Update": "",
+    "Description": "Kitchener Public Library (KPL) is the place where community connects. With five library branches conveniently located throughout the city, there are lots of places for you to explore, learn and share. Library cards are free to everyone who lives or owns property in the City of Kitchener. A free reciprocal library card is also available to all residents and property owners living anywhere within the Region of Waterloo"
+  },
+  {
+    "Title": "Major Active Transportation",
+    "API": "https://opendata.arcgis.com/datasets/10d36c07efb7432298706ef4c1af4d42_0.geojson",
+    "Category": "R&T",
+    "Update": "",
+    "Description": "The Major Active Transportation Routes are intended to emphasize the network of trail facilities within The City of Waterloo that have been identified by the Transportation and Trails Advisory Committee as high priority. This information is intended to provide context and reference on maps pertaining to recreation and active transportation."
+  },
+  {
+    "Title": "Municipal Boundary",
+    "API": "https://opendata.arcgis.com/datasets/aa2ee29f0bf64ae0b69ca5645984c6a0_0.geojson",
+    "Category": "Other",
+    "Update": "",
+    "Description": "The municipal boundary of the City of Kitchener."
+  },
+  {
+    "Title": "Museums",
+    "API": "https://opendata.arcgis.com/datasets/737cebec98414635bb45cf0621977d0d_0.geojson",
+    "Category": "Facilities",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Neighbourhood Association",
+    "API": "https://opendata.arcgis.com/datasets/9f779360acea4fb1abdbb41a51c0a251_0.geojson",
+    "Category": "Other",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "On Street Parking",
+    "API": "https://opendata.arcgis.com/datasets/7ce8a07ef85544899f88658fc4ccb764_0.geojson",
+    "Category": "R&T",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Parking Feature",
+    "API": "https://opendata.arcgis.com/datasets/d8194bd20f184a759e8a77bafb388650_0.geojson",
+    "Category": "Transportation",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Parks",
+    "API": "https://opendata.arcgis.com/datasets/5586508b64724e1bb29b313d218460ff_0.geojson",
+    "Category": "POA",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Places Of Worship",
+    "API": "https://opendata.arcgis.com/datasets/6a7bfb38d2e5428b8098d27964727c01_0.geojson",
+    "Category": "Other",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Planning community",
+    "API": "https://opendata.arcgis.com/datasets/024d5342b1c74d9f85b47b653a2c8137_0.geojson",
+    "Category": "Other",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Plow Areas",
+    "API": "https://opendata.arcgis.com/datasets/eb34aeec43914e31b4d867d837f7ef61_0.geojson",
+    "Category": "Fleet",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Plow Priority",
+    "API": "https://opendata.arcgis.com/datasets/f42e4339cbe4457f8cc21c3a9335b750_0.geojson",
+    "Category": "Fleet",
+    "Update": "daily",
+    "Description": ""
+  },
+  {
+    "Title": "Plow Priority by Address",
+    "API": "https://opendata.arcgis.com/datasets/d46ddc398e7c49f4b80b52b0397deb49_0.geojson",
+    "Category": "Fleet",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Points of Interest",
+    "API": "https://opendata.arcgis.com/datasets/7dc17e10731546e9b427677d80cff3a1_0.geojson",
+    "Category": "other",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Pools and Splash pad",
+    "API": "https://opendata.arcgis.com/datasets/69498d7dcd0449d2981a609fdccef556_0.geojson",
+    "Category": "P&OA",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Public Art and Industrial Artifacts",
+    "API": "https://opendata.arcgis.com/datasets/ae25575af37a41a3abf2a548a6edcb07_0.geojson",
+    "Category": "Other",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Public Washrooms",
+    "API": "https://opendata.arcgis.com/datasets/850fd9e450774527bc1365228f092d71_0.geojson",
+    "Category": "Facilities",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Railway Lines",
+    "API": "https://opendata.arcgis.com/datasets/eafc6b977d4f4f33a1ec9acdd5a0529f_0.geojson",
+    "Category": "Transportation",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Rivers Creeks Ponds Lakes",
+    "API": "https://opendata.arcgis.com/datasets/ad77f72e0a8c43fcae75736df937d6ed_0.geojson",
+    "Category": "P&OA",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Roads",
+    "API": "https://opendata.arcgis.com/datasets/c2a28a64955943ffad68e7ce099c5556_0.geojson",
+    "Category": "SU",
+    "Update": "daily",
+    "Description": ""
+  },
+  {
+    "Title": "Roundabouts",
+    "API": "https://opendata.arcgis.com/datasets/92ba423107c04d4ca4076b149f308fc0_1.geojson",
+    "Category": "R&T",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Salt Priority",
+    "API": "https://opendata.arcgis.com/datasets/6395e6b9c5354aa1b51497dbde2f14f9_0.geojson",
+    "Category": "R&T",
+    "Update": "daily",
+    "Description": ""
+  },
+  {
+    "Title": "Sanitary Drainage Areas",
+    "API": "https://opendata.arcgis.com/datasets/1218b2244ca74697a76207b103a3c071_0.geojson",
+    "Category": "SU",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Sanitary Forcemain Valves",
+    "API": "https://opendata.arcgis.com/datasets/2587d84b98934c98b3462fe31ff574a2_0.geojson",
+    "Category": "R&T",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Sanitary Manholes",
+    "API": "https://opendata.arcgis.com/datasets/bc4f44a9234840859ebeffd77e122612_0.geojson",
+    "Category": "SU",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Sanitary pipes",
+    "API": "https://opendata.arcgis.com/datasets/c6ff501ce88a476ea6a0d044b5b3322f_0.geojson",
+    "Category": "SU",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Sanitary Plugs",
+    "API": "https://opendata.arcgis.com/datasets/19a80ccb562f4d46aaab8a2124b04119_0.geojson",
+    "Category": "SU",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Sanitary Pumping Stations",
+    "API": "https://opendata.arcgis.com/datasets/68dab10b7e014b9ebf687f99eeb23bcc_0.geojson",
+    "Category": "SU",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Sanitary Service Pipes",
+    "API": "https://opendata.arcgis.com/datasets/f526ef1e9d914312bcba1f836a65437e_0.geojson",
+    "Category": "SU",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Sanitary Stubs",
+    "API": "https://opendata.arcgis.com/datasets/3bc44968c9324df3ab63771e9be86454_0.geojson",
+    "Category": "SU",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Side Walks",
+    "API": "https://opendata.arcgis.com/datasets/01031a7c9b5a4aac96c69bb7cb168971_0.geojson",
+    "Category": "R&T",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Soccer Fields",
+    "API": "https://opendata.arcgis.com/datasets/dabd77e216794ad0a3f9e4fe93868026_0.geojson",
+    "Category": "P&UA",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Storm Catchbasins",
+    "API": "https://opendata.arcgis.com/datasets/29ed04d8444248449a610c7b39044635_0.geojson",
+    "Category": "SWU",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Storm Facility",
+    "API": "https://opendata.arcgis.com/datasets/179c5205fb974c9c9f98647fb115a70d_0.geojson",
+    "Category": "SWU",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Storm Leads",
+    "API": "https://opendata.arcgis.com/datasets/96d70941a65f4e3bbd325e2f66a2c945_0.geojson",
+    "Category": "SWU",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Storm Manholes",
+    "API": "https://opendata.arcgis.com/datasets/58a9abc7a2514130a58a7242d61569db_0.geojson",
+    "Category": "SWU",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Storm Outlets",
+    "API": "https://opendata.arcgis.com/datasets/81c9275ce18e45438c8091aafea2d329_0.geojson",
+    "Category": "SWU",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Storm Pipes",
+    "API": "https://opendata.arcgis.com/datasets/7e35cc41604d4ca1840c5543c23fabd0_0.geojson",
+    "Category": "SWU",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Storm Plugs",
+    "API": "https://opendata.arcgis.com/datasets/f87b6fa50ba943b7a9bc0555795ac7fd_0.geojson",
+    "Category": "SWU",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Storm Service Pipes",
+    "API": "https://opendata.arcgis.com/datasets/c346ff0ccc51492288e40eb68ac94b8d_0.geojson",
+    "Category": "SWU",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Storm Stubs",
+    "API": "https://opendata.arcgis.com/datasets/5f2e64724a9d400d83bc90c3c8aabe21_0.geojson",
+    "Category": "SWU",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Tennis Courts",
+    "API": "https://opendata.arcgis.com/datasets/6745d5101b79490291b2d686fe2f68cb_0.geojson",
+    "Category": "POA",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Traffic All Way Stops",
+    "API": "https://opendata.arcgis.com/datasets/b459028c20504e4f8386bebf5e534f1a_0.geojson",
+    "Category": "R&T",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Traffic Calming",
+    "API": "https://opendata.arcgis.com/datasets/a67c9224a6a94faaa08a9b67880221f9_0.geojson",
+    "Category": "R&T",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Traffic Closures - Current",
+    "API": "https://opendata.arcgis.com/datasets/21e43c1114c54fad96462dfd18b885d2_0.geojson",
+    "Category": "R&T",
+    "Update": "daily",
+    "Description": ""
+  },
+  {
+    "Title": "Traffic Closures - Future",
+    "API": "https://opendata.arcgis.com/datasets/21e43c1114c54fad96462dfd18b885d2_1.geojson",
+    "Category": "R&T",
+    "Update": "daily",
+    "Description": ""
+  },
+  {
+    "Title": "Traffic Closures Historic",
+    "API": "https://opendata.arcgis.com/datasets/eb122293e0fc4599bc4f980186ea0f91_0.geojson",
+    "Category": "R&T",
+    "Update": "daily",
+    "Description": ""
+  },
+  {
+    "Title": "Traffic Collisions",
+    "API": "https://opendata.arcgis.com/datasets/75fa68b17e5b421d9d881f987c2d43fc_0.geojson",
+    "Category": "R&T",
+    "Update": "daily",
+    "Description": ""
+  },
+  {
+    "Title": "Traffic Crossing Guards",
+    "API": "https://opendata.arcgis.com/datasets/b9874d92c93a47ea8dd0840ac364e828_0.geojson",
+    "Category": "R&T",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Traffic Lights",
+    "API": "https://opendata.arcgis.com/datasets/b5a0a56f6aa649d092095b0624ce46f4_0.geojson",
+    "Category": "R&T",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Traffic Markings",
+    "API": "https://opendata.arcgis.com/datasets/efdb4ccccd6e4257bfff2314bd78d5ff_0.geojson",
+    "Category": "R&T",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Traffic Signs",
+    "API": "https://opendata.arcgis.com/datasets/1a274ecb587341e992acb45ed3214713_19.geojson",
+    "Category": "R&T",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Traffic Volumes",
+    "API": "https://opendata.arcgis.com/datasets/426089c5166c4f8f8f4000acb2fef840_0.geojson",
+    "Category": "R&T",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Trails",
+    "API": "https://opendata.arcgis.com/datasets/48ea0be1158646118b2ec23c082f1466_0.geojson",
+    "Category": "P&OA",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Tree Inventory",
+    "API": "https://opendata.arcgis.com/datasets/e42a9601b87a4417b3d3d15a0f596f64_0.geojson",
+    "Category": "Forestry",
+    "Update": "daily",
+    "Description": ""
+  },
+  {
+    "Title": "Truck Routes",
+    "API": "https://opendata.arcgis.com/datasets/1be230c733184b8c9944310498648414_0.geojson",
+    "Category": "R&T",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Voting Polling Stations",
+    "API": "https://opendata.arcgis.com/datasets/7c192408ceac4f36b71025456dfe9bdd_0.geojson",
+    "Category": "Facilities",
+    "Update": "daily",
+    "Description": ""
+  },
+  {
+    "Title": "Voting Subdivisions",
+    "API": "https://opendata.arcgis.com/datasets/25239fe7927847ac962c92b1459b4821_0.geojson",
+    "Category": "Other",
+    "Update": "daily",
+    "Description": ""
+  },
+  {
+    "Title": "Walkability",
+    "API": "https://opendata.arcgis.com/datasets/64710818a7e044f4aad99b5d6dff4a3f_0.geojson",
+    "Category": "Transportation",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Wards",
+    "API": "https://opendata.arcgis.com/datasets/aaa70fb878304de4ba244f12c5447016_0.geojson",
+    "Category": "Other",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Waste Collection Schedule",
+    "API": "https://opendata.arcgis.com/datasets/d7f2fd2cbefd49778526d2b392354721_13.geojson",
+    "Category": "Fleet",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Water Hydrants",
+    "API": "https://opendata.arcgis.com/datasets/de572d8500e54c718c4ecb01ae6e3a05_0.geojson",
+    "Category": "WU",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Water Main",
+    "API": "https://opendata.arcgis.com/datasets/550dc7b12e3143bf96900841ef01efea_0.geojson",
+    "Category": "WU",
+    "Update": "",
+    "Description": ""
+  },
+  {
+    "Title": "Water Main Break",
+    "API": "https://opendata.arcgis.com/datasets/4b805dc0bc194809a7dc6cf49707288f_0.geojson",
+    "Category": "WU",
+    "Update": "daily",
+    "Description": ""
+  },
+  {
+    "Title": "Water Valve",
+    "API": "https://opendata.arcgis.com/datasets/ffb30245f5d8478f9c84414dda1eca64_0.geojson",
+    "Category": "WU",
+    "Update": "",
+    "Description": ""
+  }
+]
