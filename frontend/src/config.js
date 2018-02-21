@@ -32,7 +32,7 @@ const Auth0Config = {
       redirectUrl: 'http://localhost:3000/auth0loginCallback'
     },
     languageDictionary: {
-      title: 'Isomorphic',
+      title: 'CLARA',
       emailInputPlaceholder: 'demo@gmail.com',
       passwordInputPlaceholder: 'demodemo'
     },

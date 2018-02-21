@@ -65,9 +65,9 @@ class SignIn extends Component {
                 </Button>
               </div>
 
-              <p className="isoHelperText">
+              {/* <p className="isoHelperText">
                 <IntlMessages id="page.signInPreview" />
-              </p>
+              </p> */}
 
               <div className="isoInputWrapper isoOtherLogin">
                 <Button onClick={this.handleLogin} type="primary btnFacebook">
@@ -79,7 +79,7 @@ class SignIn extends Component {
 
                 {Auth0.isValid &&
                   <Button
-                    onClick={() => {
+                    onClick={() => {                 
                       Auth0.login(this.handleLogin);
                     }}
                     type="primary btnAuthZero"
