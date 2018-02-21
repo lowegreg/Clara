@@ -6,12 +6,12 @@ import IntlMessages from '../components/utility/intlMessages';
 export default function(url, submenuColor) {
   const sidebars = [];
   sidebars.push(
-    <Menu.Item key="githubSearch">
-      <Link to={`${url}/githubSearch`}>
+    <Menu.Item key="settings">
+      <Link to={`${url}/blank_page`}>
         <span className="isoMenuHolder" style={submenuColor}>
-          <i className="ion-social-github" />
+          <i className="ion-gear-b" />
           <span className="nav-text">
-            <IntlMessages id="sidebar.githubSearch" />
+            <IntlMessages id="Settings" />
           </span>
         </span>
       </Link>
