@@ -5,25 +5,55 @@ import Input from '../../components/uielements/input';
 import Checkbox from '../../components/uielements/checkbox';
 import Button from '../../components/uielements/button';
 import authAction from '../../redux/auth/actions';
-import Auth0 from '../../helpers/auth0';
-import Firebase from '../../helpers/firebase';
-import FirebaseLogin from '../../components/firebase';
 import IntlMessages from '../../components/utility/intlMessages';
 import SignInStyleWrapper from './signin.style';
 
 const { login } = authAction;
 
 class SignIn extends Component {
-  state = {
-    redirectToReferrer: false,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      redirectToReferrer: false,
+      credentials: {email: '', password: ''}
+    };
+    this.onChange=this.onChange.bind(this)
+    this.onSave=this.onSave.bind(this)
+  }
+  onChange(event) {  
+    const field = event.target.name;
+    const credentials = this.state.credentials;
+    credentials[field] = event.target.value;
+    return this.setState({credentials: credentials});
+  }
+  onSave(event) {
+    event.preventDefault();
+    fetch('http://localhost:3000/api/authenticate', {
+    headers: {
+      'Accept': 'application/x-www-form-urlencoded',
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    
+    method: "POST",
+    body: `email=${this.state.credentials.email}&password=${this.state.credentials.password}`,
+})
+    .then(response => response.json())
+    .then(contents =>{
+      if (contents.status){
+       const { login } = this.props;
+      login();
+      this.props.history.push('/dashboard')}})
+    .catch(() => console.log("Can’t access http://localhost:3000/api/authenticate response. Blocked by browser?"))
+  }
   componentWillReceiveProps(nextProps) {
     if (
       this.props.isLoggedIn !== nextProps.isLoggedIn &&
       nextProps.isLoggedIn === true
     ) {
       this.setState({ redirectToReferrer: true });
+      console.log('in componentWillReciveProps')
     }
+    console.log('in componentWillReciveProps')
   }
   handleLogin = () => {
     const { login } = this.props;
@@ -32,10 +62,10 @@ class SignIn extends Component {
   };
   render() {
     const from = { pathname: '/dashboard' };
-    const { redirectToReferrer } = this.state;
-
-    if (redirectToReferrer) {
-      return <Redirect to={from} />;
+    
+    if (this.state.redirectToReferrer) {
+      console.log(`redirect is true`)
+      return <Redirect to={from} onChange={this.handleLogin}/>;
     }
     return (
       <SignInStyleWrapper className="isoSignInPage">
@@ -49,46 +79,37 @@ class SignIn extends Component {
 
             <div className="isoSignInForm">
               <div className="isoInputWrapper">
-                <Input size="large" placeholder="Username" />
+                <Input size="large" placeholder="Username"
+                  name="email"
+                  label="email"
+                  value={this.state.credentials.email}
+                  onChange={this.onChange} 
+                />
               </div>
 
               <div className="isoInputWrapper">
-                <Input size="large" type="password" placeholder="Password" />
+                <Input size="large" type="password" placeholder="Password" 
+                  name="password" 
+                  label="password"
+                  value={this.state.credentials.password}
+                  onChange={this.onChange} 
+                  />
               </div>
 
               <div className="isoInputWrapper isoLeftRightComponent">
                 <Checkbox>
                   <IntlMessages id="page.signInRememberMe" />
                 </Checkbox>
-                <Button type="primary" onClick={this.handleLogin}>
+                <Button type="primary" onClick={this.onSave}>
                   <IntlMessages id="page.signInButton" />
                 </Button>
               </div>
 
-              {/* <p className="isoHelperText">
+              <p className="isoHelperText">
                 <IntlMessages id="page.signInPreview" />
-              </p> */}
+              </p>
 
-              <div className="isoInputWrapper isoOtherLogin">
-                <Button onClick={this.handleLogin} type="primary btnFacebook">
-                  <IntlMessages id="page.signInFacebook" />
-                </Button>
-                <Button onClick={this.handleLogin} type="primary btnGooglePlus">
-                  <IntlMessages id="page.signInGooglePlus" />
-                </Button>
-
-                {Auth0.isValid &&
-                  <Button
-                    onClick={() => {                 
-                      Auth0.login(this.handleLogin);
-                    }}
-                    type="primary btnAuthZero"
-                  >
-                    <IntlMessages id="page.signInAuth0" />
-                  </Button>}
-
-                {Firebase.isValid && <FirebaseLogin login={this.handleLogin} />}
-              </div>
+              
               <div className="isoCenterComponent isoHelperWrapper">
                 <Link to="/forgotpassword" className="isoForgotPass">
                   <IntlMessages id="page.signInForgotPass" />
@@ -104,7 +125,6 @@ class SignIn extends Component {
     );
   }
 }
-
 export default connect(
   state => ({
     isLoggedIn: state.Auth.get('idToken') !== null ? true : false,
