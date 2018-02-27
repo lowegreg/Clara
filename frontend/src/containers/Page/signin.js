@@ -28,7 +28,7 @@ class SignIn extends Component {
   }
   onSave(event) {
     event.preventDefault();
-    fetch('http://localhost:5000/api/authenticate', {
+    fetch('http://localhost:3000/api/authenticate', {
     headers: {
       'Accept': 'application/x-www-form-urlencoded',
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -43,7 +43,7 @@ class SignIn extends Component {
        const { login } = this.props;
       login();
       this.props.history.push('/dashboard')}})
-    .catch(() => console.log("Can’t access http://localhost:5000/api/authenticate response. Blocked by browser?"))
+    .catch(() => console.log("Can’t access http://localhost:3000/api/authenticate response. Blocked by browser?"))
   }
   componentWillReceiveProps(nextProps) {
     if (
