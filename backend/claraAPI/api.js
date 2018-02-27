@@ -35,7 +35,7 @@ app.get('/tableLookUp', function(req, res){
 
 app.get('/trafficCollisions', function(req, res){
 
-    var sql= 'SELECT * FROM `Traffic Collisions` '
+    var sql= 'SELECT  ENVIRONMENT_CONDITION as `name`, COUNT(*) as `accidents`  FROM `Traffic Collisions` group by ENVIRONMENT_CONDITION'
 
     con.query(sql, function(err, rows){
        if(err){

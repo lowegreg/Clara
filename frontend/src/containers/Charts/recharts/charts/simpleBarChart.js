@@ -21,7 +21,7 @@ export default class extends Component {
           data={datas}
           margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
         >
-          <XAxis dataKey="name" stroke={colors[3]} />
+          <XAxis dataKey="name" stroke={colors[3]} /> 
           <YAxis stroke={colors[3]} />
           <CartesianGrid strokeDasharray="3 3" />
           <Tooltip />

@@ -11,7 +11,7 @@ export default function(url, submenuColor) {
         <span className="isoMenuHolder" style={submenuColor}>
           <i className="ion-gear-b" />
           <span className="nav-text">
-            <IntlMessages id="Settings" />
+            <IntlMessages id="sidebar.settings" />
           </span>
         </span>
       </Link>

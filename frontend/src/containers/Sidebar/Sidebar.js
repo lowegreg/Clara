@@ -141,7 +141,7 @@ class Sidebar extends Component {
                   <span className="isoMenuHolder" style={submenuColor}>
                     <i className="ion-ios-home-outline" />
                     <span className="nav-text">
-                      <IntlMessages id="Desktop" />
+                      <IntlMessages id="sidebar.desktop" />
                     </span>
                   </span>
                 </Link>
@@ -153,29 +153,29 @@ class Sidebar extends Component {
                   <span className="isoMenuHolder" style={submenuColor}>
                     <i className="ion-android-bulb" />
                     <span className="nav-text">
-                      <IntlMessages id="Stories" />
+                      <IntlMessages id="sidebar.stories" />
                     </span>
                   </span>
                 }
               >
                 <Menu.Item style={submenuStyle} key="shop">
                   <Link style={submenuColor} to={`${url}/blank_page`}>
-                    <IntlMessages id="Live" />
+                    <IntlMessages id="sidebar.live" />
                   </Link>
                 </Menu.Item>
                 <Menu.Item style={submenuStyle} key="cart">
                   <Link style={submenuColor} to={`${url}/blank_page`}>
-                    <IntlMessages id="Open" />
+                    <IntlMessages id="sidebar.open" />
                   </Link>
                 </Menu.Item>
                 <Menu.Item style={submenuStyle} key="checkout">
                   <Link style={submenuColor} to={`${url}/blank_page`}>
-                    <IntlMessages id="3rd Party" />
+                    <IntlMessages id="sidebar.thirdParty" />
                   </Link>
                 </Menu.Item>
                 <Menu.Item style={submenuStyle} key="card">
                   <Link style={submenuColor} to={`${url}/blank_page`}>
-                    <IntlMessages id="Imported" />
+                    <IntlMessages id="sidebar.imported" />
                   </Link>
                 </Menu.Item>
               </SubMenu>
@@ -186,24 +186,24 @@ class Sidebar extends Component {
                   <span className="isoMenuHolder" style={submenuColor}>
                     <i className="ion-map" />
                     <span className="nav-text">
-                      <IntlMessages id="Story Builder" />
+                      <IntlMessages id="sidebar.builder" />
                     </span>
                   </span>
                 }
               >
                 <Menu.Item style={submenuStyle} key="claraStories">
                   <Link style={submenuColor} to={`${url}/blank_page`}>
-                    <IntlMessages id="Clara's Stories" />
+                    <IntlMessages id="sidebar.claraStories" />
                   </Link>
                 </Menu.Item>
                 <Menu.Item style={submenuStyle} key="userStories">
                   <Link style={submenuColor} to={`${url}/blank_page`}>
-                    <IntlMessages id="User's Stories" />
+                    <IntlMessages id="sidebar.userStories" />
                   </Link>
                 </Menu.Item>
                 <Menu.Item style={submenuStyle} key="newStories">
                   <Link style={submenuColor} to={`${url}/blank_page`}>
-                    <IntlMessages id="Create New Stories" />
+                    <IntlMessages id="sidebar.createdStories" />
                   </Link>
                 </Menu.Item>
               </SubMenu>
@@ -213,7 +213,7 @@ class Sidebar extends Component {
                   <span className="isoMenuHolder" style={submenuColor}>
                     <i className="ion-ios-list-outline" />
                     <span className="nav-text">
-                      <IntlMessages id="Reports" />
+                      <IntlMessages id="sidebar.reports" />
                     </span>
                   </span>
                 </Link>

@@ -1,39 +1,22 @@
 import React, { Component } from 'react';
 import Card from '../../../containers/Uielements/Card/card.style'
 // import IntlMessages from '../../../components/utility/intlMessages';
-import {
-    LineChart,
-    Line,
-    XAxis,
-    YAxis,
-    CartesianGrid,
-    Tooltip,
-    Legend,
-  } from 'recharts';
-import ChartWrapper from '../../../containers/Charts/chart.style';
+
+
 import { Row, Col,Tag } from 'antd';
-import {
-   SimpleLineCharts,
-//   CustomizedDotLineChart,
-//  SimpleBarChart,
-//   MixBarChart,
-//   CustomShapeBarChart,
-//   BiaxialBarChart,
-//   SimpleAreaChart,
-//   StackedAreaChart,
-   LineBarAreaComposedChart,
-//   CustomActiveShapePieChart,
-//   SpecifiedDomainRadarChart,
-//  SimpleRadialBarChart,
-//   LegendEffectOpacity,
-} from '../../../containers/Charts/recharts/charts';
+
+import LineBarAreaComposedChart from '../../../containers/Charts/recharts/charts/lineBarAreaComposedChart';
+import SimpleLineCharts from  '../../../containers/Charts/recharts/charts/simpleLineCharts';
 import Box from '../../../components/utility/box';
 import ContentHolder from '../../../components/utility/contentHolder';
 import basicStyle from '../../../config/basicStyle';
 
 export default class extends Component {
+
   render() {
+
     const { rowStyle, colStyle, gutter } = basicStyle;
+   
     return (
 
         <Card
@@ -45,8 +28,8 @@ export default class extends Component {
             <Box title={''}>
              { this.props.componentName=== 'SimpleLineCharts' &&
                 <ContentHolder>
-                    <SimpleLineCharts {...this.props} />
-                </ContentHolder>
+                    <SimpleLineCharts datas={this.props.datas} width={this.props.width} height={this.props.height} colors={this.props.colors} dataKey={this.props.dataKey} />
+                 </ContentHolder>
              } 
             { this.props.componentName=== 'LineBarAreaComposedChart' &&
                 <ContentHolder>
