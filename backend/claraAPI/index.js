@@ -56,7 +56,7 @@ app.get('/trafficCollisions', function(req, res){
     });
 })
 
-app.listen(5000); // to do on local
-// app.listen(3000, function () {
-//     console.log(' REST server started.');
-//   });
+// app.listen(3000); // to do on local
+app.listen(3000, function () {
+    console.log(' REST server started.');
+  });
