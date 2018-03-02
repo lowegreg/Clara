@@ -5,7 +5,7 @@ var app = express();
 var con        = require('./config');
 var authenticateController=require('./controllers/authenticate-controller');
 var registerController=require('./controllers/register-controller');
-
+const fetch = require('node-fetch')
 
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
@@ -55,7 +55,8 @@ app.get('/trafficCollisions', function(req, res){
        }
     });
 })
-app.listen(3000); // to do on local
-// app.listen(3000, function () {
-//     console.log(' REST server started.');
-//   });
+
+// app.listen(3000); // to do on local
+app.listen(3000, function () {
+    console.log(' REST server started.');
+  });

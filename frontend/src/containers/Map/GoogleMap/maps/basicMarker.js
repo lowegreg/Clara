@@ -10,8 +10,8 @@ class BasicMarkerMap extends Component {
     super(props);
     this.loadMap = this.loadMap.bind(this);
     this.state = {
-      center: { lat: 40.78306, lng: -73.971249 }, // 40.783060, -73.971249
-      zoom: 13,
+      center: { lat:  43.4516, lng: -80.4925 }, // 40.783060, -73.971249
+      zoom: 15,
       posts,
       infoWindow: null,
     };

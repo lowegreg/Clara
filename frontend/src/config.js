@@ -29,10 +29,10 @@ const Auth0Config = {
     auth: {
       autoParseHash: true,
       redirect: true,
-      redirectUrl: 'http://localhost:3000/auth0loginCallback'
+      redirectUrl: 'http://35.182.224.114:3000/auth0loginCallback'
     },
     languageDictionary: {
-      title: 'CLARA',
+      title: 'Clara',
       emailInputPlaceholder: 'demo@gmail.com',
       passwordInputPlaceholder: 'demodemo'
     },
@@ -59,7 +59,7 @@ const firebaseConfig = {
   messagingSenderId: ''
 };
 const googleConfig = {
-  apiKey: '' //
+  apiKey: 'AIzaSyDq3ZF-Hh1zAkSUdcOqjzxDTcMGeP6WjBo' //
 };
 const mapboxConfig = {
   tileLayer: '',

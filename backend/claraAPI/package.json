@@ -9,7 +9,8 @@
     "cors": "^2.8.4",
     "express": "^4.16.2",
     "jsonwebtoken": "^7.3.0",
-    "mysql": "^2.15.0"
+    "mysql": "^2.15.0",
+    "node-fetch": "^2.0.0"
   },
   "devDependencies": {},
   "scripts": {
