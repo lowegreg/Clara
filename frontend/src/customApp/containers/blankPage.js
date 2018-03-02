@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import Tile from '../components/insightTile';
 import { Row, Col } from 'antd';
-
+// import BasicMarker from '../../../containers/maps/basicMarker';
+import BasicMarker from '../../containers/Map/GoogleMap/maps/basicMarker';
 import basicStyle from '../../config/basicStyle'
 export default class extends Component {
   constructor(props){
@@ -78,14 +79,19 @@ export default class extends Component {
     };
     return (
       <div>
-      <Row style={rowStyle} gutter={gutter} justify="start">
+      <Row md={12} xs={24} style={colStyle} >
         <Col md={12} xs={24} style={colStyle}>   
             <Tile {...LineBarAreaComposedChart} />
         </Col> 
         <Col md={12} xs={24} style={colStyle}> 
             <Tile {...SimpleLineCharts} />
+          
         </Col> 
       </Row>
+      <Row md={12} xs={24} style={colStyle} >
+        <BasicMarker />
+      </Row>  
+
     </div>
     );
   }

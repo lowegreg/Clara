@@ -31,7 +31,7 @@ export default function({ collapsed }) {
                // width={100}
                 height={30}
               />
-              {siteConfig.siteName}
+            {siteConfig.siteName}
               
             </Link>
          

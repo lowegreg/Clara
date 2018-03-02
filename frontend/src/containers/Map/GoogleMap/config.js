@@ -1,8 +1,8 @@
 // Import image for infoWindow here
-import infoWindowImg1 from '../../../image/image1.jpg';
+import infoWindowImg1 from '../../../image/cityHall.jpg';
 import infoWindowImg2 from '../../../image/image3.jpg';
 import infoWindowImg3 from '../../../image/image4.jpg';
-import infoWindowImg4 from '../../../image/image5.jpg';
+import infoWindowImg4 from '../../../image/balzac.jpg';
 
 const SnazyMapStyle = JSON.stringify([
   {
@@ -186,11 +186,11 @@ const SnazyMapStyle = JSON.stringify([
 const posts = [
   {
     ID: 1,
-    title: 'Manhatan Lake Cafe',
-    location: 'Manhatan, NY',
+    title: 'City Hall',
+    location: 'Kitchener, ON',
     img: infoWindowImg1,
-    lat: 40.783060,
-    lng: -73.971249,
+    lat: 43.4516,
+    lng: -80.4925,
     marker: {
       borderStyle: 'double',
       borderColor: 'grey',
@@ -228,11 +228,11 @@ const posts = [
   },
   {
     ID: 4,
-    title: 'Malcom hill',
-    location: 'Malcom X, NY',
+    title: 'Balzac`s ',
+    location: 'Communitech',
     img: infoWindowImg4,
-    lat: 40.809657,
-    lng: -73.944201,
+    lat: 43.4512,
+    lng: -80.4984,
     marker: {
       borderStyle: 'double',
       borderColor: 'yellow',
