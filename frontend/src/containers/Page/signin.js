@@ -43,7 +43,7 @@ class SignIn extends Component {
        const { login } = this.props;
       login();
       this.props.history.push('/dashboard')}})
-    .catch(() => console.log("Can’t access http://35.182.224.114:3000/api/authenticate response. Blocked by browser?"))
+    .catch(() => console.log("Can’t access clara's /api/authenticate response."))
   }
   componentWillReceiveProps(nextProps) {
     if (
