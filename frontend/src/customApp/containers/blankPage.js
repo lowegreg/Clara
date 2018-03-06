@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import Tile from '../components/insightTile';
-import { Row, Col } from 'antd';
-// import BasicMarker from '../../../containers/maps/basicMarker';
-import BasicMarker from '../../containers/Map/GoogleMap/maps/basicMarker';
+// import { Row, Col } from 'antd';
+import { Grid, Row, Col } from 'react-flexbox-grid';
+//import BasicMarker from '../../containers/Map/GoogleMap/maps/basicMarker';
 import basicStyle from '../../config/basicStyle'
 export default class extends Component {
   constructor(props){
@@ -60,10 +60,11 @@ export default class extends Component {
       colors,
       datas: this.state.traffic,
       description:'This tile displays the correlations between accidents and weather conditions.',
-      widthOfCard:'100%',
+      widthOfCard:'65%',
       tags,
-      dataKey:{name:'weather', dataOne:'accidents'}
+      dataKey:{name:'name', dataOne:'accidents'}
     };
+    
     let LineBarAreaComposedChart = {
       componentName: 'LineBarAreaComposedChart',
       key: 'LineBarAreaComposedChart',
@@ -73,25 +74,63 @@ export default class extends Component {
       colors,
       datas: this.state.traffic,
       description:'This tile displays the correlations between accidents and weather conditions.',
-      widthOfCard:'100%',
+      widthOfCard:'100%',// 100 or 60
       tags,
-      dataKey:{name:'weather', dataOne:'accidents'}
+      dataKey:{name:'name', dataOne:'accidents'}
+    };
+    console.log(this.state.traffic)
+    let CustomActiveShapePieChart = {
+      componentName: 'CustomActiveShapePieChart',
+      key: 'CustomActiveShapePieChart',
+      title: 'Custom Active Shape Pie Chart',
+      width: 600,
+      height,
+      colors,
+      dataKey: 'value',
+      datas:[
+        {name: 'Group A', value: 400},
+        {name: 'Group B', value: 900},
+        {name: 'Group C', value: 300},
+        {name: 'Group D', value: 200},
+      ],
+      description:'This tile displays the correlations between accidents and weather conditions.',
+      widthOfCard:'50%',
+      tags,
+
     };
     return (
-      <div>
-      <Row md={12} xs={24} style={colStyle} >
-        <Col md={12} xs={24} style={colStyle}>   
-            <Tile {...LineBarAreaComposedChart} />
-        </Col> 
-        <Col md={12} xs={24} style={colStyle}> 
-            <Tile {...SimpleLineCharts} />
-          
-        </Col> 
-      </Row>
-      <Row md={12} xs={24} style={colStyle} >
-        <BasicMarker />
-      </Row>  
+      <div style={{alignContent:'center', alignItems:'ceter', marginLeft: '16px', marginTop: '16px'}}>
+         <Grid fluid>
+          <Row style={{ marginBottom: '16px'}}>
+            <Col xs={6} >
+               <Tile {...LineBarAreaComposedChart} />
+            </Col>
+            <Col xs={3}  >
+               <div style={{ marginBottom: '16px'}}>
+                  <Tile {...CustomActiveShapePieChart} />
+               </div> 
+               <div> 
+                  <Tile {...CustomActiveShapePieChart} />
+                </div> 
+            </Col>
+            <Col xs={3}  >
 
+                <Tile {...SimpleLineCharts} /> 
+ 
+            </Col>
+          </Row>
+        
+           
+        <Row>
+          <Col xs={12} >
+            <Tile componentName='gmaps' tags={tags} height={height} widthOfCard={'100%'}  width={width} description={'A map of downtown kitchener'} title={'Maps'}/>
+          </Col>
+        </Row>  
+        
+
+ 
+        </Grid>
+      
     </div>
     );
   }

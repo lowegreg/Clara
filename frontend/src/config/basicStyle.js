@@ -1,7 +1,8 @@
 const rowStyle = {
   width: '100%',
   display: 'flex',
-  flexFlow: 'row wrap',
+  flexDirection: 'row',
+   flexFlow: 'row wrap',
 };
 const colStyle = {
   marginBottom: '16px',
