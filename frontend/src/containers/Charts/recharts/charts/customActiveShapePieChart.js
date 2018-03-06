@@ -80,6 +80,7 @@ export default class extends Component {
     this.onPieEnter = this.onPieEnter.bind(this);
     this.state = { activeIndex: 0 };
   }
+  
   onPieEnter(data, index) {
     // this.setState({
     //   activeIndex: index,
@@ -87,18 +88,24 @@ export default class extends Component {
   }
   render() {
     const { datas, width, height, colors } = this.props;
+
+    let  shrinkH=this.props.shrink
+    if (shrinkH<1){
+      console.log(shrinkH)
+      shrinkH=shrinkH-0.05;
+    }
     return (
       <ChartWrapper className="isoChartWrapper">
-        <PieChart width={width} height={height} onMouseEnter={this.onPieEnter}>
+        <PieChart width={width* this.props.shrink} height={height*shrinkH} onMouseEnter={this.onPieEnter}>
           <Pie
             activeIndex={this.state.activeIndex}
             activeShape={renderActiveShape}
             dataKey="value"
             data={datas}
-            cx={300}
-            cy={200}
-            innerRadius={60}
-            outerRadius={80}
+            cx={(width/2)*this.props.shrink}
+            cy={125*this.props.shrink}
+            innerRadius={65*this.props.shrink}
+            outerRadius={100*this.props.shrink}
             fill={colors[0]}
           />
         </PieChart>

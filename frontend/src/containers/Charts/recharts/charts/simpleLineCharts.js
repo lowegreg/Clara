@@ -16,10 +16,11 @@ export default class extends Component {
 
   render() {
     const { datas, width, height, colors,dataKey } = this.props;
-
+    console.log(width, height);
     return (
       <ChartWrapper>
         <LineChart
+        isAnimationActive={false}
           width={width}
           height={height}
           data={datas}
@@ -32,12 +33,13 @@ export default class extends Component {
           <Legend />
           <Line
             type="monotone"
+            isAnimationActive={false}
             dataKey={this.props.dataKey.dataOne}
             stroke={colors[0]}
             activeDot={{ r: 8 }}
           />
           {dataKey.dataTwo&&
-            <Line type="monotone" dataKey={this.props.dataKey.dateTwo} stroke={colors[1]} />
+            <Line  isAnimationActive={false} type="monotone"  dataKey={this.props.dataKey.dateTwo} stroke={colors[1]} />
           }  
         </LineChart>
       </ChartWrapper>

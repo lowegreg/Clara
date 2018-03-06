@@ -84,7 +84,7 @@ class BasicMarkerMap extends Component {
           <BasicMapWrapper>
             <div
               className="isoGoogleMap"
-              style={{ height: '650px', width: '100%' }}
+              style={{ height: this.props.height, width: '100%' }}
               ref={this.loadMap}
             />
           </BasicMapWrapper>
