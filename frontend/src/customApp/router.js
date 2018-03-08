@@ -20,5 +20,13 @@ export default function(url) {
       component={asyncComponent(() => import('./containers/blankPage'))}
     />
   );
+  routers.push(
+    <Route
+      exact
+      key="open_data"
+      path={`${url}/open_data`}
+      component={asyncComponent(() => import('./containers/Open Data/index'))}
+    />
+  );
   return routers;
 }
