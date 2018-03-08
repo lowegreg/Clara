@@ -68,6 +68,7 @@
     "react-scrollbar-js": "^1.0.1",
     "react-sidebar": "^2.3.2",
     "react-speech-recognition": "^1.0.4",
+    "react-table": "^6.8.0",
     "react-tag-input": "^4.7.2",
     "react-tags": "^0.2.2",
     "react-test-renderer": "^16.2.0",
