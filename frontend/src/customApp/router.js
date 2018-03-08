@@ -25,7 +25,7 @@ export default function(url) {
       exact
       key="open_data"
       path={`${url}/open_data`}
-      component={asyncComponent(() => import('./containers/Open Data/index'))}
+      component={asyncComponent(() => import('./containers/OpenData/index'))}
     />
   );
   return routers;
