@@ -163,8 +163,8 @@ class Sidebar extends Component {
                     <IntlMessages id="sidebar.live" />
                   </Link>
                 </Menu.Item>
-                <Menu.Item style={submenuStyle} key="cart">
-                  <Link style={submenuColor} to={`${url}/blank_page`}>
+                <Menu.Item style={submenuStyle} key="open_data">
+                  <Link style={submenuColor} to={`${url}/open_data`}>
                     <IntlMessages id="sidebar.open" />
                   </Link>
                 </Menu.Item>

@@ -26,6 +26,14 @@ export default function(url) {
       key="parkingInfractions"
       path={`${url}/parkingInfractions`}
       component={asyncComponent(() => import('./containers/parking/parkingInfractions'))}
+    /> 
+  );
+  routers.push(
+    <Route
+      exact
+      key="open_data"
+      path={`${url}/open_data`}
+      component={asyncComponent(() => import('./containers/OpenData/index'))}
     />
   );
   return routers;
