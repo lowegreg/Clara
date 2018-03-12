@@ -11,6 +11,11 @@ class AppRouter extends React.Component {
         <Route
           exact
           path={`${url}/`}
+          component={asyncComponent(() => import('../../customApp/containers/ClaraDash/index.js'))}
+        />
+        <Route
+          exact
+          path={`${url}/widgets`}
           component={asyncComponent(() => import('../Widgets/index.js'))}
         />
         <Route

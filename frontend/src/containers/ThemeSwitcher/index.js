@@ -14,7 +14,7 @@ class ThemeSwitcher extends Component {
   render() {
     const {
       isActivated,
-      // changeThemes,
+      changeThemes,
       topbarTheme,
       sidebarTheme,
       layoutTheme,
@@ -35,11 +35,11 @@ class ThemeSwitcher extends Component {
         </div>
 
         <div className="SwitcherBlockWrapper">
-          {/*<Switcher
+          <Switcher
             config={Themes.changeThemes}
             changeTheme={changeTheme}
             selectedId={changeThemes.themeName}
-          />*/}
+          />
           <Switcher
             config={Themes.sidebarTheme}
             changeTheme={changeTheme}
@@ -58,16 +58,6 @@ class ThemeSwitcher extends Component {
             selectedId={layoutTheme.themeName}
           />
           <LanguageSwitcher />
-        </div>
-
-        <div className="purchaseBtnWrapper">
-          <a
-            href="https://themeforest.net/item/isomorphic-react-redux-admin-dashboard/20262330?ref=redqteam"
-            className="purchaseBtn"
-            style={styleButton}
-          >
-            <IntlMessages id="themeSwitcher.purchase" />
-          </a>
         </div>
 
         <button

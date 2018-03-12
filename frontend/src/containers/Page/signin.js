@@ -65,7 +65,7 @@ class SignIn extends Component {
     
     if (this.state.redirectToReferrer) {
       console.log(`redirect is true`)
-      return <Redirect to={from} onChange={this.handleLogin}/>;
+      return <Redirect to={from} onChange={this.handleLogin} history={this.props.history}/>;
     }
     return (
       <SignInStyleWrapper className="isoSignInPage">
