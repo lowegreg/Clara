@@ -10,7 +10,7 @@ import {
   Tooltip,
   Legend,
 } from 'recharts';
-import ChartWrapper from '../../chart.style';
+//import ChartWrapper from '../../chart.style';
 
 export default class extends Component {
   render() {

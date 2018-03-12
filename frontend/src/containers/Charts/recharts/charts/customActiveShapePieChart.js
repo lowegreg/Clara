@@ -91,8 +91,9 @@ export default class extends Component {
 
     let  shrinkH=this.props.shrink
     if (shrinkH<1){
-      console.log(shrinkH)
       shrinkH=shrinkH-0.05;
+    }else{
+      shrinkH=0.65
     }
     return (
       <ChartWrapper className="isoChartWrapper">
@@ -103,9 +104,9 @@ export default class extends Component {
             dataKey="value"
             data={datas}
             cx={(width/2)*this.props.shrink}
-            cy={125*this.props.shrink}
-            innerRadius={65*this.props.shrink}
-            outerRadius={100*this.props.shrink}
+            cy={115*this.props.shrink}
+            innerRadius={60*this.props.shrink}
+            outerRadius={90*this.props.shrink}
             fill={colors[0]}
           />
         </PieChart>

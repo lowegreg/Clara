@@ -5,7 +5,9 @@ import { data } from './doughnutConfig';
 class DoughnutChart extends React.Component {
   render() {
     return (
-        <Doughnut data={data} />
+        <Doughnut 
+          data={this.props.data} 
+         />
     );
   }
 };

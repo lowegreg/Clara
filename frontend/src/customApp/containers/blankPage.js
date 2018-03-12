@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import Tile from '../components/insightTile';
-// import { Row, Col } from 'antd';
+
 import { Grid, Row, Col } from 'react-flexbox-grid';
-//import BasicMarker from '../../containers/Map/GoogleMap/maps/basicMarker';
-import basicStyle from '../../config/basicStyle'
+
 export default class extends Component {
   constructor(props){
     super(props);
@@ -32,7 +31,6 @@ export default class extends Component {
   
   render() {
 
-    const { rowStyle, colStyle, gutter } = basicStyle;
     let width = this.state.width/3;//800
     let height = this.state.height/2;//400
     if (height>400){
@@ -78,7 +76,7 @@ export default class extends Component {
       tags,
       dataKey:{name:'name', dataOne:'accidents'}
     };
-    console.log(this.state.traffic)
+   
     let CustomActiveShapePieChart = {
       componentName: 'CustomActiveShapePieChart',
       key: 'CustomActiveShapePieChart',
