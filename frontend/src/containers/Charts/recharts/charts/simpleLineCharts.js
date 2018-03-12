@@ -16,7 +16,6 @@ export default class extends Component {
 
   render() {
     const { datas, width, height, colors,dataKey } = this.props;
-    console.log(width, height);
     return (
       <ChartWrapper>
         <LineChart

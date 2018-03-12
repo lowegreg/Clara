@@ -56,7 +56,43 @@ app.get('/trafficCollisions', function(req, res){
     });
 })
 
+app.get('/ParkingInfractions/violations', function(req, res){
+
+    var sql= 'select `Violation Description` as name, count(`Violation Description`) as value from `Parking Infractions` where MONTHNAME(date)!= \'November\' group by `Violation Description` having count(`Violation Description`)>1000'
+
+    con.query(sql, function(err, rows){
+       if(err){
+           res.json({"Error": true, "Message":"Error Execute Sql"});
+       }else{
+           res.json({"Error": false,"Message": "Success", "id" : rows});
+       }
+    });
+})
+app.get('/ParkingInfractions/feesPerDate', function(req, res){
+
+    var sql= 'select ticket.month ,tickets, Fee from (select MONTHNAME(date) as month, count(date)as tickets from `Parking Infractions` where MONTHNAME(date)!= \'November\' GROUP BY YEAR(date), MONTH(date)) as ticket, (select  MONTHNAME(date) as month , sum(`FEE`) as Fee from `Parking Infractions` where MONTHNAME(date)!= \'November\' GROUP BY YEAR(date), MONTH(date)) as fees where ticket.month=fees.month '
+
+    con.query(sql, function(err, rows){
+       if(err){
+           res.json({"Error": true, "Message":"Error Execute Sql"});
+       }else{
+           res.json({"Error": false,"Message": "Success", "id" : rows});
+       }
+    });
+})
+app.get('/ParkingInfractions/locationFees', function(req, res){
+
+    var sql= 'select `Violation Location` as Location , sum(`Fee`) as Revenue from `Parking Infractions` where MONTHNAME(date)!= \'November\' group by `Violation Location` having Revenue >8000'
+
+    con.query(sql, function(err, rows){
+       if(err){
+           res.json({"Error": true, "Message":"Error Execute Sql"});
+       }else{
+           res.json({"Error": false,"Message": "Success", "id" : rows});
+       }
+    });
+})
 // app.listen(3000); // to do on local
 app.listen(3000, function () {
     console.log(' REST server started.');
-  });
+});

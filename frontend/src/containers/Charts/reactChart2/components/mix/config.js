@@ -74,8 +74,8 @@ const plugins = [
   {
     afterDraw: (chartInstance, easing) => {
       const ctx = chartInstance.chart.ctx;
-      ctx.fillText('This text drawn by a plugin', 100, 100);
+      // ctx.fillText('This text drawn by a plugin', 100, 100);
     }
   }
 ];
-export { data, options, plugins };
+export { options, plugins };

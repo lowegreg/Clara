@@ -20,5 +20,13 @@ export default function(url) {
       component={asyncComponent(() => import('./containers/blankPage'))}
     />
   );
+  routers.push(
+    <Route
+      exact
+      key="parkingInfractions"
+      path={`${url}/parkingInfractions`}
+      component={asyncComponent(() => import('./containers/parking/parkingInfractions'))}
+    />
+  );
   return routers;
 }

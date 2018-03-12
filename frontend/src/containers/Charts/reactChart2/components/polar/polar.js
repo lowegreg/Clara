@@ -7,7 +7,7 @@ class PolarChart extends React.Component {
   render() {
     return (
         <Polar
-          data={data}
+          data={this.props.datas}
           height={230}
         />
     );
