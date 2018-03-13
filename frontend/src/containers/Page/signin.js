@@ -105,11 +105,8 @@ class SignIn extends Component {
                 </Button>
               </div>
 
-              <p className="isoHelperText">
-                <IntlMessages id="page.signInPreview" />
-              </p>
 
-              
+{/*               
               <div className="isoCenterComponent isoHelperWrapper">
                 <Link to="/forgotpassword" className="isoForgotPass">
                   <IntlMessages id="page.signInForgotPass" />
@@ -117,7 +114,7 @@ class SignIn extends Component {
                 <Link to="/signup">
                   <IntlMessages id="page.signInCreateAccount" />
                 </Link>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

@@ -36,5 +36,13 @@ export default function(url) {
       component={asyncComponent(() => import('./containers/OpenData/index'))}
     />
   );
+  routers.push(
+    <Route
+      exact
+      key="claraSuggestion"
+      path={`${url}/claraSuggestion`}
+      component={asyncComponent(() => import('./containers/claraSuggestion'))}
+    />
+  );
   return routers;
 }

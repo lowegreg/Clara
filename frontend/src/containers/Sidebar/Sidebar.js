@@ -218,6 +218,16 @@ class Sidebar extends Component {
                   </span>
                 </Link>
               </Menu.Item>
+              <Menu.Item key="suggestions">
+                <Link to={`${url}/claraSuggestion`}>
+                  <span className="isoMenuHolder" style={submenuColor}>
+                    <i className="ion-android-happy" />
+                    <span className="nav-text">
+                      <IntlMessages id="sidebar.suggestions" />
+                    </span>
+                  </span>
+                </Link>
+              </Menu.Item>
               {getDevSidebar(url, submenuColor)}
             </Menu>
           </Scrollbars>

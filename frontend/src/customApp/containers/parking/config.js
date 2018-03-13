@@ -88,7 +88,6 @@ function setDoughnutData(apiData){
     doughnutData.datasets[0].data=apiData.map(apiData => apiData.value);
     doughnutData.datasets[0].backgroundColor=getColor(doughnutData.labels.length);
     doughnutData.datasets[0].hoverBackgroundColor=doughnutData.datasets.backgroundColor;
-     console.log(doughnutData)
     return doughnutData
 }
 
