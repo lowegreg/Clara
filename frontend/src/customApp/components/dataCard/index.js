@@ -4,7 +4,7 @@ import { Clickable } from 'react-clickable';
 
 class DataCard extends Component {
   onSelect(){
-    window.location.href =  '/dashboard/blank_page'
+    window.location.href =  '/dashboard/parkingInfractions'
     
   }
   mouseOver(){

@@ -7,7 +7,7 @@ import { Row, Col,Tag } from 'antd';
 import CustomActiveShapePieChart from '../../../containers/Charts/recharts/charts/customActiveShapePieChart';
 import LineBarAreaComposedChart from '../../../containers/Charts/recharts/charts/lineBarAreaComposedChart';
 import SimpleLineCharts from  '../../../containers/Charts/recharts/charts/simpleLineCharts';
-import SimpleRadialBarChart from '../../../containers/Charts/recharts/charts/simpleRadialBarChart';
+// import SimpleRadialBarChart from '../../../containers/Charts/recharts/charts/simpleRadialBarChart';
 import BasicMarker from '../../../containers/Map/GoogleMap/maps/basicMarker';
 import Icon from 'react-icons-kit';
 import { pushpin } from 'react-icons-kit/icomoon/pushpin';       
