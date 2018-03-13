@@ -4,7 +4,7 @@ export default {
 const siteConfig = {
   siteName: 'Clara',
   siteIcon: 'ion-flash',
-  footerText: 'Isomorphic ©2017 Created by RedQ, Inc'
+  footerText: 'AskClara ©2018 Created by Digital Kitchener Innovation Lab'
 };
 
 const themeConfig = {
