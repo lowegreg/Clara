@@ -21,84 +21,84 @@ app.post('/api/register',registerController.register);
 app.post('/api/authenticate',authenticateController.authenticate);
 
 app.get('/tableLookUp', function(req, res){
-    var id= req.param('id');
-    var sql;
+  var id = req.param('id');
+  var sql;
 
-    if (id){
-       sql= 'SELECT * FROM tableLookUp WHERE tableId= '+id
-    }else{
-        sql= 'SELECT * FROM tableLookUp '
-    } 
-    con.query(sql, function(err, rows){
-       if(err){
-           res.json({"Error": true, "Message":"Error Execute Sql"});
-       }else{
-           res.json({"Error": false,"Message": "Success", "tableId" : rows});
-       }
-    });
+  if (id){
+    sql = 'SELECT * FROM tableLookUp WHERE tableId= '+id
+  } else {
+    sql = 'SELECT * FROM tableLookUp '
+  } 
+  con.query(sql, function(err, rows){
+    if (err){
+      res.json({"Error": true, "Message":"Error Execute Sql"});
+    } else {
+      res.json({"Error": false,"Message": "Success", "tableId" : rows});
+    }
+  });
 })
 
 
 app.get('/trafficCollisions', function(req, res){
 
-    var sql= 'SELECT  ENVIRONMENT_CONDITION as `name`, COUNT(*) as `accidents`  FROM `Traffic Collisions` group by ENVIRONMENT_CONDITION'
+  var sql= 'SELECT  ENVIRONMENT_CONDITION as `name`, COUNT(*) as `accidents`  FROM `Traffic Collisions` group by ENVIRONMENT_CONDITION'
 
-    con.query(sql, function(err, rows){
-       if(err){
-           res.json({"Error": true, "Message":"Error Execute Sql"});
-       }else{
-           res.json({"Error": false,"Message": "Success", "id" : rows});
-       }
-    });
+  con.query(sql, function(err, rows){
+    if (err){
+      res.json({"Error": true, "Message":"Error Execute Sql"});
+    } else {
+      res.json({"Error": false,"Message": "Success", "id" : rows});
+    }
+  });
 })
 
 app.get('/ParkingInfractions/violations', function(req, res){
 
-    var sql= 'select `Violation Description` as name, count(`Violation Description`) as value from `Parking Infractions` where MONTHNAME(date)!= \'November\' group by `Violation Description` having count(`Violation Description`)>1000'
+  var sql= 'select `Violation Description` as name, count(`Violation Description`) as value from `Parking Infractions` where MONTHNAME(date)!= \'November\' group by `Violation Description` having count(`Violation Description`)>1000'
 
-    con.query(sql, function(err, rows){
-       if(err){
-           res.json({"Error": true, "Message":"Error Execute Sql"});
-       }else{
-           res.json({"Error": false,"Message": "Success", "id" : rows});
-       }
-    });
+  con.query(sql, function(err, rows){
+    if (err){
+      res.json({"Error": true, "Message":"Error Execute Sql"});
+    } else {
+      res.json({"Error": false,"Message": "Success", "id" : rows});
+    }
+  });
 })
 app.get('/ParkingInfractions/feesPerDate', function(req, res){
 
-    var sql= 'select ticket.month ,tickets, Fee from (select MONTHNAME(date) as month, count(date)as tickets from `Parking Infractions` where MONTHNAME(date)!= \'November\' GROUP BY YEAR(date), MONTH(date)) as ticket, (select  MONTHNAME(date) as month , sum(`FEE`) as Fee from `Parking Infractions` where MONTHNAME(date)!= \'November\' GROUP BY YEAR(date), MONTH(date)) as fees where ticket.month=fees.month '
+  var sql= 'select ticket.month ,tickets, Fee from (select MONTHNAME(date) as month, count(date)as tickets from `Parking Infractions` where MONTHNAME(date)!= \'November\' GROUP BY YEAR(date), MONTH(date)) as ticket, (select  MONTHNAME(date) as month , sum(`FEE`) as Fee from `Parking Infractions` where MONTHNAME(date)!= \'November\' GROUP BY YEAR(date), MONTH(date)) as fees where ticket.month=fees.month '
 
-    con.query(sql, function(err, rows){
-       if(err){
-           res.json({"Error": true, "Message":"Error Execute Sql"});
-       }else{
-           res.json({"Error": false,"Message": "Success", "id" : rows});
-       }
-    });
+  con.query(sql, function(err, rows){
+    if (err){
+      res.json({"Error": true, "Message":"Error Execute Sql"});
+    } else {
+      res.json({"Error": false,"Message": "Success", "id" : rows});
+    }
+  });
 })
 app.get('/ParkingInfractions/locationFees', function(req, res){
 
-    var sql= 'select `Violation Location` as Location , sum(`Fee`) as Revenue from `Parking Infractions` where MONTHNAME(date)!= \'November\' group by `Violation Location` having Revenue >8000'
+  var sql= 'select `Violation Location` as Location , sum(`Fee`) as Revenue from `Parking Infractions` where MONTHNAME(date)!= \'November\' group by `Violation Location` having Revenue >8000'
 
-    con.query(sql, function(err, rows){
-       if(err){
-           res.json({"Error": true, "Message":"Error Execute Sql"});
-       }else{
-           res.json({"Error": false,"Message": "Success", "id" : rows});
-       }
-    });
+  con.query(sql, function(err, rows){
+    if (err){
+      res.json({"Error": true, "Message":"Error Execute Sql"});
+    } else {
+      res.json({"Error": false,"Message": "Success", "id" : rows});
+    }
+  });
 })
 app.post('/suggestions', function(req, res){
-    var sql= ' INSERT INTO suggestions (security, cost, efficiency, insights, ux, description, status) values (\'' + req.body.security+'\','+ req.body.cost+','+ req.body.efficiency+','+req.body.insight+','+req.body.ux+',\''+req.body.description+'\', \'submited\')';
-    con.query(sql, function(err, rows){
-       if(err){
-           res.json({"Error": true, "Message":"Error Execute Sql"});
-       }else{
-           res.json({"Error": false,"Message": "Success", "id" : rows});
-       }
-    });
+  var sql= ' INSERT INTO suggestions (security, cost, efficiency, insights, ux, description, status) values (\'' + req.body.security+'\','+ req.body.cost+','+ req.body.efficiency+','+req.body.insight+','+req.body.ux+',\''+req.body.description+'\', \'submited\')';
+  con.query(sql, function(err, rows){
+    if (err){
+      res.json({"Error": true, "Message":"Error Execute Sql"});
+    } else {
+      res.json({"Error": false,"Message": "Success", "id" : rows});
+    }
+  });
 })
 // app.listen(3000); // to do on local
 app.listen(3000, function () {
-    console.log(' REST server started.');
+  console.log(' REST server started.');
 });
