@@ -60,6 +60,9 @@ def checkObjectId(objectId, title,cursor):
     if results!= None:
         return False
     else:
+        today=datetime.datetime.today().strftime("%Y-%m-%d")
+        query = "UPDATE `tableLookUp` SET `lastUpDated`= \'%s\' where  name=  '%s' " % (today,title)
+        cursor.execute(query)
         return True    
 
 

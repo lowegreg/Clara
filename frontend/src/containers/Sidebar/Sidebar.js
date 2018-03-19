@@ -158,8 +158,8 @@ class Sidebar extends Component {
                   </span>
                 }
               >
-                <Menu.Item style={submenuStyle} key="shop">
-                  <Link style={submenuColor} to={`${url}/blank_page`}>
+                <Menu.Item style={submenuStyle} key="live">
+                  <Link style={submenuColor} to={`${url}/comingSoon`}>
                     <IntlMessages id="sidebar.live" />
                   </Link>
                 </Menu.Item>
@@ -168,13 +168,13 @@ class Sidebar extends Component {
                     <IntlMessages id="sidebar.open" />
                   </Link>
                 </Menu.Item>
-                <Menu.Item style={submenuStyle} key="checkout">
-                  <Link style={submenuColor} to={`${url}/blank_page`}>
+                <Menu.Item style={submenuStyle} key="thirdParty">
+                  <Link style={submenuColor} to={`${url}/comingSoon`}>
                     <IntlMessages id="sidebar.thirdParty" />
                   </Link>
                 </Menu.Item>
-                <Menu.Item style={submenuStyle} key="card">
-                  <Link style={submenuColor} to={`${url}/blank_page`}>
+                <Menu.Item style={submenuStyle} key="imported">
+                  <Link style={submenuColor} to={`${url}/comingSoon`}>
                     <IntlMessages id="sidebar.imported" />
                   </Link>
                 </Menu.Item>
@@ -192,24 +192,24 @@ class Sidebar extends Component {
                 }
               >
                 <Menu.Item style={submenuStyle} key="claraStories">
-                  <Link style={submenuColor} to={`${url}/blank_page`}>
+                  <Link style={submenuColor} to={`${url}/comingSoon`}>
                     <IntlMessages id="sidebar.claraStories" />
                   </Link>
                 </Menu.Item>
                 <Menu.Item style={submenuStyle} key="userStories">
-                  <Link style={submenuColor} to={`${url}/blank_page`}>
+                  <Link style={submenuColor} to={`${url}/comingSoon`}>
                     <IntlMessages id="sidebar.userStories" />
                   </Link>
                 </Menu.Item>
                 <Menu.Item style={submenuStyle} key="newStories">
-                  <Link style={submenuColor} to={`${url}/blank_page`}>
+                  <Link style={submenuColor} to={`${url}/comingSoon`}>
                     <IntlMessages id="sidebar.createdStories" />
                   </Link>
                 </Menu.Item>
               </SubMenu>
 
               <Menu.Item key="reports">
-                <Link to={`${url}/blank_page`}>
+                <Link to={`${url}/comingSoon`}>
                   <span className="isoMenuHolder" style={submenuColor}>
                     <i className="ion-ios-list-outline" />
                     <span className="nav-text">
