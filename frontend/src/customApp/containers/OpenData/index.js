@@ -7,7 +7,7 @@ export default class OpenDataTable extends React.Component {
       super(props);
   
       this.state={
-        tables: [{key:0, name:'name',description:'decription', id: 0}],
+        tables: [{key:0, name:'',description:'', id: 0}],
       }
     }    
     

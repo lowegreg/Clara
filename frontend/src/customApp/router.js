@@ -23,10 +23,18 @@ export default function(url) {
   routers.push(
     <Route
       exact
+      key="coming soon"
+      path={`${url}/comingSoon`}
+      component={asyncComponent(() => import('../containers/Page/comingSoon'))}
+    />
+  );
+  routers.push(
+    <Route
+      exact
       key="parkingInfractions"
       path={`${url}/parkingInfractions`}
-      component={asyncComponent(() => import('./containers/parking/parkingInfractions'))}
-    /> 
+      component={asyncComponent(() => import('./containers/Parking/index'))}
+    />
   );
   routers.push(
     <Route

@@ -83,10 +83,10 @@ export default class  extends Component {
                   
                   <Tile {...configs.locationMoneyLine} width={width} height={height} datas={this.state.feesPerMonth}  />
                </div> 
-               <div> 
-                  
+               <div>
                   <Tile {...configs.SimpleLineCharts}  width={width} height={height}  datas={this.state.locations}  /> 
-                </div> 
+                   
+                  </div> 
             </Col>
             <Col xs={3}  >
                 

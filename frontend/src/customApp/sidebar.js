@@ -7,7 +7,7 @@ export default function(url, submenuColor) {
   const sidebars = [];
   sidebars.push(
     <Menu.Item key="settings">
-      <Link to={`${url}/blank_page`}>
+      <Link to={`${url}/comingSoon`}>
         <span className="isoMenuHolder" style={submenuColor}>
           <i className="ion-gear-b" />
           <span className="nav-text">
@@ -19,7 +19,7 @@ export default function(url, submenuColor) {
   );
   sidebars.push(
     <Menu.Item key="blank_page">
-      <Link to={`${url}/blank_page`}>
+      <Link to={`${url}/comingSoon`}>
         <span className="isoMenuHolder" style={submenuColor}>
           <i className="ion-document" />
           <span className="nav-text">
