@@ -19,7 +19,7 @@ app.use(function(req, res, next) {
 /* route to handle login and registration */
 app.post('/api/register',registerController.register);
 app.post('/api/authenticate',authenticateController.authenticate);
-
+// all data sets 
 app.get('/tableLookUp', function(req, res){
   var id = req.param('id');
   var sql;
@@ -38,7 +38,7 @@ app.get('/tableLookUp', function(req, res){
   });
 })
 
-
+// traffic information
 app.get('/trafficCollisions', function(req, res){
 
   var sql= 'SELECT  ENVIRONMENT_CONDITION as `name`, COUNT(*) as `accidents`  FROM `Traffic Collisions` group by ENVIRONMENT_CONDITION'
@@ -51,7 +51,7 @@ app.get('/trafficCollisions', function(req, res){
     }
   });
 })
-
+// parking information
 app.get('/ParkingInfractions/violations', function(req, res){
 
   var sql= 'select `Violation Description` as name, count(`Violation Description`) as value from `Parking Infractions` where MONTHNAME(date)!= \'November\' group by `Violation Description` having count(`Violation Description`)>1000'
@@ -88,6 +88,8 @@ app.get('/ParkingInfractions/locationFees', function(req, res){
     }
   });
 })
+
+//suggestions page
 app.post('/suggestions', function(req, res){
   var sql= ' INSERT INTO suggestions (security, cost, efficiency, insights, ux, description, status) values (\'' + req.body.security+'\','+ req.body.cost+','+ req.body.efficiency+','+req.body.insight+','+req.body.ux+',\''+req.body.description+'\', \'submited\')';
   con.query(sql, function(err, rows){
@@ -98,7 +100,57 @@ app.post('/suggestions', function(req, res){
     }
   });
 })
-// app.listen(3000); // to do on local
+
+// data management 
+app.get('/dataManagement/getProps', function(req, res){
+ 
+ 
+  var sql= 'SELECT * FROM props where tableId in (select tableId from tableLookUp where name=\''+req.query.tableName+'\')' 
+  con.query(sql, function(err, rows){
+    if (err){
+      res.json({"Error": true, "Message":"Error Execute Sql"});
+    } else {
+      res.json({"Error": false,"Message": "Success", "id" : rows});
+    }
+  });
+})
+
+app.get('/dataManagement/getDataTypes', function(req, res){
+ 
+ 
+  var sql= 'select distinct dataTypes from props' 
+  con.query(sql, function(err, rows){
+    if (err){
+      res.json({"Error": true, "Message":"Error Execute Sql"});
+    } else {
+      res.json({"Error": false,"Message": "Success", "id" : rows});
+    }
+  });
+})
+
+app.post('/dataManagement/postPropsDataTypes', function(req, res){
+
+  var sql= 'update props set dataTypes=\''+req.body.dataType+'\' where   propId=\''+req.body.propId+'\'  and tableId in (select tableId from tableLookUp where name=\''+req.body.tableName+'\')';
+  con.query(sql, function(err, rows){
+    if (err){
+      res.json({"Error": true, "Message":"Error Execute Sql"});
+    } else {
+      res.json({"Error": false,"Message": "Success", "id" : rows});
+    }
+  });
+})
+
+app.post('/dataManagement/postDefaultTags', function(req, res){
+    var sql= 'update tableLookUp set defaultTag=\''+req.body.tagName+'\' where name=\''+req.body.tableName+'\'';
+    con.query(sql, function(err, rows){
+      if (err){
+        res.json({"Error": true, "Message":"Error Execute Sql"});
+      } else {
+        res.json({"Error": false,"Message": "Success", "id" : rows});
+      }
+    });
+  })
+
 app.listen(3000, function () {
   console.log(' REST server started.');
 });
