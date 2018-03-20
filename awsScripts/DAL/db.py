@@ -116,8 +116,7 @@ def createTable(header, data, title,cursor):
 def updatePropertyTables(headerArray, tableId,cursor):    
     for i in range(0, len(headerArray)) : 
         header=  headerArray[i]
-        query= "Select * FROM props WHERE propId = '%s'" % header['proptertyID']
-
+        query= "Select * FROM props WHERE propId = '%s' AND tableId = %s " % (header['proptertyID'] , tableId)
         cursor.execute(query)
         propsDNE=cursor.fetchone()
         query= "Select * FROM propValues WHERE propId = '%s'" % header['proptertyID']
