@@ -131,7 +131,7 @@ app.get('/dataManagement/getDataTypes', function(req, res){
 app.post('/dataManagement/postPropsDataTypes', function(req, res){
 
   var sql= 'update props set dataTypes=\''+req.body.dataType+'\' where   propId=\''+req.body.propId+'\'  and tableId in (select tableId from tableLookUp where name=\''+req.body.tableName+'\')';
-  console.log(sql);
+
   con.query(sql, function(err, rows){
     if (err){
       res.json({"Error": true, "Message":"Error Execute Sql"});
@@ -143,7 +143,7 @@ app.post('/dataManagement/postPropsDataTypes', function(req, res){
 
 app.post('/dataManagement/postDefaultTags', function(req, res){
     var sql= 'update tableLookUp set defaultTag=\''+req.body.tagName+'\' ,statusId=\'submitted\' where name=\''+req.body.tableName+'\'';
-  console.log(sql)
+
     con.query(sql, function(err, rows){
       if (err){
         res.json({"Error": true, "Message":"Error Execute Sql"});

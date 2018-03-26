@@ -122,10 +122,10 @@ export default class extends Component {
         }
 
        for (var i=0; i < this.state.table.length; i++){
-            console.log(this.state.table[i].type.value)
+            
             if(this.state.table[i].type.value===null){
                 this.setState({pointError:'Please map all fields'});
-                console.log('getout now')
+                
                 return;
             }
             

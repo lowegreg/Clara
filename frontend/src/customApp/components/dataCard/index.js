@@ -19,7 +19,7 @@ class DataCard extends Component {
   
 
   render() {
-    console.log(this.props)
+    
       return (
         <div>
           <Clickable  onClick={() => this.onSelect(this.props.dataManagement)} onMouseOver={this.mouseOver.bind(this)} onMouseOut={this.mouseOut.bind(this)} >
