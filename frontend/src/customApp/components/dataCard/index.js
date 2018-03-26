@@ -3,7 +3,7 @@ import { DataCardWrapper } from './style'
 import { Clickable } from 'react-clickable';
 
 class DataCard extends Component {
-  onSelect(dataManagement){
+  onSelect(){
     window.location.href =  '/dashboard/parkingInfractions'
   }
   mouseOver(){
