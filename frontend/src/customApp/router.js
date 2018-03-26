@@ -52,5 +52,13 @@ export default function(url) {
       component={asyncComponent(() => import('./containers/claraSuggestion'))}
     />
   );
+  routers.push(
+    <Route
+      exact
+      key="dataManagement"
+      path={`${url}/dataManagement`}
+      component={asyncComponent(() => import('./containers/DataManagement/index'))}
+    />
+  );
   return routers;
 }

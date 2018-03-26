@@ -3,8 +3,10 @@ import { DataCardWrapper } from './style'
 import { Clickable } from 'react-clickable';
 
 class DataCard extends Component {
-  onSelect(){
-    window.location.href =  '/dashboard/parkingInfractions'
+  onSelect(dataManagement){
+    if (!dataManagement){
+      window.location.href =  '/dashboard/parkingInfractions'
+    }  
     
   }
   mouseOver(){
@@ -13,10 +15,14 @@ class DataCard extends Component {
   mouseOut() {
       this.setState({hover: false});
   }
+
+  
+
   render() {
+    console.log(this.props)
       return (
         <div>
-          <Clickable onClick={this.onSelect} onMouseOver={this.mouseOver.bind(this)} onMouseOut={this.mouseOut.bind(this)} >
+          <Clickable  onClick={() => this.onSelect(this.props.dataManagement)} onMouseOver={this.mouseOver.bind(this)} onMouseOut={this.mouseOut.bind(this)} >
           <DataCardWrapper>
             <h3 className="isoCardTitle">{this.props.data.name}</h3>
             <span className="isoCardDate">
