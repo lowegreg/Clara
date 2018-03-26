@@ -26,6 +26,8 @@
     "js-info-bubble": "git+https://github.com/RedQ/js-info-bubble.git",
     "js-rich-marker": "^1.1.2",
     "lodash": "^4.17.4",
+    "material-ui": "^0.20.0",
+    "material-ui-superselectfield": "^1.8.11",
     "moment": "^2.18.1",
     "nprogress": "^0.2.0",
     "polished": "^1.7.0",
