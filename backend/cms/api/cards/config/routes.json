@@ -1,0 +1,44 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/cards",
+      "handler": "Cards.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/cards/:_id",
+      "handler": "Cards.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/cards",
+      "handler": "Cards.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/cards/:_id",
+      "handler": "Cards.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/cards/:_id",
+      "handler": "Cards.destroy",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}
