@@ -153,6 +153,6 @@ app.post('/dataManagement/postDefaultTags', function(req, res){
     });
   })
 
-app.listen(3001, function () {
+app.listen(3000, function () {
   console.log(' REST server started.');
 });
