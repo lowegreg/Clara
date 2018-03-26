@@ -94,7 +94,7 @@ export default class extends Component {
         });
     }
     componentDidMount (){
-        var query= 'http://localhost:3001/dataManagement/getProps?tableName='+this.state.tableName
+        var query= 'http://35.182.224.114:3000/dataManagement/getProps?tableName='+this.state.tableName
         fetch(query, {method: 'GET', mode: 'cors'})
        .then((response) =>  response.json())
        .then(responseJson=> this.setTable(responseJson.id ))
@@ -102,7 +102,7 @@ export default class extends Component {
          console.error(error);
        }); 
        
-       fetch('http://localhost:3001/dataManagement/getDataTypes', {method: 'GET', mode: 'cors'})
+       fetch('http://35.182.224.114:3000/dataManagement/getDataTypes', {method: 'GET', mode: 'cors'})
        .then((response) =>  response.json())
        .then(responseJson=> this.setData(responseJson.id ))
        .catch((error) => {
@@ -135,7 +135,7 @@ export default class extends Component {
         this.state.table.map((input,index)=>{
             formBody ='propId='+ input.property+'&dataType='+input.type.value.value+'&tableName='+this.state.tableName;
             
-            fetch('http://localhost:3001/dataManagement/postPropsDataTypes', {method: 'POST', headers:headersValue,  mode: 'cors', body:formBody})
+            fetch('http://35.182.224.114:3000/dataManagement/postPropsDataTypes', {method: 'POST', headers:headersValue,  mode: 'cors', body:formBody})
             .then((response) =>  response.json())
             .then(responseJson=> this.setState({submited:true }))
             .catch((error) => {
@@ -144,7 +144,7 @@ export default class extends Component {
         })
       
         formBody='tagName=' +this.state.tag+'&tableName='+this.state.tableName;
-        fetch('http://localhost:3001/dataManagement/postDefaultTags', {method: 'POST', headers:headersValue,  mode: 'cors', body:formBody})
+        fetch('http://35.182.224.114:3000/dataManagement/postDefaultTags', {method: 'POST', headers:headersValue,  mode: 'cors', body:formBody})
             .then((response) =>  response.json())
             .then(responseJson=> this.setState({submited:true }))
             .catch((error) => {

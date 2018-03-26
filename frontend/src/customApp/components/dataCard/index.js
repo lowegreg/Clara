@@ -4,10 +4,7 @@ import { Clickable } from 'react-clickable';
 
 class DataCard extends Component {
   onSelect(dataManagement){
-    if (!dataManagement){
-      window.location.href =  '/dashboard/parkingInfractions'
-    }  
-    
+    window.location.href =  '/dashboard/parkingInfractions'
   }
   mouseOver(){
       this.setState({hover: true});
@@ -22,7 +19,7 @@ class DataCard extends Component {
     
       return (
         <div>
-          <Clickable  onClick={() => this.onSelect(this.props.dataManagement)} onMouseOver={this.mouseOver.bind(this)} onMouseOut={this.mouseOut.bind(this)} >
+          <Clickable  onClick={this.onSelect} onMouseOver={this.mouseOver.bind(this)} onMouseOut={this.mouseOut.bind(this)} >
           <DataCardWrapper>
             <h3 className="isoCardTitle">{this.props.data.name}</h3>
             <span className="isoCardDate">
