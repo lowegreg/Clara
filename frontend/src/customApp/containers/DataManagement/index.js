@@ -12,6 +12,8 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 // const { TextArea } = Input;
 import Input from '../../../components/uielements/input';
 import Form from '../../../components/uielements/form';
+import { Modal } from 'antd';
+
 const FormItem = Form.Item;
   
 const formItemLayout = {
@@ -32,19 +34,58 @@ export default class extends Component {
         this.state={
             table:[],
             category: ['Number','Text','Date', 'Location'],
-            number: [],
+            number:[],
             date: [],
             text: [],
             location:[],
             typeDropdown:[],
             tag:'',
             test:{},
-            tableName:'Addresses',
+            tableName:'',
             submited:false,
-            pointError:''
+            pointError:'',
+            visible: false ,
+            newTypeCat:null,
+            dataTypeInput:''
+    
             
         }    
     };
+    showModal = () => {
+        this.setState({
+          visible: true,
+        });
+      }
+    handleOk = (e) => {
+        console.log( this.state.newTypeCat.value, this.state.dataTypeInput)
+        var temp=[]
+        if( this.state.newTypeCat.value==='Number'){
+            temp =this.state.number
+            temp.push(this.state.dataTypeInput)
+            this.setState({number:temp})
+        }else if (this.state.newTypeCat.value==='Text' ){
+            temp =this.state.text
+            temp.push(this.state.dataTypeInput)
+            this.setState({text:temp})
+        }else if(this.state.newTypeCat.value==='Date'){
+            temp =this.state.date
+            temp.push(this.state.dataTypeInput)
+            this.setState({date:temp})
+        }else if (this.state.newTypeCat.value==='Location'){
+            temp =this.state.location
+            temp.push(this.state.dataTypeInput)
+            this.setState({location:temp})
+        }
+        this.setState({
+          visible: false,
+        });
+      }
+    handleCancel = (e) => {
+        
+        this.setState({
+          visible: false,
+        });
+      }
     setTable(props){
        if (!props){return []}
         var tableArray=[]
@@ -109,9 +150,22 @@ export default class extends Component {
          console.error(error);
        });
      }
-    inputText(event){
+     componentWillMount(){
+        if (this.state.tableName===''){
+            console.log(this.props.match.params.tableName)
+            this.setState({tableName:this.props.match.params.tableName})
+        }
+     }
+    inputTag(event){
         
         this.setState({tag: event.target.value});
+    }
+    inputType(event){
+        
+        this.setState({dataTypeInput: event.target.value});
+    }
+    newDataTypeSelection=(values,name)=>{
+        this.setState({newTypeCat:values})
     }
     submit(){
         this.setState({pointError:''});
@@ -120,15 +174,12 @@ export default class extends Component {
             'Accept': 'application/x-www-form-urlencoded',
             'Content-Type': 'application/x-www-form-urlencoded',
         }
-
        for (var i=0; i < this.state.table.length; i++){
             
             if(this.state.table[i].type.value===null){
                 this.setState({pointError:'Please map all fields'});
-                
                 return;
-            }
-            
+            }    
         }
       
         if (this.state.tag===''){ this.setState({pointError:'Please enter a default tag for this data set'});     return}
@@ -151,7 +202,7 @@ export default class extends Component {
                     console.error(error);
         });
         
-
+        
     }
     handleSelection = (values, name) =>   {
         var [stage, num] = name.split('-');
@@ -204,7 +255,7 @@ export default class extends Component {
                 >
                 
                     {dataArray.map((data,index)=>{
-                        return <div key={index} value={data}>{data}</div>
+                        return <div key={index} value={data}>{data}</div> 
                     })}
                     
                     
@@ -214,25 +265,25 @@ export default class extends Component {
         )
     }
 
-
-  
     header(){
         return (
-         <Row  style={{backgroundColor: "#92add1"}}>
+         <Row  style={{backgroundColor: "#fff", borderBottom:'1px solid #adb2ba',}}>
              <Col xs={3}>
-                <div >
+                <h3 style={{color:'#646466'}}>
                         Propterties
-                </div>
+                </h3>
             </Col>
             <Col xs={3}>
-                <div >
+                <h3 style={{color:'#646466'}}>
                         Category
-                </div>
+                </h3>
             </Col>
             <Col xs={6}>
-                <div>
-                        Data type
-                </div>
+                
+                        <h3 style={{color:'#646466'}}>
+                                Data type
+                        </h3>
+                   
             </Col>
         
         </Row>
@@ -240,7 +291,7 @@ export default class extends Component {
     }
     tableRow( handleSelection,data, index, catLabels ){
         return(
-            <Row  style={{backgroundColor: "#edeeef", border:'1px solid #adb2ba'}} key={index} >  
+            <Row  style={{backgroundColor: "#fff", borderBottom:'1px solid #adb2ba', alignItems: 'center',justifyContent: 'center', flex:1}} key={index} >  
                 <Col xs={3}>
                     <div>
                         {data.property}
@@ -254,7 +305,9 @@ export default class extends Component {
                     
                 </Col>
                 <Col xs={6}>
-                    {this.dropDown(handleSelection, data.type.value, data.type.name, 'select a data type', index, 'type')}    
+                   
+                    {this.dropDown(handleSelection, data.type.value, data.type.name, 'select a data type', index, 'type')}
+                      
                     
                 </Col>
                
@@ -267,54 +320,131 @@ export default class extends Component {
   render() {
     // const { stateCat1, stateType1, stateCat2, stateType2 } = this.state
     // const {  colStyle } = basicStyle;
+   
+
+    const actions = [
+        <Button
+          label="Ok"
+          primary={true}
+          keyboardFocused={true}
+          onClick={this.handleClose}
+        />,
+      ];
+  
     return (
-
-      <div  style={{alignContent:'center', alignItems:'ceter', marginLeft: '16px', marginRight: '16px', marginBottom: '16px', marginTop: '16px'}}>
-        <h1 style={{alignContent:'center', alignItems:'ceter', marginLeft: '16px', marginTop: '16px',marginRight: '16px'}}>Maping Data Fields</h1>
-        
-        
-        <Box
-                title="Help Clara make the meaningless meaningful."
-                subtitle=""
-                
-            >
-            {this.header()}
+     <div  >     
+        {this.state.submited===false&&    
+        <div style={{marginLeft: '16px', marginRight: '16px', marginBottom: '16px', marginTop: '16px', width:'96%'}} >
+            <Row >
+                <Col >
+                   
+                    <h1  style={{marginLeft: '16px'}}>Maping Data Fields</h1>
+                    
+                </Col>
+                <Col >
+                    
+                    <Button  style={{ position: 'absolute',right:'32px'}} type="default"  icon="plus" onClick={this.showModal}>Data Type</Button>
+                    
+                </Col>
+            </Row>
+            <h3  style={{marginLeft: '16px'}}>Help Clara make the meaningless meaningful.</h3>
             
-
-            {this.state.table.length>0 &&
-                this.state.table.map((data,index)=>{
-                        return this.tableRow( this.handleSelection, data, index) ;
-                })
-            }
-         
-                <Row xs={24}>   
-                    <FormItem
-                        {...formItemLayout}
-                        label='Default tag'
-                        hasFeedback
-                        >
-                        <Input placeholder="Enter tag" id="tag" defaultValue='title' value={this.state.tag} onChange={event => this.inputText(event)} />
-                    </FormItem>
-                </Row>    
+            
+            <Box >
+                 {this.header()}
                 
-            <div style={{alignContent:'center', alignItems:'ceter', marginLeft: '16px',marginRight: '16px'}}>
-                <Row>
-                <Button
-                type="primary"
-                onClick={() => {
-                    this.submit();
-                }}
-                className="nextPage"
-                >
-                Submit
-                </Button>
-                <p style={{color:'red', fontWeight: 'bold',marginLeft: '16px'}}>{this.state.pointError}</p>
-                </Row>
-            </div>
-        </Box>
+
+                {this.state.table.length>0 &&
+                    this.state.table.map((data,index)=>{
+                            return this.tableRow( this.handleSelection, data, index) ;
+                    })
+                }
+                
+                    <Row xs={24} style={{ marginRight: '16px'}}>   
+                        <FormItem
+                            {...formItemLayout}
+                            label='Default tag'
+                            hasFeedback
+                            >
+                            <Input placeholder="Enter tag" id="tag" defaultValue='title' value={this.state.tag} onChange={event => this.inputTag(event)} />
+                        </FormItem>
+                    </Row>    
+                    
+                <div style={{alignContent:'center', alignItems:'ceter', marginLeft: '16px',marginRight: '16px'}}>
+                    <Row>
+                        <Button
+                        type="primary"
+                        onClick={() => {
+                            this.submit();
+                        }}
+                        className="nextPage"
+                        color='#92add1'
+                        
+                    
+                        >
+                        Submit
+                        </Button>
+                    
+                        
+                        <Modal
+                        title="Create a new data type"
+                        visible={this.state.visible}
+                        onOk={this.handleOk}
+                        onCancel={this.handleCancel}
+                        >
+                            <Row>
+                                <Col xs={6}>
+                                    <MuiThemeProvider>
+                                        <SuperSelectField
+                                            name= {'Category'}
+                                            hintText='select a category'
+                                            value={this.state.newTypeCat}
+                                            onChange={this.newDataTypeSelection}
+                                            style={{ minWidth: 150, margin: 10 }}
+                                        >
+                                        
+                                            {this.state.category.map((data,index)=>{
+                                                return <div key={index} value={data}>{data}</div> 
+                                            })}
+                                            
+                                            
+                                        </SuperSelectField>
+                                    </MuiThemeProvider>
+                                </Col>
+                                <Col xs={6}>
+                                    <FormItem
+                                    {...formItemLayout}
+                                    label='Data Type'
+                                    hasFeedback
+                                    >
+                                        <Input placeholder="Enter data type" id="dtype" defaultValue='title' value={this.state.dataTypeInput} onChange={event => this.inputType(event)} />
+                                    </FormItem>
+                                </Col>
+                            </Row>
+                        </Modal>
+                    
+                    <p style={{color:'red', fontWeight: 'bold',marginLeft: '16px'}}>{this.state.pointError}</p>
+                    </Row> 
+                </div>
+            </Box>
 
 
-      
+        
+        </div>
+        }
+        {this.state.submited===true&&
+        <div  style={{alignContent:'center', alignItems:'ceter', flex:1, marginLeft: '16px', marginRight: '16px', marginBottom: '16px', marginTop: '16px', width:400}}>
+           
+            <Box
+                    title="Submited"
+                    subtitle="The data set will aprear when it has been approved."
+                    
+                />
+
+            
+        </div>
+        }
+
     </div>
 
     );

@@ -56,7 +56,7 @@ export default function(url) {
     <Route
       exact
       key="dataManagement"
-      path={`${url}/dataManagement`}
+      path={`${url}/dataManagement/:tableName?`}
       component={asyncComponent(() => import('./containers/DataManagement/index'))}
     />
   );
