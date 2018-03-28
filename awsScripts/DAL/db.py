@@ -6,7 +6,7 @@ import datetime
 import dateutil.parser
 
 
-
+# checks if the data feild is in a date format
 def checkDate(value):
     try:
         dateutil.parser.parse( value)
@@ -15,7 +15,7 @@ def checkDate(value):
         return False
     except OverflowError:
         return False    
-
+#gets max length of the varchar (text) field
 def getMaxLength(data, setKey):
     max=0
     for key, value in data.items():
@@ -24,7 +24,7 @@ def getMaxLength(data, setKey):
             if length> max:
                 max= length
     return max     
-
+# find the data set where the most properties are not null breaks at 75% then 60%, then 50% not null default is the first row
 def grabBestSet(data):
     rvalue=0
     mark60=-1
@@ -53,13 +53,14 @@ def grabBestSet(data):
         return 0            
     return rvalue
 
+#checks if the row already exist in the table 
 def checkObjectId(objectId, title,cursor):
     query= "SELECT OBJECTID FROM `%s` WHERE OBJECTID = %s" % (title, objectId)
     cursor.execute(query)
     results = cursor.fetchone()
-    if results!= None:
+    if results!= None:# does exist already
         return False
-    else:
+    else: # does not exist and marks the able as updated that day
         today=datetime.datetime.today().strftime("%Y-%m-%d")
         query = "UPDATE `tableLookUp` SET `lastUpDated`= \'%s\' where  name=  '%s' " % (today,title)
         cursor.execute(query)
@@ -87,20 +88,21 @@ def createInsert(data, header, title,cursor):
         if checkObjectId(objectId, title,cursor):
             print(query)
             cursor.execute(query)
-
+#create table for new data set entering clara db
+#maps to approtite data set for the db to record correctly
 def createTable(header, data, title,cursor):
     startOfquery= "CREATE TABLE IF NOT EXISTS  `%s`  (" % title
     i=0
     setVal=grabBestSet(data)
-    for key, value in data[setVal].items():
-        if isinstance(value, int) or isinstance(value, float):
+    for key, value in data[setVal].items(): 
+        if isinstance(value, int) or isinstance(value, float): # checks for a  integer type
             dataTypes = 'int'
-        elif   checkDate(str(value)):
+        elif   checkDate(str(value)): # checks for date a type
             dataTypes ='date'
-        else: 
+        else:  # text type is the only other option, now finds the length of the text, the default is 100 other wise takes the max length in current data set and adds 10
             dataTypes='varchar(100)'    
             if value != None:
-                max = getMaxLength(data[0], key)+10
+                max = getMaxLength(data[0], key)+10 
                 dataTypes= 'varchar(%d)' % max 
 
         subQuery="`"+ header[i]['proptertyID']+ '` '+ dataTypes+','
@@ -123,12 +125,12 @@ def updatePropertyTables(headerArray, tableId,cursor):
 
         cursor.execute(query)
         propValueDNE=cursor.fetchone()
-        if propValueDNE== None:
+        if propValueDNE== None:# prop does not exist in the propValue table
             #insert propid dispplay name , descrition) into propvalue
             descript= header['descript'].replace('\'',' \`')
             query = "INSERT INTO propValues (propId, displayName,description) values ('%s' , '%s', '%s')" % ( header['proptertyID'],  header['displayName'], descript)
             cursor.execute(query)
-        if propsDNE== None:
+        if propsDNE== None: # prop does not exist in the prop table
             query = " INSERT INTO props (propId, tableId) VALUES ('%s', '%d')" % (header['proptertyID'],tableId )   #insert propid , dbid into props
 
             cursor.execute(query)
@@ -143,10 +145,7 @@ def updateDB(njson):
     # prepare a cursor object using cursor() method
     cursor = db.cursor() 
 
-    # execute SQL query using execute() method.
-    #cursor.execute("INSERT INTO props(propId, tableId) VALUES ('te',3)")
-    # cur.fetchone()
-    # cur.fetchall()
+ 
 
     title =njson['title']
 
@@ -155,7 +154,7 @@ def updateDB(njson):
     queryValue= cursor.fetchone()
     tableId=0
     tableDNE=0
-
+    #check if the table already exist, if it does then it will be in the tablelookup if its not we add it
     if queryValue == None:
         descript= njson['description'].replace('\'',' \`')
         query= "INSERT INTO tableLookUp (name, description) VALUES ('%s', '%s')" %(njson['title'], descript)
@@ -164,13 +163,12 @@ def updateDB(njson):
         tableDNE=1
         updatePropertyTables(njson['header'], tableId,cursor )# # insert header information
     else:    
-        tableId =queryValue[0]
+        tableId =queryValue[0] 
 
     #create the new table if it does not exist
-
     if tableDNE == 1:
         createTable(njson['header'],njson['data'],njson['title'],cursor)
-    print ('entering data')
+    print ('entering data...')
     # insert new data information
     createInsert(njson['data'], njson['header'], title,cursor)
 
