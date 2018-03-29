@@ -15,10 +15,10 @@ class SignIn extends Component {
     super(props);
     this.state = {
       redirectToReferrer: false,
-      credentials: {email: '', password: ''}
+      credentials: {identifier: '', password: ''}
     };
-    this.onChange=this.onChange.bind(this)
-    this.onSave=this.onSave.bind(this)
+    this.onChange=this.onChange.bind(this);
+    this.onClick=this.onClick.bind(this);
   }
   onChange(event) {  
     const field = event.target.name;
@@ -26,40 +26,17 @@ class SignIn extends Component {
     credentials[field] = event.target.value;
     return this.setState({credentials: credentials});
   }
-  onSave(event) {
-    event.preventDefault();
-    fetch('http://35.182.224.114:3000/api/authenticate', {
-    headers: {
-      'Accept': 'application/x-www-form-urlencoded',
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    
-    method: "POST",
-    body: `email=${this.state.credentials.email}&password=${this.state.credentials.password}`,
-})
-    .then(response => response.json())
-    .then(contents =>{
-      if (contents.status){
-       const { login } = this.props;
-      login();
-      this.props.history.push('/dashboard')}})
-    .catch(() => console.log("Can’t access clara's /api/authenticate response."))
-  }
-  componentWillReceiveProps(nextProps) {
-    if (
-      this.props.isLoggedIn !== nextProps.isLoggedIn &&
-      nextProps.isLoggedIn === true
-    ) {
-      this.setState({ redirectToReferrer: true });
-      console.log('in componentWillReciveProps')
-    }
-    console.log('in componentWillReciveProps')
-  }
-  handleLogin = () => {
+  onClick(){
+    console.log('on click')
     const { login } = this.props;
-    login();
+    login(this.state.credentials);
     this.props.history.push('/dashboard');
-  };
+  }
+  componentDidMount() {
+    if (this.props.isLoggedIn === true) {
+      this.setState({ redirectToReferrer: true });
+    }
+  }
   render() {
     const from = { pathname: '/dashboard' };
     
@@ -80,9 +57,9 @@ class SignIn extends Component {
             <div className="isoSignInForm">
               <div className="isoInputWrapper">
                 <Input size="large" placeholder="Username"
-                  name="email"
-                  label="email"
-                  value={this.state.credentials.email}
+                  name="identifier"
+                  label="identifier"
+                  value={this.state.credentials.identifier}
                   onChange={this.onChange} 
                 />
               </div>
@@ -100,7 +77,7 @@ class SignIn extends Component {
                 <Checkbox>
                   <IntlMessages id="page.signInRememberMe" />
                 </Checkbox>
-                <Button type="primary" onClick={this.onSave}>
+                <Button type="primary" onClick={this.onClick}>
                   <IntlMessages id="page.signInButton" />
                 </Button>
               </div>

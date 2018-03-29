@@ -1,26 +1,55 @@
-import { all, takeEvery, put, fork } from 'redux-saga/effects';
+import { all, takeEvery, put, fork, select, call } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
 import { getToken, clearToken } from '../../helpers/utility';
 import actions from './actions';
 
-const fakeApiCall = true; // auth0 or express JWT
+function loginAPI(user, password, code) {
+  return fetch('http://localhost:1337/auth/local',  {
+    headers: {
+      'Accept': 'application/x-www-form-urlencoded',
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    
+    method: "POST",
+    body: `identifier=${user}&password=${password}`,
+  })
+  .then(response => response.json())
+  .catch(error => error)
+  .then(data => data)
+}
 
 export function* loginRequest() {
   yield takeEvery('LOGIN_REQUEST', function*() {
-    if (fakeApiCall) {
-      yield put({
-        type: actions.LOGIN_SUCCESS,
-        token: 'secret token',
-        profile: 'Profile'
-      });
-    } else {
-      yield put({ type: actions.LOGIN_ERROR });
+    console.log('login request')
+    const state = yield select();
+    const credentials =  state.Auth._root.entries[1][1]
+    
+    try {
+      var responseBody = yield call(loginAPI, credentials.identifier, credentials.password)
+      console.log(responseBody)
+      console.log(responseBody.jwt)
+      if (responseBody.jwt) {
+          yield put({
+          type: actions.LOGIN_SUCCESS,
+          token: responseBody.jwt,
+          profile: 'Profile'
+        });
+      } else{
+        console.log("token undefined")
+        yield put({ type: actions.LOGIN_ERROR });
+      }
+      
+    } catch (e) {
+      console.log(e)
+     
     }
   });
 }
 
 export function* loginSuccess() {
   yield takeEvery(actions.LOGIN_SUCCESS, function*(payload) {
+    console.log('in login succes')
+    console.log(payload)
     yield localStorage.setItem('id_token', payload.token);
   });
 }
@@ -38,6 +67,8 @@ export function* logout() {
 export function* checkAuthorization() {
   yield takeEvery(actions.CHECK_AUTHORIZATION, function*() {
     const token = getToken().get('idToken');
+    console.log('in check auth')
+    console.log(token)
     if (token) {
       yield put({
         type: actions.LOGIN_SUCCESS,
