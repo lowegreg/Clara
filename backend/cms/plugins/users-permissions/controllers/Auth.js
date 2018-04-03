@@ -25,7 +25,6 @@ module.exports = {
       if (!_.get(await store.get({key: 'grant'}), 'email.enabled') && !ctx.request.admin) {
         return ctx.badRequest(null, 'This provider is disabled.');
       }
-      console.log(params)
       // The identifier is required.
       if (!params.identifier) {
         return ctx.badRequest(null, ctx.request.admin ? [{ messages: [{ id: 'Auth.form.error.email.provide' }] }] : 'Please provide your username or your e-mail.');
