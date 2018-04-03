@@ -9,7 +9,6 @@ function loginAPI(user, password, code) {
       'Accept': 'application/x-www-form-urlencoded',
       'Content-Type': 'application/x-www-form-urlencoded',
     },
-    
     method: "POST",
     body: `identifier=${user}&password=${password}`,
   })
@@ -20,42 +19,39 @@ function loginAPI(user, password, code) {
 
 export function* loginRequest() {
   yield takeEvery('LOGIN_REQUEST', function*() {
-    console.log('login request')
     const state = yield select();
     const credentials =  state.Auth._root.entries[1][1]
     
     try {
       var responseBody = yield call(loginAPI, credentials.identifier, credentials.password)
-      console.log(responseBody)
-      console.log(responseBody.jwt)
       if (responseBody.jwt) {
           yield put({
           type: actions.LOGIN_SUCCESS,
           token: responseBody.jwt,
           profile: 'Profile'
         });
-      } else{
-        console.log("token undefined")
-        yield put({ type: actions.LOGIN_ERROR });
+      } else {
+        yield put({ 
+          type: actions.LOGIN_ERROR,
+          message: responseBody.message
+         });
       }
-      
     } catch (e) {
-      console.log(e)
-     
+      console.log(e);
     }
   });
 }
 
 export function* loginSuccess() {
   yield takeEvery(actions.LOGIN_SUCCESS, function*(payload) {
-    console.log('in login succes')
-    console.log(payload)
     yield localStorage.setItem('id_token', payload.token);
   });
 }
 
 export function* loginError() {
-  yield takeEvery(actions.LOGIN_ERROR, function*() {});
+  yield takeEvery(actions.LOGIN_ERROR, function*(payload) {
+    yield localStorage.setItem('message', payload.message);
+  });
 }
 
 export function* logout() {
@@ -67,8 +63,6 @@ export function* logout() {
 export function* checkAuthorization() {
   yield takeEvery(actions.CHECK_AUTHORIZATION, function*() {
     const token = getToken().get('idToken');
-    console.log('in check auth')
-    console.log(token)
     if (token) {
       yield put({
         type: actions.LOGIN_SUCCESS,

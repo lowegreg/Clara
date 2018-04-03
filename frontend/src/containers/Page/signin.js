@@ -27,7 +27,6 @@ class SignIn extends Component {
     return this.setState({credentials: credentials});
   }
   onClick(){
-    console.log('on click')
     const { login } = this.props;
     login(this.state.credentials);
     this.props.history.push('/dashboard');
@@ -41,7 +40,6 @@ class SignIn extends Component {
     const from = { pathname: '/dashboard' };
     
     if (this.state.redirectToReferrer) {
-      console.log(`redirect is true`)
       return <Redirect to={from} onChange={this.handleLogin} history={this.props.history}/>;
     }
     return (
@@ -53,7 +51,9 @@ class SignIn extends Component {
                 <IntlMessages id="page.signInTitle" />
               </Link>
             </div>
-
+            <div style={{color: 'red'}}>
+             {this.props.errorMesssage} 
+            </div>
             <div className="isoSignInForm">
               <div className="isoInputWrapper">
                 <Input size="large" placeholder="Username"
@@ -102,6 +102,7 @@ class SignIn extends Component {
 export default connect(
   state => ({
     isLoggedIn: state.Auth.get('idToken') !== null ? true : false,
+    errorMesssage: state.Auth.get('errorMessage'),
   }),
   { login }
 )(SignIn);
