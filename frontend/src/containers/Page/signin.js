@@ -38,7 +38,7 @@ class SignIn extends Component {
   }
   render() {
     const from = { pathname: '/dashboard' };
-    
+
     if (this.state.redirectToReferrer) {
       return <Redirect to={from} onChange={this.handleLogin} history={this.props.history}/>;
     }
@@ -103,6 +103,7 @@ export default connect(
   state => ({
     isLoggedIn: state.Auth.get('idToken') !== null ? true : false,
     errorMesssage: state.Auth.get('errorMessage'),
+    profile: state.Auth.get('profile'),
   }),
   { login }
 )(SignIn);
