@@ -18,9 +18,15 @@ import AppHolder from './commonStyle';
 import './global.css';
 
 const { Content, Footer } = Layout;
-const { logout } = authAction;
+const { logout, checkAuthorization } = authAction;
 const { toggleAll } = appActions;
+
 export class App extends Component {
+  componentDidMount(){
+    // const { checkAuthorization } = this.props;
+    // checkAuthorization();
+    console.log(this.props)
+  }
   render() {
     const { url } = this.props.match;
     const { locale, selectedTheme } = this.props;
@@ -42,7 +48,7 @@ export class App extends Component {
                       )}
                   />
                 </Debounce>
-                <Topbar url={url} />
+                <Topbar url={url} profile={this.props.profile}/>
                 <Layout style={{ flexDirection: 'row', overflowX: 'hidden' }}>
                   <Sidebar url={url} />
                   <Layout
@@ -83,6 +89,8 @@ export default connect(
     auth: state.Auth,
     locale: state.LanguageSwitcher.toJS().language.locale,
     selectedTheme: state.ThemeSwitcher.toJS().changeThemes.themeName,
+    profile: state.Auth.get('profile'),
+
   }),
   { logout, toggleAll }
 )(App);

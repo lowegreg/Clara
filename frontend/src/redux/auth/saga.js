@@ -4,7 +4,7 @@ import { getToken, clearToken } from '../../helpers/utility';
 import actions from './actions';
 
 function loginAPI(user, password, code) {
-  return fetch('http://localhost:1337/auth/local',  {
+  return fetch('http://35.182.255.76/auth/local',  {
     headers: {
       'Accept': 'application/x-www-form-urlencoded',
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -25,10 +25,17 @@ export function* loginRequest() {
     try {
       var responseBody = yield call(loginAPI, credentials.identifier, credentials.password)
       if (responseBody.jwt) {
+          var profile = {
+            userID: responseBody.user.id,
+            username: responseBody.user.username,
+            email: responseBody.user.email,
+            role: responseBody.user.role.name
+          };
+
           yield put({
           type: actions.LOGIN_SUCCESS,
           token: responseBody.jwt,
-          profile: 'Profile'
+          profile: profile
         });
       } else {
         yield put({ 
@@ -45,6 +52,7 @@ export function* loginRequest() {
 export function* loginSuccess() {
   yield takeEvery(actions.LOGIN_SUCCESS, function*(payload) {
     yield localStorage.setItem('id_token', payload.token);
+    yield localStorage.setItem('profile', payload.profile)
   });
 }
 
@@ -62,6 +70,7 @@ export function* logout() {
 }
 export function* checkAuthorization() {
   yield takeEvery(actions.CHECK_AUTHORIZATION, function*() {
+    console.log("check authorization")
     const token = getToken().get('idToken');
     if (token) {
       yield put({

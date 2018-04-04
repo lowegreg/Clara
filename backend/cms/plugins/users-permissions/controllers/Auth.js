@@ -65,8 +65,6 @@ module.exports = {
       }
 
       const validPassword = strapi.plugins['users-permissions'].services.user.validatePassword(params.password, user.password);
-      console.log(params.password)
-      console.log(user.password)
       if (!validPassword) {
         console.log('wrong password')
         return ctx.badRequest(null, ctx.request.admin ? [{ messages: [{ id: 'Auth.form.error.invalid' }] }] : 'Identifier or password invalid.');
