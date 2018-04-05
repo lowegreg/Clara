@@ -1,6 +1,6 @@
 import { all, takeEvery, put, fork, select, call } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
-import { getToken, clearToken } from '../../helpers/utility';
+import { getToken, clearToken, getProfile } from '../../helpers/utility';
 import actions from './actions';
 
 function loginAPI(user, password, code) {
@@ -52,7 +52,7 @@ export function* loginRequest() {
 export function* loginSuccess() {
   yield takeEvery(actions.LOGIN_SUCCESS, function*(payload) {
     yield localStorage.setItem('id_token', payload.token);
-    yield localStorage.setItem('profile', payload.profile)
+    yield localStorage.setItem('profile', JSON.stringify(payload.profile))
   });
 }
 
@@ -70,13 +70,13 @@ export function* logout() {
 }
 export function* checkAuthorization() {
   yield takeEvery(actions.CHECK_AUTHORIZATION, function*() {
-    console.log("check authorization")
     const token = getToken().get('idToken');
+    const profile = getProfile().get('profile');
     if (token) {
       yield put({
         type: actions.LOGIN_SUCCESS,
         token,
-        profile: 'Profile'
+        profile,
       });
     }
   });

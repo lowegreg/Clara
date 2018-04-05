@@ -12,7 +12,6 @@ const { toggleCollapsed } = appActions;
 
 class Topbar extends Component {
   render() {
-    console.log(this.props.profile)
     const { toggleCollapsed, customizedTheme, locale } = this.props;
     const collapsed = this.props.collapsed && !this.props.openDrawer;
     const styling = {
@@ -21,6 +20,7 @@ class Topbar extends Component {
       width: '100%',
       height: 70
     };
+    //console.log(this.props)
     return (
       <TopbarWrapper>
         <Header
@@ -38,8 +38,6 @@ class Topbar extends Component {
               onClick={toggleCollapsed}
             />
           </div>
-  
-          <p>{this.props.profile.username}</p>
           <ul className="isoRight">
             <li className="isoSearch">
               <TopbarSearch locale={locale} />
