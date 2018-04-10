@@ -38,7 +38,6 @@ class SignIn extends Component {
   }
   render() {
     const from = { pathname: '/dashboard' };
-
     if (this.state.redirectToReferrer) {
       return <Redirect to={from} onChange={this.handleLogin} history={this.props.history}/>;
     }

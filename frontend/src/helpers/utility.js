@@ -14,6 +14,15 @@ export function getToken() {
   }
 }
 
+export function getProfile() {
+  try {
+    const profile = JSON.parse(localStorage.getItem('profile'))
+    return new Map({ profile });
+  } catch (err) {
+    return new Map();
+  }
+}
+
 export function timeDifference(givenTime) {
   givenTime = new Date(givenTime);
   const milliseconds = new Date().getTime() - givenTime.getTime();

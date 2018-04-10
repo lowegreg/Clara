@@ -18,15 +18,10 @@ import AppHolder from './commonStyle';
 import './global.css';
 
 const { Content, Footer } = Layout;
-const { logout, checkAuthorization } = authAction;
+const { logout } = authAction;
 const { toggleAll } = appActions;
 
 export class App extends Component {
-  componentDidMount(){
-    // const { checkAuthorization } = this.props;
-    // checkAuthorization();
-    console.log(this.props)
-  }
   render() {
     const { url } = this.props.match;
     const { locale, selectedTheme } = this.props;

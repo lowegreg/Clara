@@ -11,7 +11,7 @@ class AppRouter extends React.Component {
         <Route
           exact
           path={`${url}/`}
-          component={asyncComponent(() => import('../../customApp/containers/ClaraDash/index.js'))}
+          component={asyncComponent(() => import('../../customApp/containers/ClaraHomeScreen/index.js'))}
         />
         <Route
           exact
