@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Button, { ButtonGroup } from '../../../components/uielements/button';
+import Button from '../../../components/uielements/button';
 // import basicStyle from '../../../config/basicStyle';
 import { Row, Col } from 'react-flexbox-grid';
 import Box from '../../../components/utility/box';
@@ -57,7 +57,7 @@ export default class extends Component {
         });
       }
     handleOk = (e) => {
-        console.log( this.state.newTypeCat.value, this.state.dataTypeInput)
+        
         var temp=[]
         if( this.state.newTypeCat.value==='Number'){
             temp =this.state.number
@@ -79,6 +79,7 @@ export default class extends Component {
         this.setState({
           visible: false,
         });
+        return true
       }
     handleCancel = (e) => {
         
@@ -90,14 +91,20 @@ export default class extends Component {
        if (!props){return []}
         var tableArray=[]
         for (var i=0;i< props.length;i++){
+            var values=[];
+            if (props[i].dataTypes){
+                values=props[i].dataTypes.replace(/ +$/, "").split('-')
+            }
+           
+           
             var object={
                 property:props[i].propId,
                 category:{
-                    value: null,
+                    value: {value:values[0],label:undefined},
                     name:'cat-'+i
                 },
                 type:{
-                    value:null,
+                    value: {value:values[1],label:undefined},
                     name:'type-'+i
                 }
             }
@@ -123,6 +130,7 @@ export default class extends Component {
             }else if (props.category==='Location'){
                 location.push(props.dataType)
             }
+            return [];
         })
  
         
@@ -135,6 +143,7 @@ export default class extends Component {
         });
     }
     componentDidMount (){
+        
         var query= 'http://35.182.224.114:3000/dataManagement/getProps?tableName='+this.state.tableName
         fetch(query, {method: 'GET', mode: 'cors'})
        .then((response) =>  response.json())
@@ -152,7 +161,6 @@ export default class extends Component {
      }
      componentWillMount(){
         if (this.state.tableName===''){
-            console.log(this.props.match.params.tableName)
             this.setState({tableName:this.props.match.params.tableName})
         }
      }
@@ -181,10 +189,10 @@ export default class extends Component {
                 return;
             }    
         }
-      
+       
         if (this.state.tag===''){ this.setState({pointError:'Please enter a default tag for this data set'});     return}
         this.state.table.map((input,index)=>{
-            formBody ='propId='+ input.property+'&dataType='+input.type.value.value+'&tableName='+this.state.tableName;
+            formBody ='propId='+ input.property+'&dataType='+input.category.value.value+'-'+input.type.value.value+'&tableName='+this.state.tableName;
             
             fetch('http://35.182.224.114:3000/dataManagement/postPropsDataTypes', {method: 'POST', headers:headersValue,  mode: 'cors', body:formBody})
             .then((response) =>  response.json())
@@ -192,9 +200,10 @@ export default class extends Component {
             .catch((error) => {
                     console.error(error);
             });
+            return [];
         })
-      
-        formBody='tagName=' +this.state.tag+'&tableName='+this.state.tableName;
+        
+        formBody='tagName=' +this.state.tag+'&tableName='+this.state.tableName+'&user=test';
         fetch('http://35.182.224.114:3000/dataManagement/postDefaultTags', {method: 'POST', headers:headersValue,  mode: 'cors', body:formBody})
             .then((response) =>  response.json())
             .then(responseJson=> this.setState({submited:true }))
@@ -214,7 +223,7 @@ export default class extends Component {
             tempRow.type.value=null
             var tempDropDown= this.state.typeDropdown;
             if (values){
-                tempDropDown[number]=values.value
+                tempDropDown[number]=values.value        
             }
             this.setState({ typeDropdown: tempDropDown });
         }else{
@@ -322,14 +331,6 @@ export default class extends Component {
     // const {  colStyle } = basicStyle;
    
 
-    const actions = [
-        <Button
-          label="Ok"
-          primary={true}
-          keyboardFocused={true}
-          onClick={this.handleClose}
-        />,
-      ];
   
     return (
      <div  >     
@@ -437,7 +438,7 @@ export default class extends Component {
            
             <Box
                     title="Submited"
-                    subtitle="The data set will aprear when it has been approved."
+                    subtitle="The data set will apprear when it has been approved."
                     
                 />
 

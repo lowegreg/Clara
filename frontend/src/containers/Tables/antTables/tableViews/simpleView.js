@@ -3,7 +3,7 @@ import TableWrapper from '../antTable.style';
 
 export default class SimpleView extends Component {
   render() {
-    console.log(this.props)
+    
     const dataSource = this.props.dataSource || this.props.dataList.getAll();
     const columns = this.props.columns || this.props.tableInfo.columns;
     return (
