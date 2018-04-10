@@ -105,7 +105,8 @@ app.post('/suggestions', function(req, res){
 app.get('/dataManagement/getProps', function(req, res){
  
   //use props
-  var sql= 'SELECT propId FROM props where tableId in (select tableId from tableLookUp where name=\''+req.query.tableName+'\')' 
+  var sql= 'SELECT propId, dataTypes FROM props where tableId in (select tableId from tableLookUp where name=\''+req.query.tableName+'\')' 
+
   con.query(sql, function(err, rows){
     if (err){
       res.json({"Error": true, "Message":"Error Execute Sql"});
@@ -142,17 +143,48 @@ app.post('/dataManagement/postPropsDataTypes', function(req, res){
 })
 
 app.post('/dataManagement/postDefaultTags', function(req, res){
-    var sql= 'update tableLookUp set defaultTag=\''+req.body.tagName+'\' ,statusId=\'submitted\' where name=\''+req.body.tableName+'\'';
-
+    
+    var d = new Date();
+    var today = d.getFullYear()+'/'+d.getMonth()+'/'+d.getDate();
+   
+    var sql= 'update tableLookUp set defaultTag=\''+req.body.tagName+'\' ,statusId=\'submitted\', submittedBy=\''+req.body.user+'\' ,submittedOn=\''+today+'\' where name=\''+req.body.tableName+'\'';
     con.query(sql, function(err, rows){
       if (err){
-        res.json({"Error": true, "Message":"Error Execute Sql"});
+        res.json({"Error": true, "Message":err});
       } else {
         res.json({"Error": false,"Message": "Success", "id" : rows});
       }
     });
-  })
+})
+app.post('/dataManagement/postTableStatus', function(req, res){
+  var sql;
+  if (req.body.status==='accepted'){
+    sql= 'update tableLookUp set  statusId=\''+req.body.status+'\' where name=\''+req.body.tableName+'\'';
+  }else{
+    sql= 'update tableLookUp set  statusId=\''+req.body.status+'\' , feedback=\''+ req.body.feedback+'\'  where name=\''+req.body.tableName+'\'';
+  }
 
+  con.query(sql, function(err, rows){
+    if (err){
+      res.json({"Error": true, "Message":"Error Execute Sql"});
+    } else {
+      res.json({"Error": false,"Message": "Success", "id" : rows});
+    }
+  });
+})
+
+app.post('/dataManagement/postNewDatatype', function(req, res){
+    
+ 
+  var sql= 'insert into dataTypes (category, dataType) values (\''+req.body.category+'\',\''+req.body.datatype+'\')';
+  con.query(sql, function(err, rows){
+    if (err){
+      res.json({"Error": true, "Message":err});
+    } else {
+      res.json({"Error": false,"Message": "Success", "id" : rows});
+    }
+  });
+})
 app.listen(3000, function () {
   console.log(' REST server started.');
 });

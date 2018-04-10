@@ -32,7 +32,7 @@ export default function(url) {
     <Route
       exact
       key="parkingInfractions"
-      path={`${url}/parkingInfractions`}
+      path={`${url}/parking%20Infractions?`}
       component={asyncComponent(() => import('./containers/Parking/index'))}
     />
   );
@@ -58,6 +58,14 @@ export default function(url) {
       key="dataManagement"
       path={`${url}/dataManagement/:tableName?`}
       component={asyncComponent(() => import('./containers/DataManagement/index'))}
+    />
+  );
+  routers.push(
+    <Route
+      exact
+      key="dataManagementAdmin"
+      path={`${url}/dataManagementAdmin`}
+      component={asyncComponent(() => import('./containers/AdminDataManagement/index'))}
     />
   );
   return routers;
