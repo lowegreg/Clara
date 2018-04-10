@@ -3,7 +3,7 @@ import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import  'bootstrap/dist/css/bootstrap.css';
 import Box from '../../../components/utility/box';
 import { Row, Col } from 'react-flexbox-grid';
-import { Input,Tag,List, Modal } from 'antd';
+import { Input, Tag, List, Modal, Icon } from 'antd';
 import Button from '../../../components/uielements/button';
 import dateformat from 'dateformat';
 const { TextArea } = Input;
@@ -27,16 +27,15 @@ export default  class SortTable extends React.Component {
       } 
     handleBtnClick = () => {
         if (order === 'desc') {
-        this.refs.table.handleSort('asc', 'name');
-        order = 'asc';
+            this.refs.table.handleSort('asc', 'name');
+            order = 'asc';
         } else {
-        this.refs.table.handleSort('desc', 'name');
-        order = 'desc';
+            this.refs.table.handleSort('desc', 'name');
+            order = 'desc';
         }
     }
   
     refactorData(){
-        
         var current= [];
         for(var i=0; i< this.state.table.length;i++){
             if (this.state.table[i].statusId!=null){
@@ -48,15 +47,12 @@ export default  class SortTable extends React.Component {
                     date:dateformat(this.state.table[i].submittedOn,'yyyy/mm/dd') ||'no date' ,
                     feedback:this.state.table[i].feedback
                 }
-
                 current.push(row)
             }    
         }
-        this.setState({table: current});
-        
+        this.setState({table: current});  
     }
     setData(data){
-
         var all=[]
         data.map((props,index)=>{
             var temp
@@ -74,8 +70,6 @@ export default  class SortTable extends React.Component {
             return []
         })
         this.setState({dataTypes:all})
-        
-      
     }
     componentDidMount(){
         fetch('http://35.182.224.114:3000/tableLookUp', {method: 'GET', mode: 'cors'})
@@ -106,12 +100,9 @@ export default  class SortTable extends React.Component {
                 updatedTable[i].status=status
             }
         }
-    
-
         this.setState({
             table: updatedTable
-        })
-        
+        })  
     }
     setStatus(formBody){
         var  headersValue= {
@@ -124,23 +115,18 @@ export default  class SortTable extends React.Component {
         .catch((error) => {
                 console.error(error);
         });
-        
     }
     handleOk = (e) => {
-
         this.setState({
             visible: false,
             error:'',
         });
-      
-        
+         
         var formBody='status=accepted&tableName='+this.state.selected.name;
-
         this.setStatus(formBody);//db table
         this.changeStatus('accepted')// ui
         // check if any new datatypes were created
-        for (var i=0; i<this.state.entry.length; i++ ){
-            
+        for (var i=0; i<this.state.entry.length; i++ ){      
             if(!this.state.dataTypes.includes(this.state.entry[i].dataTypes.replace(/ +$/, ""))){
                 // insert data type in to datatypes table  postNewDatatype
                 var  headersValue= {
@@ -155,14 +141,10 @@ export default  class SortTable extends React.Component {
                 .catch((error) => {
                         console.error(error);
                 });
-            }
-           
-        }
-       
-        
+            }      
+        }    
     }
     handleReject = (e) => {
-        
         if (this.state.text===''){
             this.setState({
                 error: 'Please enter a explination for the reason you reject'
@@ -180,7 +162,6 @@ export default  class SortTable extends React.Component {
         this.changeStatus('rejected')
     }
     handleCancel= ()=>{
-       
         this.setState({
             visible:false,
             error:'',
@@ -195,15 +176,13 @@ export default  class SortTable extends React.Component {
             text: feedback
         })
         
-        var query= 'http://35.182.224.114:3000/dataManagement/getProps?tableName='+row.name
-        
+        var query= 'http://35.182.224.114:3000/dataManagement/getProps?tableName='+row.name  
         fetch(query, {method: 'GET', mode: 'cors'})
         .then((response) =>  response.json())
         .then(responseJson=> this.setState({entry:responseJson.id} ))
         .catch((error) => {
         console.error(error);
-        });  
-       
+        });      
     }
     inputText(event) { 
         this.setState({text: event.target.value});
@@ -216,11 +195,9 @@ export default  class SortTable extends React.Component {
                 break;
             }
         }
-
         return feedback;
     }
   render() {
-
     var options = {
         onRowClick: this.onRow
 
@@ -255,8 +232,6 @@ export default  class SortTable extends React.Component {
                     <div style={{maxHeight: 275, overflow: 'auto',overflowX: "hidden"}}>
                         <List
                             size="small"
-                            //header={<div>Header</div>}
-                            //footer={<div>Footer</div>}
                             bordered
                             dataSource={this.state.entry}
                             renderItem={item => (<List.Item><Col xs={8}>{item.propId}</Col><Col xs={6}><Tag >{item.dataTypes}</Tag></Col></List.Item>)}
@@ -268,11 +243,9 @@ export default  class SortTable extends React.Component {
                     <Row><Col xs={4}>   <h4 >Data Set:</h4>       </Col><Col xs={3}> <h5 >{this.state.selected.name}</h5>        </Col></Row>
                     <Row><Col xs={4}>   <h4 >Submited By: </h4>   </Col><Col xs={3}> <h5 >{this.state.selected.submittedBy}</h5> </Col></Row>
                     <Row><Col xs={4}>   <h4 >Submited On:</h4>    </Col><Col xs={3}> <h5 >{this.state.selected.date}</h5>        </Col></Row>
-                    <Row><Col xs={4}>   <h4 >Tag: </h4>           </Col><Col xs={3}> <h5 >{this.state.selected.tag}</h5> </Col></Row>
+                    <Row><Col xs={4}>   <h4 >Tag: </h4>           </Col><Col xs={3}> <h5 >{this.state.selected.tag}</h5>         </Col></Row>
                     <Row><Col xs={4}>   <h4 >Current Status:</h4> </Col><Col xs={3}> <h5 >{this.state.selected.status}</h5>      </Col></Row>    
-                       
-                         
-                      
+                           
                     </div>   
                     <TextArea 
                         value={this.state.text}
@@ -282,8 +255,8 @@ export default  class SortTable extends React.Component {
                         autoFocus 
                         rows={4} 
                     />
-                     <p style={{color:'red', fontWeight: 'bold',marginLeft: '16px'}}>{this.state.error}</p>
-                    
+                    <p style={{color:'red', fontWeight: 'bold',marginLeft: '16px'}}>{this.state.error}</p>
+         
                 </Col>
             </Row>
         </Modal>
@@ -294,7 +267,7 @@ export default  class SortTable extends React.Component {
             <TableHeaderColumn dataField='status'              dataSort={ true }>Status</TableHeaderColumn>
         </BootstrapTable>
       </Box>
-      </div>
+    </div>
     );
   }
 }
