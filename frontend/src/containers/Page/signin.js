@@ -29,7 +29,6 @@ class SignIn extends Component {
   onClick(){
     const { login } = this.props;
     login(this.state.credentials);
-    console.log(this.props.history)
     this.props.history.push('/dashboard');
   }
   componentDidMount() {
@@ -39,7 +38,6 @@ class SignIn extends Component {
   }
   render() {
     const from = { pathname: '/dashboard' };
-    console.log(this.state)
     if (this.state.redirectToReferrer) {
       return <Redirect to={from} onChange={this.handleLogin} history={this.props.history}/>;
     }

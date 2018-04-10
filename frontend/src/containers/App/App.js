@@ -26,7 +26,6 @@ export class App extends Component {
     const { url } = this.props.match;
     const { locale, selectedTheme } = this.props;
     const currentAppLocale = AppLocale[locale];
-    console.log(this.state)
     return (
       <LocaleProvider locale={currentAppLocale.antd}>
         <IntlProvider
