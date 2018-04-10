@@ -21,8 +21,7 @@ export default  class SortTable extends React.Component {
           submitted: false,
           text:'',
           error:'',
-          dataTypes:[]
-          
+          dataTypes:[] 
         }
       } 
     handleBtnClick = () => {
@@ -89,8 +88,6 @@ export default  class SortTable extends React.Component {
        .catch((error) => {
          console.error(error);
        });
-   
-
     } 
     changeStatus(status){
         var updatedTable = this.state.table;
