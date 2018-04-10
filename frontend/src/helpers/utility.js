@@ -17,7 +17,6 @@ export function getToken() {
 export function getProfile() {
   try {
     const profile = JSON.parse(localStorage.getItem('profile'))
-    //console.log(profile)
     return new Map({ profile });
   } catch (err) {
     return new Map();
