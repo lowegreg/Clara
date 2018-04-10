@@ -1,5 +1,4 @@
 import React from 'react';
-
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import  'bootstrap/dist/css/bootstrap.css';
 import Box from '../../../components/utility/box';
