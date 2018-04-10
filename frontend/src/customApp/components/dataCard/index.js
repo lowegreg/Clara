@@ -4,7 +4,6 @@ import { Clickable } from 'react-clickable';
 import Badge from '../../../containers/Uielements/Badge/badge.style';
 class DataCard extends Component {
   onSelect(tableName){
-    
     window.location.href =  '/dashboard/dataManagement/'+tableName
   
   }

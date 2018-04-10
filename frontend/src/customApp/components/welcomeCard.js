@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { DataCardWrapper } from '../containers/ClaraDash/style';
+import { DataCardWrapper } from '../containers/ClaraHomeScreen/style';
 import src from '../../image/claraCats02.svg';
 import Card from '../../containers/Uielements/Card/card.style';
 import { Icon } from 'antd';

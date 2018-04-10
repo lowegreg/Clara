@@ -29,6 +29,7 @@ class SignIn extends Component {
   onClick(){
     const { login } = this.props;
     login(this.state.credentials);
+    console.log(this.props.history)
     this.props.history.push('/dashboard');
   }
   componentDidMount() {
