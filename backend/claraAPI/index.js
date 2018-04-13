@@ -21,11 +21,11 @@ app.post('/api/register',registerController.register);
 app.post('/api/authenticate',authenticateController.authenticate);
 // all data sets 
 app.get('/tableLookUp', function(req, res){
-  var id = req.param('id');
+  // var id = req.param('id');
   var sql;
 
-  if (id){
-    sql = 'SELECT * FROM tableLookUp WHERE tableId= '+id
+  if (req.query.tableName){
+    sql = 'SELECT * FROM tableLookUp WHERE name= \''+req.query.tableName +'\''
   } else {
     sql = 'SELECT * FROM tableLookUp '
   } 
@@ -103,10 +103,8 @@ app.post('/suggestions', function(req, res){
 
 // data management 
 app.get('/dataManagement/getProps', function(req, res){
- 
   //use props
   var sql= 'SELECT propId, dataTypes FROM props where tableId in (select tableId from tableLookUp where name=\''+req.query.tableName+'\')' 
-
   con.query(sql, function(err, rows){
     if (err){
       res.json({"Error": true, "Message":"Error Execute Sql"});
@@ -115,10 +113,8 @@ app.get('/dataManagement/getProps', function(req, res){
     }
   });
 })
-
+//get all offical datatypes
 app.get('/dataManagement/getDataTypes', function(req, res){
- 
- 
   var sql= 'select distinct dataType, category from dataTypes' 
   con.query(sql, function(err, rows){
     if (err){
@@ -129,8 +125,8 @@ app.get('/dataManagement/getDataTypes', function(req, res){
   });
 })
 
+//update props with maped datatypes for a specific data set
 app.post('/dataManagement/postPropsDataTypes', function(req, res){
-
   var sql= 'update props set dataTypes=\''+req.body.dataType+'\' where   propId=\''+req.body.propId+'\'  and tableId in (select tableId from tableLookUp where name=\''+req.body.tableName+'\')';
 
   con.query(sql, function(err, rows){
@@ -142,6 +138,7 @@ app.post('/dataManagement/postPropsDataTypes', function(req, res){
   });
 })
 
+// set default tag for data set
 app.post('/dataManagement/postDefaultTags', function(req, res){
     
     var d = new Date();
@@ -156,6 +153,7 @@ app.post('/dataManagement/postDefaultTags', function(req, res){
       }
     });
 })
+//set data set status for data mapping if rejected it has feedback as well
 app.post('/dataManagement/postTableStatus', function(req, res){
   var sql;
   if (req.body.status==='accepted'){
@@ -173,9 +171,8 @@ app.post('/dataManagement/postTableStatus', function(req, res){
   });
 })
 
+//add new data type
 app.post('/dataManagement/postNewDatatype', function(req, res){
-    
- 
   var sql= 'insert into dataTypes (category, dataType) values (\''+req.body.category+'\',\''+req.body.datatype+'\')';
   con.query(sql, function(err, rows){
     if (err){
@@ -185,6 +182,44 @@ app.post('/dataManagement/postNewDatatype', function(req, res){
     }
   });
 })
+
+// add a notificaiton
+app.post('/postNotifications', function(req, res){
+  var today = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
+  var sql= 'insert into notifications (email, receipt,subTitle, noteDate, title) values (\''+req.body.email+'\',\'delivered\', \''+req.body.subTitle+'\',\''+today+'\', \''+req.body.title+'\')';
+  con.query(sql, function(err, rows){
+    if (err){
+      res.json({"Error": true, "Message":err});
+    } else {
+      res.json({"Error": false,"Message": "Success", "id" : rows});
+    }
+  });
+})
+
+//get notifciaiton for a particular user
+app.get('/getNotifications', function(req, res){
+  var sql= 'select * from notifications where email=\''+req.query.email+'\' and receipt=\''+req.query.receipt+'\''
+  con.query(sql, function(err, rows){
+    if (err){
+      res.json({"Error": true, "Message":err});
+    } else {
+      res.json({"Error": false,"Message": "Success", "id" : rows});
+    }
+  });
+})
+
+// mark notificaiton as read
+app.post('/updateNotifications', function(req, res){
+  var sql= 'UPDATE notifications SET receipt=\'read\' WHERE id='+req.body.id
+  con.query(sql, function(err, rows){
+    if (err){
+      res.json({"Error": true, "Message":err});
+    } else {
+      res.json({"Error": false,"Message": "Success", "id" : rows});
+    }
+  });
+})
+
 app.listen(3000, function () {
   console.log(' REST server started.');
 });

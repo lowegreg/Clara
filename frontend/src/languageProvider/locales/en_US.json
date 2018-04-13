@@ -1,5 +1,9 @@
 {
   "sidebar.dashboard": "Dashboard",
+  "sidebar.admin": "Admin Panel",
+  "sidebar.dataManage": "Data Mapping Forms",
+  "sidebar.suggestionManage": "Suggetion Forms",
+  "sidebar.userSettings": "Change Users Settings",
   "sidebar.stories": "Stories",  
   "sidebar.builder": "Story Builder",
   "sidebar.reports": "Reports",
