@@ -20,7 +20,7 @@ class Topbar extends Component {
       width: '100%',
       height: 70
     };
-    return (  
+    return (
       <TopbarWrapper>
         <Header
           style={styling}
