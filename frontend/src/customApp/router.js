@@ -31,8 +31,8 @@ export default function(url) {
   routers.push(
     <Route
       exact
-      key="parkingInfractions"
-      path={`${url}/parking%20Infractions?`}
+      key="parking Infractions"
+      path={`${url}/parking Infractions`}
       component={asyncComponent(() => import('./containers/Parking/index'))}
     />
   );

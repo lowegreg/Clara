@@ -228,6 +228,37 @@ class Sidebar extends Component {
                   </span>
                 </Link>
               </Menu.Item>
+              {this.props.profile.role==='Administrator' &&
+                <SubMenu
+                  key="Admin"
+                  title={
+                    <span className="isoMenuHolder" style={submenuColor}>
+                      <i className="ion-ios-people-outline" />
+                      <span className="nav-text">
+                        <IntlMessages id="sidebar.admin" />
+                      </span>
+                    </span>
+                  }
+                >
+                  <Menu.Item style={submenuStyle} key="dataManage">
+                    <Link style={submenuColor} to={`${url}/dataManagementAdmin`}>
+                      <IntlMessages id="sidebar.dataManage" />
+                    </Link>
+                  </Menu.Item>
+                  <Menu.Item style={submenuStyle} key="suggestionManage">
+                    <Link style={submenuColor} to={`${url}/comingSoon`}>
+                      <IntlMessages id="sidebar.suggestionManage" />
+                    </Link>
+                  </Menu.Item>
+                  <Menu.Item style={submenuStyle} key="userSetttings">
+                    <a target="_blank" href={`http://ec2-35-182-255-76.ca-central-1.compute.amazonaws.com/admin/`}>
+                      <IntlMessages id="sidebar.userSettings" />
+                    </a>
+                  </Menu.Item>
+                  
+                </SubMenu>
+              }
+              
               {getDevSidebar(url, submenuColor)}
             </Menu>
           </Scrollbars>
@@ -240,6 +271,7 @@ class Sidebar extends Component {
 export default connect(
   state => ({
     app: state.App.toJS(),
+    profile: state.Auth.get('profile'),
     customizedTheme: state.ThemeSwitcher.toJS().sidebarTheme
   }),
   { toggleOpenDrawer, changeOpenKeys, changeCurrent, toggleCollapsed }

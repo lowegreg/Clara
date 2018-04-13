@@ -1,27 +1,32 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import  'bootstrap/dist/css/bootstrap.css';
 import Box from '../../../components/utility/box';
 import { Row, Col } from 'react-flexbox-grid';
-import { Input, Tag, List, Modal, Icon } from 'antd';
+import { Input, Tag, List, Modal } from 'antd';
 import Button from '../../../components/uielements/button';
 import dateformat from 'dateformat';
 const { TextArea } = Input;
 let order = 'desc';
-
-export default  class SortTable extends React.Component {
+var  headersValue= {
+    'Accept': 'application/x-www-form-urlencoded',
+    'Content-Type': 'application/x-www-form-urlencoded',
+}
+class AdminDataManagement extends React.Component {
+    
     constructor(props){
         super(props);
     
         this.state={
-          table: [],//name, statusId, submittedBy, SubmittedOn
-          visible: false,
-          entry:[],
-          selected:{},
-          submitted: false,
-          text:'',
-          error:'',
-          dataTypes:[] 
+          table: [],//name, statusId, submittedBy, SubmittedOn from the tablelookup 
+          visible: false,  // if the pop up is open
+          entry:[], // the lis tof  all the data types mapped 
+          selected:{},// selected row from table 
+          submitted: false, // if it was succesfuly added to the database
+          text:'',  // value of text box for feedback
+          error:'', // value of error text
+          dataTypes:[]  // current values of the datatypes database table
         }
       } 
     handleBtnClick = () => {
@@ -33,7 +38,6 @@ export default  class SortTable extends React.Component {
             order = 'desc';
         }
     }
-  
     refactorData(){
         var current= [];
         for(var i=0; i< this.state.table.length;i++){
@@ -93,7 +97,6 @@ export default  class SortTable extends React.Component {
         var updatedTable = this.state.table;
         for( var i=0; i< updatedTable.length; i++){
             if (updatedTable[i].name===this.state.selected.name){
-               
                 updatedTable[i].status=status
             }
         }
@@ -102,11 +105,15 @@ export default  class SortTable extends React.Component {
         })  
     }
     setStatus(formBody){
-        var  headersValue= {
-            'Accept': 'application/x-www-form-urlencoded',
-            'Content-Type': 'application/x-www-form-urlencoded',
-        }
         fetch('http://35.182.224.114:3000/dataManagement/postTableStatus', {method: 'POST', headers:headersValue,  mode: 'cors', body:formBody})
+        .then((response) =>  response.json())
+        .then(responseJson=> this.setState({submited:true }))
+        .catch((error) => {
+                console.error(error);
+        });
+    }
+    setNotifcaiton(formBody){
+        fetch('http://35.182.224.114:3000/postNotifications', {method: 'POST', headers:headersValue,  mode: 'cors', body:formBody})
         .then((response) =>  response.json())
         .then(responseJson=> this.setState({submited:true }))
         .catch((error) => {
@@ -126,10 +133,6 @@ export default  class SortTable extends React.Component {
         for (var i=0; i<this.state.entry.length; i++ ){      
             if(!this.state.dataTypes.includes(this.state.entry[i].dataTypes.replace(/ +$/, ""))){
                 // insert data type in to datatypes table  postNewDatatype
-                var  headersValue= {
-                    'Accept': 'application/x-www-form-urlencoded',
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                }
                 var input =this.state.entry[i].dataTypes.replace(/ +$/, "").split('-')
                 var formBody2='category='+input[0]+'&datatype='+input[1];
                 fetch('http://35.182.224.114:3000/dataManagement/postNewDatatype', {method: 'POST', headers:headersValue,  mode: 'cors', body:formBody2})
@@ -138,6 +141,8 @@ export default  class SortTable extends React.Component {
                 .catch((error) => {
                         console.error(error);
                 });
+                var formBody3= 'email='+this.state.selected.submittedBy+'&subTitle=accepted-'+this.state.selected.name+'&title='+this.state.selected.name+' has been approved.'
+                this.setNotifcaiton(formBody3)
             }      
         }    
     }
@@ -155,14 +160,14 @@ export default  class SortTable extends React.Component {
         
         var formBody='status=rejected&tableName='+this.state.selected.name+'&feedback='+this.state.text;
         this.setStatus(formBody);
-       
+        var formBody2= 'email='+this.state.selected.submittedBy+'&subTitle=rejected-'+this.state.selected.name+'- '+this.state.text+'&title='+this.state.selected.name+' has been rejected.'
+        this.setNotifcaiton(formBody2)
         this.changeStatus('rejected')
     }
     handleCancel= ()=>{
         this.setState({
             visible:false,
-            error:'',
-            
+            error:'',    
         })
     }
     onRow=(row)=>{
@@ -246,7 +251,6 @@ export default  class SortTable extends React.Component {
                     </div>   
                     <TextArea 
                         value={this.state.text}
-                        
                         placeholder='If you are rejecting, please explain why'
                         onChange={event => this.inputText(event)}
                         autoFocus 
@@ -268,3 +272,7 @@ export default  class SortTable extends React.Component {
     );
   }
 }
+
+export default connect(state => ({
+    profile: state.Auth.get('profile'),
+}))(AdminDataManagement);

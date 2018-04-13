@@ -1,15 +1,10 @@
 import React, { Component } from 'react';
 import Button from '../../../components/uielements/button';
-// import basicStyle from '../../../config/basicStyle';
 import { Row, Col } from 'react-flexbox-grid';
 import Box from '../../../components/utility/box';
-// import { Input } from 'antd';
-// import image from '../../../image/claraCats02.svg';
-// import { TableViews } from '../../../containers/Tables/antTables';
-// import DataCard from '../../components/dataCard';
 import SuperSelectField from 'material-ui-superselectfield'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
-// const { TextArea } = Input;
+import { connect } from 'react-redux';
 import Input from '../../../components/uielements/input';
 import Form from '../../../components/uielements/form';
 import { Modal } from 'antd';
@@ -26,29 +21,30 @@ const formItemLayout = {
       sm: { span: 13 },
     },
   };
-  
-export default class extends Component {
+  var  headersValue= {
+    'Accept': 'application/x-www-form-urlencoded',
+    'Content-Type': 'application/x-www-form-urlencoded',
+}
+ class DataManagement extends Component {
     
     constructor(props){
         super(props);
         this.state={
-            table:[],
-            category: ['Number','Text','Date', 'Location'],
-            number:[],
-            date: [],
-            text: [],
-            location:[],
-            typeDropdown:[],
-            tag:'',
-            test:{},
-            tableName:'',
-            submited:false,
-            pointError:'',
-            visible: false ,
-            newTypeCat:null,
-            dataTypeInput:''
-    
-            
+            table:[], // the list of all the properties and thier values
+            category: ['Number','Text','Date', 'Location'],// the categories that appear in the category dropdown
+            number:[],//array of data types for number category dropdown
+            date: [], // array of data type for date categoyry dropdown
+            text: [], // array of data type for text categoyry dropdown
+            location:[], // array of data type for location categoyry dropdown
+            typeDropdown:[], // array that is used to popluate the last dropdown data type depending on what was selected in the category dropdown
+            tag:'', // the value of the default tag text box
+            tableName:'', // the name of the data set being worked on
+            submited:false, // status if it was succefuly added to the database
+            pointError:'', // error message
+            visible: false , // if the new data type module popup is open or not
+            newTypeCat:null, // the value of category drop down from module popup
+            dataTypeInput:'', // the value of datatype text box from module popup
+            feedback:'', // the reason the data maping was rejected by an admin  
         }    
     };
     showModal = () => {
@@ -57,7 +53,6 @@ export default class extends Component {
         });
       }
     handleOk = (e) => {
-        
         var temp=[]
         if( this.state.newTypeCat.value==='Number'){
             temp =this.state.number
@@ -82,7 +77,6 @@ export default class extends Component {
         return true
       }
     handleCancel = (e) => {
-        
         this.setState({
           visible: false,
         });
@@ -95,8 +89,7 @@ export default class extends Component {
             if (props[i].dataTypes){
                 values=props[i].dataTypes.replace(/ +$/, "").split('-')
             }
-           
-           
+
             var object={
                 property:props[i].propId,
                 category:{
@@ -108,11 +101,10 @@ export default class extends Component {
                     name:'type-'+i
                 }
             }
-            
-            
+             
             tableArray.push(object)
         }
-         this.setState({table:tableArray})
+        this.setState({table:tableArray})
     }
     setData(data){
         var number=[]
@@ -120,7 +112,6 @@ export default class extends Component {
         var text=[]
         var location=[]
         data.map((props,index)=>{
-
             if(props.category==='Text'){
                 text.push(props.dataType)
             }else if(props.category==='Number'){
@@ -133,7 +124,6 @@ export default class extends Component {
             return [];
         })
  
-        
         this.setState({
             number: number,
             text: text,
@@ -143,11 +133,17 @@ export default class extends Component {
         });
     }
     componentDidMount (){
-        
         var query= 'http://35.182.224.114:3000/dataManagement/getProps?tableName='+this.state.tableName
         fetch(query, {method: 'GET', mode: 'cors'})
        .then((response) =>  response.json())
        .then(responseJson=> this.setTable(responseJson.id ))
+       .catch((error) => {
+         console.error(error);
+       }); 
+       query= 'http://35.182.224.114:3000/tableLookUp?tableName='+this.state.tableName
+        fetch(query, {method: 'GET', mode: 'cors'})
+       .then((response) =>  response.json())
+       .then(responseJson=> this.setState({feedback:responseJson.tableId[0].feedback}))
        .catch((error) => {
          console.error(error);
        }); 
@@ -165,11 +161,9 @@ export default class extends Component {
         }
      }
     inputTag(event){
-        
         this.setState({tag: event.target.value});
     }
     inputType(event){
-        
         this.setState({dataTypeInput: event.target.value});
     }
     newDataTypeSelection=(values,name)=>{
@@ -178,12 +172,7 @@ export default class extends Component {
     submit(){
         this.setState({pointError:''});
         var formBody;
-        var  headersValue= {
-            'Accept': 'application/x-www-form-urlencoded',
-            'Content-Type': 'application/x-www-form-urlencoded',
-        }
-       for (var i=0; i < this.state.table.length; i++){
-            
+        for (var i=0; i < this.state.table.length; i++){
             if(this.state.table[i].type.value===null){
                 this.setState({pointError:'Please map all fields'});
                 return;
@@ -203,14 +192,13 @@ export default class extends Component {
             return [];
         })
         
-        formBody='tagName=' +this.state.tag+'&tableName='+this.state.tableName+'&user=test';
+        formBody='tagName=' +this.state.tag+'&tableName='+this.state.tableName+'&user='+this.props.profile.email;
         fetch('http://35.182.224.114:3000/dataManagement/postDefaultTags', {method: 'POST', headers:headersValue,  mode: 'cors', body:formBody})
             .then((response) =>  response.json())
             .then(responseJson=> this.setState({submited:true }))
             .catch((error) => {
                     console.error(error);
-        });
-        
+        });  
         
     }
     handleSelection = (values, name) =>   {
@@ -232,7 +220,6 @@ export default class extends Component {
         tempTable[number]= tempRow;
         this.setState({ table: tempTable });
     }    
-    
     dropDown(handleSelection, state, name, hintText, stateIndex, dropDown){
         var dataArray=[]
         if (dropDown==='cat'){
@@ -251,10 +238,8 @@ export default class extends Component {
             }  
         }
         
-        return (
-            
-            <MuiThemeProvider>
-                
+        return (   
+            <MuiThemeProvider> 
                 <SuperSelectField
                     name= {name}
                     hintText={hintText}
@@ -262,18 +247,13 @@ export default class extends Component {
                     onChange={handleSelection}
                     style={{ minWidth: 150, margin: 10 }}
                 >
-                
                     {dataArray.map((data,index)=>{
                         return <div key={index} value={data}>{data}</div> 
                     })}
-                    
-                    
                 </SuperSelectField>
             </MuiThemeProvider>
-        
         )
     }
-
     header(){
         return (
          <Row  style={{backgroundColor: "#fff", borderBottom:'1px solid #adb2ba',}}>
@@ -288,11 +268,9 @@ export default class extends Component {
                 </h3>
             </Col>
             <Col xs={6}>
-                
-                        <h3 style={{color:'#646466'}}>
-                                Data type
-                        </h3>
-                   
+                <h3 style={{color:'#646466'}}>
+                    Data type
+                </h3>   
             </Col>
         
         </Row>
@@ -306,54 +284,39 @@ export default class extends Component {
                         {data.property}
                     </div>
                 </Col>
-
                 <Col xs={3}>
-                   
-                        {/* {cat} */}
                        {this.dropDown(handleSelection, data.category.value,data.category.name, 'select a category', index, 'cat')}
-                    
                 </Col>
                 <Col xs={6}>
-                   
-                    {this.dropDown(handleSelection, data.type.value, data.type.name, 'select a data type', index, 'type')}
-                      
-                    
+                    {this.dropDown(handleSelection, data.type.value, data.type.name, 'select a data type', index, 'type')} 
                 </Col>
-               
-                
             </Row>
         )
     }
     
 
   render() {
-    // const { stateCat1, stateType1, stateCat2, stateType2 } = this.state
-    // const {  colStyle } = basicStyle;
-   
-
-  
     return (
      <div  >     
         {this.state.submited===false&&    
         <div style={{marginLeft: '16px', marginRight: '16px', marginBottom: '16px', marginTop: '16px', width:'96%'}} >
             <Row >
                 <Col >
-                   
                     <h1  style={{marginLeft: '16px'}}>Maping Data Fields</h1>
-                    
                 </Col>
                 <Col >
-                    
                     <Button  style={{ position: 'absolute',right:'32px'}} type="default"  icon="plus" onClick={this.showModal}>Data Type</Button>
-                    
                 </Col>
             </Row>
             <h3  style={{marginLeft: '16px'}}>Help Clara make the meaningless meaningful.</h3>
-            
-            
+
             <Box >
+                {this.state.feedback &&
+                    <div style={{width:'80%'}}>
+                        <h3 style={{color:'red', fontWeight: 'bold',display:'inline'}}>Reason for rejection:{this.state.feedback}</h3>
+                    </div>
+                }
                  {this.header()}
-                
 
                 {this.state.table.length>0 &&
                     this.state.table.map((data,index)=>{
@@ -380,13 +343,11 @@ export default class extends Component {
                         }}
                         className="nextPage"
                         color='#92add1'
-                        
-                    
+
                         >
                         Submit
                         </Button>
-                    
-                        
+
                         <Modal
                         title="Create a new data type"
                         visible={this.state.visible}
@@ -394,7 +355,7 @@ export default class extends Component {
                         onCancel={this.handleCancel}
                         >
                             <Row>
-                                <Col xs={6}>
+                                <Col xs={6}> 
                                     <MuiThemeProvider>
                                         <SuperSelectField
                                             name= {'Category'}
@@ -403,12 +364,10 @@ export default class extends Component {
                                             onChange={this.newDataTypeSelection}
                                             style={{ minWidth: 150, margin: 10 }}
                                         >
-                                        
                                             {this.state.category.map((data,index)=>{
                                                 return <div key={index} value={data}>{data}</div> 
                                             })}
-                                            
-                                            
+
                                         </SuperSelectField>
                                     </MuiThemeProvider>
                                 </Col>
@@ -428,8 +387,6 @@ export default class extends Component {
                     </Row> 
                 </div>
             </Box>
-
-
         
         </div>
         }
@@ -438,16 +395,18 @@ export default class extends Component {
            
             <Box
                     title="Submited"
-                    subtitle="The data set will apprear when it has been approved."
-                    
+                    subtitle="The data set will apprear when it has been approved." 
                 />
 
             
         </div>
         }
-
     </div>
-
     );
   }
 }
+export default connect(
+    state => ({
+        profile: state.Auth.get('profile'),
+    }),
+  )(DataManagement);
