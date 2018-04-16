@@ -1,3 +1,3 @@
-# mongo
+# clara-dev
 
-A quick description of mongo.
+A quick description of clara-dev.

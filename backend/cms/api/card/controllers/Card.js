@@ -1,28 +1,28 @@
 'use strict';
 
 /**
- * Cards.js controller
+ * Card.js controller
  *
- * @description: A set of functions called "actions" for managing `Cards`.
+ * @description: A set of functions called "actions" for managing `Card`.
  */
 
 module.exports = {
 
   /**
-   * Retrieve cards records.
+   * Retrieve card records.
    *
    * @return {Object|Array}
    */
 
   find: async (ctx) => {
-    const data = await strapi.services.cards.fetchAll(ctx.query);
+    const data = await strapi.services.card.fetchAll(ctx.query);
 
     // Send 200 `ok`
     ctx.send(data);
   },
 
   /**
-   * Retrieve a cards record.
+   * Retrieve a card record.
    *
    * @return {Object}
    */
@@ -32,46 +32,46 @@ module.exports = {
       return ctx.notFound();
     }
 
-    const data = await strapi.services.cards.fetch(ctx.params);
+    const data = await strapi.services.card.fetch(ctx.params);
 
     // Send 200 `ok`
     ctx.send(data);
   },
 
   /**
-   * Create a/an cards record.
+   * Create a/an card record.
    *
    * @return {Object}
    */
 
   create: async (ctx) => {
-    const data = await strapi.services.cards.add(ctx.request.body);
+    const data = await strapi.services.card.add(ctx.request.body);
 
     // Send 201 `created`
     ctx.created(data);
   },
 
   /**
-   * Update a/an cards record.
+   * Update a/an card record.
    *
    * @return {Object}
    */
 
   update: async (ctx, next) => {
-    const data = await strapi.services.cards.edit(ctx.params, ctx.request.body) ;
+    const data = await strapi.services.card.edit(ctx.params, ctx.request.body) ;
 
     // Send 200 `ok`
     ctx.send(data);
   },
 
   /**
-   * Destroy a/an cards record.
+   * Destroy a/an card record.
    *
    * @return {Object}
    */
 
   destroy: async (ctx, next) => {
-    const data = await strapi.services.cards.remove(ctx.params);
+    const data = await strapi.services.card.remove(ctx.params);
 
     // Send 200 `ok`
     ctx.send(data);

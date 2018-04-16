@@ -1,8 +1,8 @@
 {
   "_from": "strapi-plugin-content-type-builder@alpha",
-  "_id": "strapi-plugin-content-type-builder@3.0.0-alpha.11.1",
+  "_id": "strapi-plugin-content-type-builder@3.0.0-alpha.11.3",
   "_inBundle": false,
-  "_integrity": "sha512-LEjPOZwJCNBT3TC5JF+QEjiMLSUCWcBsq4BL8GRkmu3CDtqSPxQcRk+GwQVweE1s/BNeQhtM6/CvqTNgv9UcNg==",
+  "_integrity": "sha512-VNqrgu03ND9RxyNsgSuk95f+pH8wn12CKwRTsX8WfxGz9L2IdolmP46unYZG7OjsMwA26QsqREFN1YB3PClOdA==",
   "_location": "/strapi-plugin-content-type-builder",
   "_phantomChildren": {},
   "_requested": {
@@ -18,10 +18,10 @@
   "_requiredBy": [
     "#USER"
   ],
-  "_resolved": "https://registry.npmjs.org/strapi-plugin-content-type-builder/-/strapi-plugin-content-type-builder-3.0.0-alpha.11.1.tgz",
-  "_shasum": "e01c05f08729762a59d909df762b58f9843e64f7",
+  "_resolved": "https://registry.npmjs.org/strapi-plugin-content-type-builder/-/strapi-plugin-content-type-builder-3.0.0-alpha.11.3.tgz",
+  "_shasum": "47942ce0bf5645813c0c1eb6a6868beab9006ef3",
   "_spec": "strapi-plugin-content-type-builder@alpha",
-  "_where": "C:\\Users\\Remote\\Documents\\Clara-development\\strapi\\mongo",
+  "_where": "C:\\Users\\Remote\\Documents\\strapi\\clara-dev",
   "author": {
     "name": "Strapi team",
     "email": "hi@strapi.io",
@@ -33,13 +33,13 @@
   "bundleDependencies": false,
   "dependencies": {
     "pluralize": "^7.0.0",
-    "strapi-generate": "3.0.0-alpha.11.1",
-    "strapi-generate-api": "3.0.0-alpha.11.1"
+    "strapi-generate": "3.0.0-alpha.11.3",
+    "strapi-generate-api": "3.0.0-alpha.11.3"
   },
   "deprecated": false,
   "description": "Strapi plugin to create content type (API).",
   "devDependencies": {
-    "strapi-helper-plugin": "3.0.0-alpha.11.1"
+    "strapi-helper-plugin": "3.0.0-alpha.11.3"
   },
   "engines": {
     "node": ">= 9.0.0",
@@ -79,7 +79,7 @@
     "icon": "paint-brush",
     "description": "content-type-builder.plugin.description"
   },
-  "version": "3.0.0-alpha.11.1",
+  "version": "3.0.0-alpha.11.3",
   "warnings": [
     {
       "code": "ENOTSUP",
@@ -87,7 +87,7 @@
         "node": ">= 9.0.0",
         "npm": ">= 3.0.0"
       },
-      "pkgid": "strapi-plugin-content-type-builder@3.0.0-alpha.11.1"
+      "pkgid": "strapi-plugin-content-type-builder@3.0.0-alpha.11.3"
     },
     {
       "code": "ENOTSUP",
@@ -95,7 +95,7 @@
         "node": ">= 9.0.0",
         "npm": ">= 3.0.0"
       },
-      "pkgid": "strapi-plugin-content-type-builder@3.0.0-alpha.11.1"
+      "pkgid": "strapi-plugin-content-type-builder@3.0.0-alpha.11.3"
     }
   ]
 }

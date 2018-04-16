@@ -18,24 +18,18 @@ module.exports = {
    */
 
   add: async (values) => {
-    console.log('adding new user')
-    if(values.fields){
-      values = values.fields;
-      values.provider = 'local'
-    }
     if (values.password) {
-      console.log(values.password)
       values.password = await strapi.plugins['users-permissions'].services.user.hashPassword(values);
-      console.log(values.password)
-      // Use Content Manager business logic to handle relation.
-      if (strapi.plugins['content-manager']) {
-        return await strapi.plugins['content-manager'].services['contentmanager'].add({
-          model: 'user'
-        }, values, 'users-permissions');
-      }
-
-      return strapi.query('user', 'users-permissions').create(values);
     }
+
+    // Use Content Manager business logic to handle relation.
+    if (strapi.plugins['content-manager']) {
+      return await strapi.plugins['content-manager'].services['contentmanager'].add({
+        model: 'user'
+      }, values, 'users-permissions');
+    }
+
+    return strapi.query('user', 'users-permissions').create(values);
   },
 
   /**
@@ -48,9 +42,6 @@ module.exports = {
     // Note: The current method will return the full response of Mongo.
     // To get the updated object, you have to execute the `findOne()` method
     // or use the `findOneOrUpdate()` method with `{ new:true }` option.
-    if(values.fields){
-      values = values.fields;
-    }
     if (values.password) {
       values.password = await strapi.plugins['users-permissions'].services.user.hashPassword(values);
     }

@@ -1,8 +1,8 @@
 {
   "_from": "strapi-plugin-settings-manager@alpha",
-  "_id": "strapi-plugin-settings-manager@3.0.0-alpha.11.1",
+  "_id": "strapi-plugin-settings-manager@3.0.0-alpha.11.3",
   "_inBundle": false,
-  "_integrity": "sha512-0W+fNYG59lPfQAOHSlAmy1KnkPt/py3vK1M0lV2LOiJU+Wv2+sa4rDOslH3aMnQepINp2ACGWTYp9Dfagga+mA==",
+  "_integrity": "sha512-f8qap73/NwB+8npO5Spl95gHSDROPwXrgjG1wDkAoOQYVRaL36CKmoNyVTqsK/WdmPqv3VgQNONBt14TR3H2Fw==",
   "_location": "/strapi-plugin-settings-manager",
   "_phantomChildren": {},
   "_requested": {
@@ -18,10 +18,10 @@
   "_requiredBy": [
     "#USER"
   ],
-  "_resolved": "https://registry.npmjs.org/strapi-plugin-settings-manager/-/strapi-plugin-settings-manager-3.0.0-alpha.11.1.tgz",
-  "_shasum": "9e94a6389713108fe1520d4f5410c01759930e05",
+  "_resolved": "https://registry.npmjs.org/strapi-plugin-settings-manager/-/strapi-plugin-settings-manager-3.0.0-alpha.11.3.tgz",
+  "_shasum": "2bede6936735f37fc68f1e87d701be1be8d9902c",
   "_spec": "strapi-plugin-settings-manager@alpha",
-  "_where": "C:\\Users\\Remote\\Documents\\Clara-development\\strapi\\mongo",
+  "_where": "C:\\Users\\Remote\\Documents\\strapi\\clara-dev",
   "author": {
     "name": "Strapi team",
     "email": "hi@strapi.io",
@@ -36,7 +36,7 @@
   "devDependencies": {
     "flag-icon-css": "^2.8.0",
     "react-select": "^1.0.0-rc.5",
-    "strapi-helper-plugin": "3.0.0-alpha.11.1"
+    "strapi-helper-plugin": "3.0.0-alpha.11.3"
   },
   "engines": {
     "node": ">= 9.0.0",
@@ -76,7 +76,7 @@
     "icon": "wrench",
     "description": "settings-manager.plugin.description"
   },
-  "version": "3.0.0-alpha.11.1",
+  "version": "3.0.0-alpha.11.3",
   "warnings": [
     {
       "code": "ENOTSUP",
@@ -84,7 +84,7 @@
         "node": ">= 9.0.0",
         "npm": ">= 3.0.0"
       },
-      "pkgid": "strapi-plugin-settings-manager@3.0.0-alpha.11.1"
+      "pkgid": "strapi-plugin-settings-manager@3.0.0-alpha.11.3"
     },
     {
       "code": "ENOTSUP",
@@ -92,7 +92,7 @@
         "node": ">= 9.0.0",
         "npm": ">= 3.0.0"
       },
-      "pkgid": "strapi-plugin-settings-manager@3.0.0-alpha.11.1"
+      "pkgid": "strapi-plugin-settings-manager@3.0.0-alpha.11.3"
     }
   ]
 }

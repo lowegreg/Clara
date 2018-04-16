@@ -1,28 +1,28 @@
 'use strict';
 
 /**
- * Test.js controller
+ * Tile.js controller
  *
- * @description: A set of functions called "actions" for managing `Test`.
+ * @description: A set of functions called "actions" for managing `Tile`.
  */
 
 module.exports = {
 
   /**
-   * Retrieve test records.
+   * Retrieve tile records.
    *
    * @return {Object|Array}
    */
 
   find: async (ctx) => {
-    const data = await strapi.services.test.fetchAll(ctx.query);
+    const data = await strapi.services.tile.fetchAll(ctx.query);
 
     // Send 200 `ok`
     ctx.send(data);
   },
 
   /**
-   * Retrieve a test record.
+   * Retrieve a tile record.
    *
    * @return {Object}
    */
@@ -32,46 +32,46 @@ module.exports = {
       return ctx.notFound();
     }
 
-    const data = await strapi.services.test.fetch(ctx.params);
+    const data = await strapi.services.tile.fetch(ctx.params);
 
     // Send 200 `ok`
     ctx.send(data);
   },
 
   /**
-   * Create a/an test record.
+   * Create a/an tile record.
    *
    * @return {Object}
    */
 
   create: async (ctx) => {
-    const data = await strapi.services.test.add(ctx.request.body);
+    const data = await strapi.services.tile.add(ctx.request.body);
 
     // Send 201 `created`
     ctx.created(data);
   },
 
   /**
-   * Update a/an test record.
+   * Update a/an tile record.
    *
    * @return {Object}
    */
 
   update: async (ctx, next) => {
-    const data = await strapi.services.test.edit(ctx.params, ctx.request.body) ;
+    const data = await strapi.services.tile.edit(ctx.params, ctx.request.body) ;
 
     // Send 200 `ok`
     ctx.send(data);
   },
 
   /**
-   * Destroy a/an test record.
+   * Destroy a/an tile record.
    *
    * @return {Object}
    */
 
   destroy: async (ctx, next) => {
-    const data = await strapi.services.test.remove(ctx.params);
+    const data = await strapi.services.tile.remove(ctx.params);
 
     // Send 200 `ok`
     ctx.send(data);

@@ -1,8 +1,8 @@
 {
   "_from": "strapi-plugin-upload@alpha",
-  "_id": "strapi-plugin-upload@3.0.0-alpha.11.1",
+  "_id": "strapi-plugin-upload@3.0.0-alpha.11.3",
   "_inBundle": false,
-  "_integrity": "sha512-VImWWe1NVbwae5NbrCJqmtEmVnt0mzUZGistVPYigxmQKINf2nbqVinAGOEn0NtYuuIi8zTevQEe5dIffKXYHg==",
+  "_integrity": "sha512-b/HBmAoAmWIkfT+NrYGXhrHjEG7h/2CsKClsv3lOudGQtkBeVW2JVJEc+fJcbLEZptoxxsCbdjAjMjewnblaIA==",
   "_location": "/strapi-plugin-upload",
   "_phantomChildren": {},
   "_requested": {
@@ -18,24 +18,24 @@
   "_requiredBy": [
     "#USER"
   ],
-  "_resolved": "https://registry.npmjs.org/strapi-plugin-upload/-/strapi-plugin-upload-3.0.0-alpha.11.1.tgz",
-  "_shasum": "97d0ab186677687ce9d5076837de7229ed5fd72d",
+  "_resolved": "https://registry.npmjs.org/strapi-plugin-upload/-/strapi-plugin-upload-3.0.0-alpha.11.3.tgz",
+  "_shasum": "794fc37851f477ef887eb45064cd6ff152ddaaf7",
   "_spec": "strapi-plugin-upload@alpha",
-  "_where": "C:\\Users\\Remote\\Documents\\Clara-development\\strapi\\mongo",
+  "_where": "C:\\Users\\Remote\\Documents\\strapi\\clara-dev",
   "author": {
     "name": "A Strapi developer"
   },
   "bundleDependencies": false,
   "dependencies": {
     "react-copy-to-clipboard": "^5.0.1",
-    "strapi-upload-local": "3.0.0-alpha.11.1",
+    "strapi-upload-local": "3.0.0-alpha.11.3",
     "stream-to-array": "^2.3.0",
     "uuid": "^3.2.1"
   },
   "deprecated": false,
   "description": "This is the description of the plugin.",
   "devDependencies": {
-    "strapi-helper-plugin": "3.0.0-alpha.11.1"
+    "strapi-helper-plugin": "3.0.0-alpha.11.3"
   },
   "engines": {
     "node": ">= 7.0.0",
@@ -68,5 +68,5 @@
     "icon": "cloud-upload",
     "description": "Description of upload plugin."
   },
-  "version": "3.0.0-alpha.11.1"
+  "version": "3.0.0-alpha.11.3"
 }

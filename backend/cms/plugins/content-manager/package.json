@@ -1,8 +1,8 @@
 {
   "_from": "strapi-plugin-content-manager@alpha",
-  "_id": "strapi-plugin-content-manager@3.0.0-alpha.11.1",
+  "_id": "strapi-plugin-content-manager@3.0.0-alpha.11.3",
   "_inBundle": false,
-  "_integrity": "sha512-Tlclg9FTntNkkXo0ArMqzptJ1VF9Q2qDlcf7TJwqwWamamo/jjRU2/VA8vOBu7n76TV2JjF3lbR/goChKkqXKw==",
+  "_integrity": "sha512-r9I4A5hdwUgay1zXt22pxbTE/I/jdMEAnvYYLgJl6zVQOC+FqBGKs35hp9cKe2EVW21Fbqf8b39KbiPxUuZjwA==",
   "_location": "/strapi-plugin-content-manager",
   "_phantomChildren": {},
   "_requested": {
@@ -18,10 +18,10 @@
   "_requiredBy": [
     "#USER"
   ],
-  "_resolved": "https://registry.npmjs.org/strapi-plugin-content-manager/-/strapi-plugin-content-manager-3.0.0-alpha.11.1.tgz",
-  "_shasum": "6baeb6303346a7fc77bd313314ee400e617103c2",
+  "_resolved": "https://registry.npmjs.org/strapi-plugin-content-manager/-/strapi-plugin-content-manager-3.0.0-alpha.11.3.tgz",
+  "_shasum": "15032043b4b20001ccf461158da13e4c35851025",
   "_spec": "strapi-plugin-content-manager@alpha",
-  "_where": "C:\\Users\\Remote\\Documents\\Clara-development\\strapi\\mongo",
+  "_where": "C:\\Users\\Remote\\Documents\\strapi\\clara-dev",
   "author": {
     "name": "Strapi team",
     "email": "hi@strapi.io",
@@ -35,7 +35,7 @@
   "description": "A powerful UI to easily manage your data.",
   "devDependencies": {
     "react-select": "^1.0.0-rc.5",
-    "strapi-helper-plugin": "3.0.0-alpha.11.1"
+    "strapi-helper-plugin": "3.0.0-alpha.11.3"
   },
   "engines": {
     "node": ">= 9.0.0",
@@ -75,7 +75,7 @@
     "icon": "plug",
     "description": "content-manager.plugin.description"
   },
-  "version": "3.0.0-alpha.11.1",
+  "version": "3.0.0-alpha.11.3",
   "warnings": [
     {
       "code": "ENOTSUP",
@@ -83,7 +83,7 @@
         "node": ">= 9.0.0",
         "npm": ">= 3.0.0"
       },
-      "pkgid": "strapi-plugin-content-manager@3.0.0-alpha.11.1"
+      "pkgid": "strapi-plugin-content-manager@3.0.0-alpha.11.3"
     },
     {
       "code": "ENOTSUP",
@@ -91,7 +91,7 @@
         "node": ">= 9.0.0",
         "npm": ">= 3.0.0"
       },
-      "pkgid": "strapi-plugin-content-manager@3.0.0-alpha.11.1"
+      "pkgid": "strapi-plugin-content-manager@3.0.0-alpha.11.3"
     }
   ]
 }

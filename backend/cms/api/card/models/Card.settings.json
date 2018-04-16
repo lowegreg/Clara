@@ -2,20 +2,20 @@
   "connection": "default",
   "collectionName": "",
   "info": {
-    "name": "test",
+    "name": "card",
     "description": ""
   },
   "options": {
     "timestamps": true
   },
   "attributes": {
-    "test": {
-      "type": "string",
-      "multiple": false
+    "title": {
+      "multiple": false,
+      "type": "string"
     },
-    "text": {
-      "type": "text",
-      "multiple": false
+    "description": {
+      "multiple": false,
+      "type": "text"
     }
   }
 }
