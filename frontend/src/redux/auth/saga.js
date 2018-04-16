@@ -4,13 +4,25 @@ import { getToken, clearToken, getProfile } from '../../helpers/utility';
 import actions from './actions';
 
 function loginAPI(user, password, code) {
-  return fetch('http://35.182.255.76/auth/local',  {
+  return fetch('http://localhost:1337/auth/local',  {
     headers: {
       'Accept': 'application/x-www-form-urlencoded',
       'Content-Type': 'application/x-www-form-urlencoded',
     },
     method: "POST",
     body: `identifier=${user}&password=${password}`,
+  })
+  .then(response => response.json())
+  .catch(error => error)
+  .then(data => data)
+}
+
+function getDashboards(userId,jwt) {
+  return fetch(`http://localhost:1337/dashboard/user/${userId}`,  {
+    headers: {
+      'Authorization': `Bearer ${jwt}`,
+    },
+    method: "GET",
   })
   .then(response => response.json())
   .catch(error => error)
@@ -24,12 +36,15 @@ export function* loginRequest() {
     
     try {
       var responseBody = yield call(loginAPI, credentials.identifier, credentials.password)
+      console.log(responseBody)
       if (responseBody.jwt) {
+        var dashboards = yield call(getDashboards, responseBody.user._id, responseBody.jwt)  
           var profile = {
-            userID: responseBody.user.id,
+            userId: responseBody.user._id,
             username: responseBody.user.username,
             email: responseBody.user.email,
-            role: responseBody.user.role.name
+            role: responseBody.user.role.name,
+            dashboards,
           };
 
           yield put({
