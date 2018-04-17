@@ -107,4 +107,19 @@ module.exports = {
     // Send 200 `ok`
     ctx.send(data);
   },
+
+  /**
+   * Retrieve a dashboard record.
+   *
+   * @return {Object}
+   */
+
+  deleteTile: async (ctx) => {
+    if (!ctx.params._id.match(/^[0-9a-fA-F]{24}$/)) {
+      return ctx.notFound();
+    }
+    const data = await strapi.services.dashboard.delete(ctx.params._id, ctx.params.tile);
+    // Send 200 `ok`
+    ctx.send(data);
+  },
 };

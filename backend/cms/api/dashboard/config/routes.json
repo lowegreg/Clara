@@ -55,6 +55,14 @@
       "config": {
         "policies": []
       }
+    },
+    {
+      "method": "DELETE",
+      "path": "/dashboard/:_id/tile/:tile",
+      "handler": "Dashboard.deleteTile",
+      "config": {
+        "policies": []
+      }
     }
   ]
 }
