@@ -107,4 +107,19 @@ module.exports = {
     .limit(convertedParams.limit)
     .populate(_.keys(_.groupBy(_.reject(strapi.models.dashboard.associations, {autoPopulate: false}), 'alias')).join(' '))   
   },
+
+  /**
+   * Promise to edit a/an dashboard.
+   *
+   * @return {Promise}
+   */
+
+  save: async (params, values) => {
+    // Note: The current method will return the full response of Mongo.
+    // To get the updated object, you have to execute the `findOne()` method
+    // or use the `findOneOrUpdate()` method with `{ new:true }` option.
+    await strapi.hook.mongoose.manageRelations('dashboard', _.merge(_.clone(params), { values }));
+    return Dashboard
+    .update(params,{ '$addToSet': {'tiles' : values.tile}}, { multi: true });
+  }
 };

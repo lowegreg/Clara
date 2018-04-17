@@ -47,6 +47,14 @@
       "config": {
         "policies": []
       }
+    },
+    {
+      "method": "PUT",
+      "path": "/dashboard/:_id/tile",
+      "handler": "Dashboard.saveTile",
+      "config": {
+        "policies": []
+      }
     }
   ]
 }
