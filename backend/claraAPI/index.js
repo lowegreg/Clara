@@ -219,7 +219,28 @@ app.post('/updateNotifications', function(req, res){
     }
   });
 })
+// universal select all
+app.get('/selectGraphData', function(req, res){
+  var sql= 'Select COUNT(`'+ req.query.y+'`) as y, `'+ req.query.x+ '` as x from `'+req.query.tableName +'` group by `'+req.query.x+'`  order by COUNT(`'+req.query.y+'`) desc limit 10'
 
+  if (req.query.xType==='date'&& req.query.yType==='type'){
+    sql= 'Select count(`'+req.query.y+'`) as z, `'+req.query.y+'` as y, MONTHNAME('+req.query.x+') as x from `'+req.query.tableName+'`  where ( select count(*) from (select count(`'+req.query.y+'`) as length from `'+req.query.tableName+'` as t1 group by `'+req.query.y+'`)  as t2)>1 and ( select count(*) from (select count('+req.query.x+') as length from `'+req.query.tableName+'` as t3 group by '+req.query.x+')  as t4)>1 group by MONTH('+req.query.x+')  order by COUNT(`'+req.query.y+'`) desc limit 10'
+  }else if (req.query.xType==='type'&& req.query.yType==='loc' ||(req.query.xType==='fin'&& req.query.yType==='loc' )){
+    sql= 'Select count(`'+req.query.y+'`) as z, `'+req.query.y+'` as y, `'+req.query.x+'` as x from `'+req.query.tableName+'`  where ( select count(*) from (select count(`'+req.query.y+'`) as length from `'+req.query.tableName+'` as t1 group by `'+req.query.y+'`)  as t2)>1 and ( select count(*) from (select count(`'+req.query.x+'`) as length from `'+req.query.tableName+'` as t3 group by `'+req.query.x+'`)  as t4)>1 group by `'+req.query.y+'`  order by COUNT(`'+req.query.y+'`) desc limit 10'
+  }else if (req.query.yType==='rank'){
+    sql= 'Select sum(`'+ req.query.y+'`) as y, MONTHNAME('+ req.query.x+ ') as x from `'+req.query.tableName +'` group by MONTH('+req.query.x+')   order by sum(`'+req.query.y+'`) desc limit 10' 
+  }else if (req.query.xType==='date'||(req.query.xType==='fin'&& req.query.yType==='date')){
+    sql= 'Select COUNT(`'+ req.query.y+'`) as y, MONTHNAME('+ req.query.x+ ') as x from `'+req.query.tableName +'` group by MONTH('+req.query.x+')  '  
+  }
+
+  con.query(sql, function(err, rows){
+    if (err){
+      res.json({"Error": true, "Message":err});
+    } else {
+      res.json({"Error": false,"Message": "Success", "id" : rows});
+    }
+  });
+})
 app.listen(3000, function () {
   console.log(' REST server started.');
 });
