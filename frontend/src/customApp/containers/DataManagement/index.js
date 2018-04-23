@@ -54,6 +54,10 @@ const formItemLayout = {
       }
     handleOk = (e) => {
         var temp=[]
+        if (this.state.newTypeCat===null||this.state.dataTypeInput===''){
+            // create error message
+            return;
+        }
         if( this.state.newTypeCat.value==='Number'){
             temp =this.state.number
             temp.push(this.state.dataTypeInput)

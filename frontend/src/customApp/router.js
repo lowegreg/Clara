@@ -68,5 +68,13 @@ export default function(url) {
       component={asyncComponent(() => import('./containers/AdminDataManagement/index'))}
     />
   );
+  routers.push(
+    <Route
+      exact
+      key="insights"
+      path={`${url}/insights`}
+      component={asyncComponent(() => import('./containers/insightPages/index'))}
+    />
+  );
   return routers;
 }
