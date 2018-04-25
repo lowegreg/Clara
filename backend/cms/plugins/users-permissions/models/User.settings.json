@@ -39,7 +39,7 @@
       "plugin": "users-permissions",
       "configurable": false
     },
-    "dashboard": {
+    "dashboards": {
       "collection": "dashboard",
       "via": "user"
     },

@@ -20,7 +20,7 @@
     },
     "user": {
       "model": "user",
-      "via": "dashboard",
+      "via": "dashboards",
       "plugin": "users-permissions"
     }
   }

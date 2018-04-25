@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { palette } from 'styled-theme';
 
-const TableDemoStyle = styled.div`
+const TableStyle = styled.div`
   .ant-tabs-content {
     margin-top: 40px;
   }
@@ -48,4 +48,4 @@ const TableDemoStyle = styled.div`
   }
 `;
 
-export default TableDemoStyle;
+export default TableStyle;

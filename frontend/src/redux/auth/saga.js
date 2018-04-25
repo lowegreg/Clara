@@ -2,32 +2,7 @@ import { all, takeEvery, put, fork, select, call } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
 import { getToken, clearToken, getProfile } from '../../helpers/utility';
 import actions from './actions';
-
-function loginAPI(user, password, code) {
-  return fetch('http://localhost:1337/auth/local',  {
-    headers: {
-      'Accept': 'application/x-www-form-urlencoded',
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    method: "POST",
-    body: `identifier=${user}&password=${password}`,
-  })
-  .then(response => response.json())
-  .catch(error => error)
-  .then(data => data)
-}
-
-function getDashboards(userId,jwt) {
-  return fetch(`http://localhost:1337/dashboard/user/${userId}`,  {
-    headers: {
-      'Authorization': `Bearer ${jwt}`,
-    },
-    method: "GET",
-  })
-  .then(response => response.json())
-  .catch(error => error)
-  .then(data => data)
-}
+import { loginAPI, getDashboards, getUser } from './helper'
 
 export function* loginRequest() {
   yield takeEvery('LOGIN_REQUEST', function*() {
@@ -36,18 +11,17 @@ export function* loginRequest() {
     
     try {
       var responseBody = yield call(loginAPI, credentials.identifier, credentials.password)
-      console.log(responseBody)
       if (responseBody.jwt) {
-        var dashboards = yield call(getDashboards, responseBody.user._id, responseBody.jwt)  
-          var profile = {
-            userId: responseBody.user._id,
-            username: responseBody.user.username,
-            email: responseBody.user.email,
-            role: responseBody.user.role.name,
-            dashboards,
-          };
+        var user = yield call(getUser, responseBody.user._id, responseBody.jwt)  
+        var profile = {
+          userId: user._id,
+          username: user.username,
+          email: user.email,
+          role: user.role.name,
+          dashboards: user.dashboards,
+        };
 
-          yield put({
+        yield put({
           type: actions.LOGIN_SUCCESS,
           token: responseBody.jwt,
           profile: profile
@@ -87,6 +61,7 @@ export function* checkAuthorization() {
   yield takeEvery(actions.CHECK_AUTHORIZATION, function*() {
     const token = getToken().get('idToken');
     const profile = getProfile().get('profile');
+    console.log(profile)
     if (token) {
       yield put({
         type: actions.LOGIN_SUCCESS,
@@ -96,8 +71,27 @@ export function* checkAuthorization() {
     }
   });
 }
+
+export function* updateUser() {
+  yield takeEvery(actions.UPDATE_USER_RESQUEST, function*() {
+    const state = yield select();
+    //array of the inital state fronm reducer
+    const params = state.Auth._root.entries;
+    var dashboards = yield call(getDashboards, params[3][1].userId, params[0][1])
+    if(!dashboards.error){
+      var updateProfile = getProfile().get('profile');
+      console.log(updateProfile)
+      updateProfile.dashboards = dashboards;
+      console.log(updateProfile)
+      yield localStorage.setItem('profile', JSON.stringify(updateProfile));
+      
+    }
+  });
+}
+
 export default function* rootSaga() {
   yield all([
+    fork(updateUser),
     fork(checkAuthorization),
     fork(loginRequest),
     fork(loginSuccess),

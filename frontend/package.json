@@ -36,7 +36,7 @@
     "nprogress": "^0.2.0",
     "polished": "^1.7.0",
     "postcss-inline-rtl": "^0.9.8",
-    "prop-types": "^15.5.10",
+    "prop-types": "^15.6.1",
     "randomcolor": "^0.5.3",
     "react": "^16.2.0",
     "react-addons-shallow-compare": "^15.5.2",

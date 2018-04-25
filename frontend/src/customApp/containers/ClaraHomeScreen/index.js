@@ -4,11 +4,13 @@ import { connect } from 'react-redux';
 import WelcomeCard from '../../components/welcomeCard/welcomeCard'
 import Tabs, { TabPane } from '../../../components/uielements/tabs';
 import LayoutContentWrapper from '../../../components/utility/layoutWrapper';
-import TableDemoStyle from './tableStyle';
+import TableStyle from './tableStyle';
 import Input from '../../../components/uielements/input';
 import Form from '../../../components/uielements/form';
 import { Modal } from 'antd';
+import authAction from '../../../redux/auth/actions';
 
+const { updateUser } = authAction;
 const FormItem = Form.Item;
 const formItemLayout = {
   labelCol: {
@@ -34,6 +36,7 @@ export class Dashboard extends Component {
       confirmLoading: false,
       title: '',
       error: 0,
+      profile: this.props.profile,
     };
     this.clickHandler = this.clickHandler.bind(this)
     this.onChange = this.onChange.bind(this)
@@ -66,12 +69,16 @@ export class Dashboard extends Component {
         body: `user=${this.props.profile.userId}&title=${this.state.title}`,
       })
       .then((response) =>  response.json())
-      .then(responseJson=> this.setState({error: 0, title: '', confirmLoading:false, visible:false }))
+      .then(responseJson=> {
+        var profile = this.props.profile;      
+        profile.dashboards.push(responseJson)
+        this.setState({error: 0, title: '', confirmLoading:false, visible:false, profile: profile })        
+        this.props.updateUser()
+      })
       .catch((error) => {
         this.setState({error: 2, confirmLoading: false})
         console.error(error);
       });
-
 
     } else {
       this.setState({
@@ -90,8 +97,7 @@ export class Dashboard extends Component {
     this.setState({title: event.target.value});
   }
 
-  render() {
-    console.log(this.state.error)
+   render() {
     var welcomeCard = null
     if (this.state.showWelcome) {
       welcomeCard = <WelcomeCard clickHandler={this.clickHandler} />
@@ -113,21 +119,21 @@ export class Dashboard extends Component {
           >
             <Form>
               <FormItem {...formItemLayout} label="Title" validateStatus={error[this.state.error].validateStatus} help={error[this.state.error].help} > 
-                <Input id="title" onChange={this.onChange} />
+                <Input id="title" onChange={this.onChange} value={this.state.title} />
               </FormItem>
             </Form>
           </Modal>
         </div>
-        <TableDemoStyle className="isoLayoutContent">
+        <TableStyle className="isoLayoutContent">
           <Tabs className="isoTableDisplayTab">
-            {this.props.profile.dashboards.map(dashboard => (
+            {this.state.profile.dashboards.map(dashboard => (
               <TabPane tab={dashboard.title} key={dashboard._id}>
                 {//display pin
                 }
               </TabPane>
             ))}
           </Tabs>
-        </TableDemoStyle>
+        </TableStyle>
       </LayoutContentWrapper>
       </div>      
     );
@@ -139,4 +145,5 @@ export default connect(
     profile: state.Auth.get('profile'),
     jwt: state.Auth.get('idToken')
   }),
+  { updateUser }
 )(Dashboard);
