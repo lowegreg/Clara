@@ -61,7 +61,6 @@ export function* checkAuthorization() {
   yield takeEvery(actions.CHECK_AUTHORIZATION, function*() {
     const token = getToken().get('idToken');
     const profile = getProfile().get('profile');
-    console.log(profile)
     if (token) {
       yield put({
         type: actions.LOGIN_SUCCESS,
@@ -72,6 +71,7 @@ export function* checkAuthorization() {
   });
 }
 
+//Gets the updated user dashboards and sets it for the new user
 export function* updateUser() {
   yield takeEvery(actions.UPDATE_USER_RESQUEST, function*() {
     const state = yield select();
@@ -80,9 +80,7 @@ export function* updateUser() {
     var dashboards = yield call(getDashboards, params[3][1].userId, params[0][1])
     if(!dashboards.error){
       var updateProfile = getProfile().get('profile');
-      console.log(updateProfile)
       updateProfile.dashboards = dashboards;
-      console.log(updateProfile)
       yield localStorage.setItem('profile', JSON.stringify(updateProfile));
       
     }

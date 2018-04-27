@@ -1,4 +1,4 @@
-
+//calls the login api and returns either errors or json web token and user info
 export function loginAPI(user, password, code) {
   return fetch('http://localhost:1337/auth/local',  {
     headers: {
@@ -12,7 +12,7 @@ export function loginAPI(user, password, code) {
   .catch(error => error)
   .then(data => data)
 }
-  
+//gets the users dashbaords using their user id and the json web token
 export function getDashboards(userId,jwt) {
   return fetch(`http://localhost:1337/dashboard/user/${userId}`,  {
     headers: {
@@ -24,7 +24,7 @@ export function getDashboards(userId,jwt) {
   .catch(error => error)
   .then(data => data)
 }
-
+//gets the user profile using their user id and json web token
 export function getUser(userId,jwt){
   return fetch(`http://localhost:1337/user/${userId}`,  {
   headers: {
