@@ -70,7 +70,7 @@ export default class  extends Component {
 			return []
 		}
 		for(var i =0; i< this.state.graphs.length; i++){
-			var url='http://localhost:3001/selectGraphData?tableName='+this.state.tableName+'&x='+this.state.graphs[i].x+'&y='+this.state.graphs[i].y+'&xType='+this.state.graphs[i].xType+'&yType='+this.state.graphs[i].yType
+			var url='http://35.182.224.114:3000/selectGraphData?tableName='+this.state.tableName+'&x='+this.state.graphs[i].x+'&y='+this.state.graphs[i].y+'&xType='+this.state.graphs[i].xType+'&yType='+this.state.graphs[i].yType
 			this.fetchData(url,i)
 		}
   } 
