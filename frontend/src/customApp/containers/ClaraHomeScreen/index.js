@@ -62,6 +62,7 @@ export class Dashboard extends Component {
     });
     //Checks if the user entered a title for their new dashbaord
     if (this.state.title) {
+      console.log('in add')
       fetch('http://localhost:1337/dashboard', {
         headers: {
           'Accept': 'application/x-www-form-urlencoded',
@@ -137,8 +138,11 @@ export class Dashboard extends Component {
             this.setState({activeKey: this.state.dashboards[index-1]._id})
           }
         }
-        this.setState({dashboards: dashboards})
-        this.props.updateUser()
+        this.setState({dashboards: dashboards});
+        this.props.updateUser();
+        var updatedProfile = this.props.profile;
+        updatedProfile.dashboards = dashboards;
+        localStorage.setItem('profile', JSON.stringify(updatedProfile))
       } else {
         //displays server errors
         console.log(responseJson.message)
@@ -149,6 +153,7 @@ export class Dashboard extends Component {
       console.log(error)
     })
   }
+
   
    render() {
     var welcomeCard = null

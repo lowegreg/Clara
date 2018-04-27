@@ -82,7 +82,8 @@ export function* updateUser() {
       var updateProfile = getProfile().get('profile');
       updateProfile.dashboards = dashboards;
       yield localStorage.setItem('profile', JSON.stringify(updateProfile));
-      
+      updateProfile = getProfile().get('profile');
+      console.log(updateProfile.dashboards)
     }
   });
 }
