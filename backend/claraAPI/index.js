@@ -221,16 +221,19 @@ app.post('/updateNotifications', function(req, res){
 })
 // universal select all
 app.get('/selectGraphData', function(req, res){
-  var sql= 'Select COUNT(`'+ req.query.y+'`) as y, `'+ req.query.x+ '` as x from `'+req.query.tableName +'` group by `'+req.query.x+'`  order by COUNT(`'+req.query.y+'`) desc limit 10'
-
+  var sql= 'Select COUNT(`'+ req.query.y+'`) as y, `'+ req.query.x+ '` as x from `'+req.query.tableName +'` group by `'+req.query.x+'`  order by COUNT(`'+req.query.y+'`) desc limit 5'
+ 
   if (req.query.xType==='date'&& req.query.yType==='type'){
-    sql= 'Select count(`'+req.query.y+'`) as z, `'+req.query.y+'` as y, MONTHNAME('+req.query.x+') as x from `'+req.query.tableName+'`  where ( select count(*) from (select count(`'+req.query.y+'`) as length from `'+req.query.tableName+'` as t1 group by `'+req.query.y+'`)  as t2)>1 and ( select count(*) from (select count('+req.query.x+') as length from `'+req.query.tableName+'` as t3 group by '+req.query.x+')  as t4)>1 group by MONTH('+req.query.x+')  order by COUNT(`'+req.query.y+'`) desc limit 10'
+    sql=  'Select count(`'+req.query.y+'`) as z,  MONTHNAME('+req.query.x+') as y, `'+req.query.y+'` as x from `'+req.query.tableName+'` as main inner join (select `'+req.query.y+'` as name from `'+req.query.tableName+'`  as t1 group by `'+req.query.y+'` order by count(`'+req.query.y+'`) desc limit 5) as compare  on main.`'+req.query.y+'` = compare.name where ( select count(*) from (select count(`'+req.query.y+'`) as length from `'+req.query.tableName+'` as t1 group by `'+req.query.y+'`)  as t2)>1 and ( select count(*) from (select count(MONTHNAME('+req.query.x+')) as length from `'+req.query.tableName+'` as t3 group by MONTHNAME('+req.query.x+'))  as t4)>1 group by MONTHNAME('+req.query.x+'), `'+req.query.y+'`  order by MONTHNAME('+req.query.x+'), COUNT(`'+req.query.y+'`) desc'
   }else if (req.query.xType==='type'&& req.query.yType==='loc' ||(req.query.xType==='fin'&& req.query.yType==='loc' )){
-    sql= 'Select count(`'+req.query.y+'`) as z, `'+req.query.y+'` as y, `'+req.query.x+'` as x from `'+req.query.tableName+'`  where ( select count(*) from (select count(`'+req.query.y+'`) as length from `'+req.query.tableName+'` as t1 group by `'+req.query.y+'`)  as t2)>1 and ( select count(*) from (select count(`'+req.query.x+'`) as length from `'+req.query.tableName+'` as t3 group by `'+req.query.x+'`)  as t4)>1 group by `'+req.query.y+'`  order by COUNT(`'+req.query.y+'`) desc limit 10'
-  }else if (req.query.yType==='rank'){
-    sql= 'Select sum(`'+ req.query.y+'`) as y, MONTHNAME('+ req.query.x+ ') as x from `'+req.query.tableName +'` group by MONTH('+req.query.x+')   order by sum(`'+req.query.y+'`) desc limit 10' 
-  }else if (req.query.xType==='date'||(req.query.xType==='fin'&& req.query.yType==='date')){
-    sql= 'Select COUNT(`'+ req.query.y+'`) as y, MONTHNAME('+ req.query.x+ ') as x from `'+req.query.tableName +'` group by MONTH('+req.query.x+')  '  
+    sql= 'Select count(`'+req.query.y+'`) as z, `'+req.query.y+'` as y, `'+req.query.x+'` as x from `'+req.query.tableName+'`  where ( select count(*) from (select count(`'+req.query.y+'`) as length from `'+req.query.tableName+'` as t1 group by `'+req.query.y+'`)  as t2)>1 and ( select count(*) from (select count(`'+req.query.x+'`) as length from `'+req.query.tableName+'` as t3 group by `'+req.query.x+'`)  as t4)>1 group by `'+req.query.y+'`, `'+req.query.x+'`  order by COUNT(`'+req.query.x+'`) desc limit 10'
+  }else if (req.query.xType==='date' &&req.query.yType==='value'){
+    sql= 'Select sum('+ req.query.y+') as y, MONTHNAME('+ req.query.x+ ') as x from `'+req.query.tableName +'` where ( select count(*) from (select count('+req.query.y+') as length from `'+req.query.tableName+'` as t1 group by '+req.query.y+')  as t2)>1 and ( select count(*) from (select count(`'+req.query.x+'`) as length from `'+req.query.tableName+'` as t3 group by '+req.query.x+')  as t4)>1  group by MONTH('+req.query.x+')   order by sum('+req.query.y+') desc limit 10'   
+  }else if (req.query.yType==='value'){
+    sql= 'Select sum('+ req.query.y+') as y, '+ req.query.x+ ' as x from `'+req.query.tableName +'` where ( select count(*) from (select count('+req.query.y+') as length from `'+req.query.tableName+'` as t1 group by '+req.query.y+')  as t2)>1 and ( select count(*) from (select count(`'+req.query.x+'`) as length from `'+req.query.tableName+'` as t3 group by '+req.query.x+')  as t4)>1  group by MONTH('+req.query.x+')   order by sum('+req.query.y+') desc limit 10'   
+  }
+  else if (req.query.xType==='date'||(req.query.xType==='fin'&& req.query.yType==='date')){
+    sql= 'Select COUNT(`'+ req.query.y+'`) as y, MONTHNAME('+ req.query.x+ ') as x from `'+req.query.tableName +'` where ( select count(*) from (select count(`'+req.query.y+'`) as length from `'+req.query.tableName+'` as t1 group by `'+req.query.y+'`)  as t2)>1 and ( select count(*) from (select count(`'+req.query.x+'`) as length from `'+req.query.tableName+'` as t3 group by `'+req.query.x+'`)  as t4)>1 group by MONTH('+req.query.x+')  ' 
   }
 
   con.query(sql, function(err, rows){
@@ -241,6 +244,6 @@ app.get('/selectGraphData', function(req, res){
     }
   });
 })
-app.listen(3000, function () {
+app.listen(3001, function () {
   console.log(' REST server started.');
 });

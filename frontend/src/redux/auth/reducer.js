@@ -9,7 +9,7 @@ export default function authReducer(state = initState, action) {
       return state.set('idToken', action.token)
                   .set('profile', action.profile);
     case actions.LOGIN_REQUEST:
-    return state.set('credentials', action.credentials);
+      return state.set('credentials', action.credentials);
     case actions.LOGOUT:
       return initState;
     case actions.LOGIN_ERROR:
