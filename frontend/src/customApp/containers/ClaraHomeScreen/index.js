@@ -62,7 +62,6 @@ export class Dashboard extends Component {
     });
     //Checks if the user entered a title for their new dashbaord
     if (this.state.title) {
-      console.log('in add')
       fetch('http://localhost:1337/dashboard', {
         headers: {
           'Accept': 'application/x-www-form-urlencoded',
@@ -92,7 +91,7 @@ export class Dashboard extends Component {
       .catch((error) => {
         // displays server error
         this.setState({error: 2, confirmLoading: false})
-        console.error(error);
+        console.log(error);
       });
 
     } else {
