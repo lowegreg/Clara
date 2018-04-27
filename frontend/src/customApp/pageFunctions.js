@@ -367,7 +367,7 @@ function multiBarConfig(xData,zData,ylength,yData){
             stack:'top',
             label: {
                 normal: {
-                    show: true,  
+                    //show: true,  
                 }
             },
             data:z,
