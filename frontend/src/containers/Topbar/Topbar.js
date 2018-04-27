@@ -37,11 +37,9 @@ class Topbar extends Component {
               onClick={toggleCollapsed}
             />
           </div>
+          <h3>{localStorage.getItem('header')}</h3>
           <ul className="isoRight">
-            <li className="isoSearch">
-              <TopbarSearch locale={locale} />
-            </li>
-
+            
             <li
               onClick={() => this.setState({ selectedItem: 'notification' })}
               className="isoNotify"

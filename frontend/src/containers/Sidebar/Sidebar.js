@@ -36,6 +36,7 @@ class Sidebar extends Component {
     this.onOpenChange = this.onOpenChange.bind(this);
   }
   handleClick(e) {
+    localStorage.setItem('header',e.key);
     this.props.changeCurrent([e.key]);
     if (this.props.app.view === 'MobileView') {
       setTimeout(() => {
@@ -136,7 +137,7 @@ class Sidebar extends Component {
               onOpenChange={this.onOpenChange}
               className="isoDashboardMenu"
             >
-              <Menu.Item key="dashboard">
+              <Menu.Item key=" " >
                 <Link to={`${url}`}>
                   <span className="isoMenuHolder" style={submenuColor}>
                     <i className="ion-ios-home-outline" />
@@ -158,22 +159,22 @@ class Sidebar extends Component {
                   </span>
                 }
               >
-                <Menu.Item style={submenuStyle} key="live">
+                <Menu.Item style={submenuStyle} key="Live" >
                   <Link style={submenuColor} to={`${url}/comingSoon`}>
                     <IntlMessages id="sidebar.live" />
                   </Link>
                 </Menu.Item>
-                <Menu.Item style={submenuStyle} key="open_data">
+                <Menu.Item style={submenuStyle} key="Open Data" >
                   <Link style={submenuColor} to={`${url}/open_data`}>
                     <IntlMessages id="sidebar.open" />
                   </Link>
                 </Menu.Item>
-                <Menu.Item style={submenuStyle} key="thirdParty">
+                <Menu.Item style={submenuStyle} key="Third Party" >
                   <Link style={submenuColor} to={`${url}/comingSoon`}>
                     <IntlMessages id="sidebar.thirdParty" />
                   </Link>
                 </Menu.Item>
-                <Menu.Item style={submenuStyle} key="imported">
+                <Menu.Item style={submenuStyle} key="Imported" >
                   <Link style={submenuColor} to={`${url}/comingSoon`}>
                     <IntlMessages id="sidebar.imported" />
                   </Link>
@@ -191,24 +192,24 @@ class Sidebar extends Component {
                   </span>
                 }
               >
-                <Menu.Item style={submenuStyle} key="claraStories">
+                <Menu.Item style={submenuStyle} key="Clara Stories" >
                   <Link style={submenuColor} to={`${url}/comingSoon`}>
                     <IntlMessages id="sidebar.claraStories" />
                   </Link>
                 </Menu.Item>
-                <Menu.Item style={submenuStyle} key="userStories">
+                <Menu.Item style={submenuStyle} key="User Stories" >
                   <Link style={submenuColor} to={`${url}/comingSoon`}>
                     <IntlMessages id="sidebar.userStories" />
                   </Link>
                 </Menu.Item>
-                <Menu.Item style={submenuStyle} key="newStories">
+                <Menu.Item style={submenuStyle} key="New Stories" >
                   <Link style={submenuColor} to={`${url}/comingSoon`}>
                     <IntlMessages id="sidebar.createdStories" />
                   </Link>
                 </Menu.Item>
               </SubMenu>
 
-              <Menu.Item key="reports">
+              <Menu.Item key="Reports" >
                 <Link to={`${url}/comingSoon`}>
                   <span className="isoMenuHolder" style={submenuColor}>
                     <i className="ion-ios-list-outline" />
@@ -218,7 +219,7 @@ class Sidebar extends Component {
                   </span>
                 </Link>
               </Menu.Item>
-              <Menu.Item key="suggestions">
+              <Menu.Item key="Clara Suggestions" >
                 <Link to={`${url}/claraSuggestion`}>
                   <span className="isoMenuHolder" style={submenuColor}>
                     <i className="ion-android-happy" />
@@ -240,17 +241,17 @@ class Sidebar extends Component {
                     </span>
                   }
                 >
-                  <Menu.Item style={submenuStyle} key="dataManage">
+                  <Menu.Item style={submenuStyle} key="Data Managment -Admin" >
                     <Link style={submenuColor} to={`${url}/dataManagementAdmin`}>
                       <IntlMessages id="sidebar.dataManage" />
                     </Link>
                   </Menu.Item>
-                  <Menu.Item style={submenuStyle} key="suggestionManage">
+                  <Menu.Item style={submenuStyle} key="Suggestion Manager" >
                     <Link style={submenuColor} to={`${url}/comingSoon`}>
                       <IntlMessages id="sidebar.suggestionManage" />
                     </Link>
                   </Menu.Item>
-                  <Menu.Item style={submenuStyle} key="userSetttings">
+                  <Menu.Item style={submenuStyle} key="User Settings" >
                     <a target="_blank" href={`http://ec2-35-182-255-76.ca-central-1.compute.amazonaws.com/admin/`}>
                       <IntlMessages id="sidebar.userSettings" />
                     </a>

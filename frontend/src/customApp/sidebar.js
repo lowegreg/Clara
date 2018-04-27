@@ -6,7 +6,7 @@ import IntlMessages from '../components/utility/intlMessages';
 export default function(url, submenuColor) {
   const sidebars = [];
   sidebars.push(
-    <Menu.Item key="settings">
+    <Menu.Item key="Settings">
       <Link to={`${url}/comingSoon`}>
         <span className="isoMenuHolder" style={submenuColor}>
           <i className="ion-gear-b" />

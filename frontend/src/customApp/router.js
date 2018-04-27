@@ -72,7 +72,7 @@ export default function(url) {
     <Route
       exact
       key="insights"
-      path={`${url}/insights`}
+      path={`${url}/insights/:tableName?`}
       component={asyncComponent(() => import('./containers/insightPages/index'))}
     />
   );
