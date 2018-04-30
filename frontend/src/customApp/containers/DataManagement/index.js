@@ -399,7 +399,7 @@ const formItemLayout = {
            
             <Box
                     title="Submited"
-                    subtitle="The data set will apprear when it has been approved." 
+                    subtitle="The data set will apprear when it has been approved."
                 />
 
             
