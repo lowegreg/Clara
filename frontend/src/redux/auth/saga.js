@@ -2,20 +2,7 @@ import { all, takeEvery, put, fork, select, call } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
 import { getToken, clearToken, getProfile } from '../../helpers/utility';
 import actions from './actions';
-
-function loginAPI(user, password, code) {
-  return fetch('http://35.182.255.76/auth/local',  {
-    headers: {
-      'Accept': 'application/x-www-form-urlencoded',
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    method: "POST",
-    body: `identifier=${user}&password=${password}`,
-  })
-  .then(response => response.json())
-  .catch(error => error)
-  .then(data => data)
-}
+import { loginAPI, getDashboards, getUser } from './helper'
 
 export function* loginRequest() {
   yield takeEvery('LOGIN_REQUEST', function*() {
@@ -25,14 +12,16 @@ export function* loginRequest() {
     try {
       var responseBody = yield call(loginAPI, credentials.identifier, credentials.password)
       if (responseBody.jwt) {
-          var profile = {
-            userID: responseBody.user.id,
-            username: responseBody.user.username,
-            email: responseBody.user.email,
-            role: responseBody.user.role.name
-          };
+        var user = yield call(getUser, responseBody.user._id, responseBody.jwt)  
+        var profile = {
+          userId: user._id,
+          username: user.username,
+          email: user.email,
+          role: user.role.name,
+          dashboards: user.dashboards,
+        };
 
-          yield put({
+        yield put({
           type: actions.LOGIN_SUCCESS,
           token: responseBody.jwt,
           profile: profile
@@ -81,8 +70,26 @@ export function* checkAuthorization() {
     }
   });
 }
+
+//Gets the updated user dashboards and sets it for the new user
+export function* updateUser() {
+  yield takeEvery(actions.UPDATE_USER_RESQUEST, function*() {
+    const state = yield select();
+    //array of the inital state fronm reducer
+    const params = state.Auth._root.entries;
+    var dashboards = yield call(getDashboards, params[3][1].userId, params[0][1])
+    if(!dashboards.error){
+      var updateProfile = getProfile().get('profile');
+      updateProfile.dashboards = dashboards;
+      yield localStorage.setItem('profile', JSON.stringify(updateProfile));
+      updateProfile = getProfile().get('profile');
+    }
+  });
+}
+
 export default function* rootSaga() {
   yield all([
+    fork(updateUser),
     fork(checkAuthorization),
     fork(loginRequest),
     fork(loginSuccess),

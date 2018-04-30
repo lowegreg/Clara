@@ -1,7 +1,7 @@
 import { Map } from 'immutable';
 import actions from './actions';
 
-const initState = new Map({ idToken: null, credentials: {}, errorMessage: null, profile: {}});
+const initState = new Map({ idToken: null, credentials: {}, errorMessage: null, profile: {}, dashboardTitle: ''});
 
 export default function authReducer(state = initState, action) {
   switch (action.type) {
@@ -14,6 +14,8 @@ export default function authReducer(state = initState, action) {
       return initState;
     case actions.LOGIN_ERROR:
       return state.set('errorMessage', action.message);
+    case actions.CREATE_DASHBOARD_REQUEST:
+      return state.set('dashboardTitle', action.dashboardTitle);
     default:
       return state;
   }

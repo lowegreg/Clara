@@ -1,0 +1,27 @@
+{
+  "connection": "default",
+  "collectionName": "",
+  "info": {
+    "name": "dashboard",
+    "description": ""
+  },
+  "options": {
+    "timestamps": true
+  },
+  "attributes": {
+    "title": {
+      "multiple": false,
+      "type": "string"
+    },
+    "tiles": {
+      "collection": "tile",
+      "via": "dashboards",
+      "dominant": true
+    },
+    "user": {
+      "model": "user",
+      "via": "dashboards",
+      "plugin": "users-permissions"
+    }
+  }
+}

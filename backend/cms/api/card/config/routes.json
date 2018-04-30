@@ -2,40 +2,40 @@
   "routes": [
     {
       "method": "GET",
-      "path": "/test",
-      "handler": "Test.find",
+      "path": "/card",
+      "handler": "Card.find",
       "config": {
         "policies": []
       }
     },
     {
       "method": "GET",
-      "path": "/test/:_id",
-      "handler": "Test.findOne",
+      "path": "/card/:_id",
+      "handler": "Card.findOne",
       "config": {
         "policies": []
       }
     },
     {
       "method": "POST",
-      "path": "/test",
-      "handler": "Test.create",
+      "path": "/card",
+      "handler": "Card.create",
       "config": {
         "policies": []
       }
     },
     {
       "method": "PUT",
-      "path": "/test/:_id",
-      "handler": "Test.update",
+      "path": "/card/:_id",
+      "handler": "Card.update",
       "config": {
         "policies": []
       }
     },
     {
       "method": "DELETE",
-      "path": "/test/:_id",
-      "handler": "Test.destroy",
+      "path": "/card/:_id",
+      "handler": "Card.destroy",
       "config": {
         "policies": []
       }

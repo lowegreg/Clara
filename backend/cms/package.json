@@ -1,5 +1,5 @@
 {
-  "name": "mongo",
+  "name": "clara-dev",
   "private": true,
   "version": "0.1.0",
   "description": "A Strapi application.",
@@ -36,7 +36,7 @@
     }
   ],
   "strapi": {
-    "uuid": "df7a357b-626c-497d-95c4-4eab030a98da"
+    "uuid": "e3ce455f-84c4-4a2b-941f-2deae44e0b61"
   },
   "engines": {
     "node": ">= 7.0.0",

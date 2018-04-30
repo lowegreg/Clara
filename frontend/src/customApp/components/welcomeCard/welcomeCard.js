@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { DataCardWrapper } from '../containers/ClaraHomeScreen/style';
-import src from '../../image/claraCats02.svg';
-import Card from '../../containers/Uielements/Card/card.style';
+import { DataCardWrapper } from './style';
+import src from '../../../image/claraCats02.svg';
+import Card from '../../../containers/Uielements/Card/card.style';
 import { Icon } from 'antd';
 
 export default class WelcomeCard extends Component {
