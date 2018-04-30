@@ -237,7 +237,6 @@ Returns:  dataout (array)
 function formatData(graphObject, xData, yData,zData){
     var dataOut={}
         //if unique y then do a bar
-        //console.log(data)
     var xu=  xData.filter((v, i, a) => a.indexOf(v) === i).length  
     var graphType=graphObject.graph
     if (xu===1 ){
