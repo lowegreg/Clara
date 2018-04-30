@@ -1,6 +1,6 @@
 //calls the login api and returns either errors or json web token and user info
 export function loginAPI(user, password, code) {
-  return fetch('http://localhost:1337/auth/local',  {
+  return fetch('http://35.182.255.76/auth/local',  {
     headers: {
       'Accept': 'application/x-www-form-urlencoded',
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -14,7 +14,7 @@ export function loginAPI(user, password, code) {
 }
 //gets the users dashbaords using their user id and the json web token
 export function getDashboards(userId,jwt) {
-  return fetch(`http://localhost:1337/dashboard/user/${userId}`,  {
+  return fetch(`http://35.182.255.76/dashboard/user/${userId}`,  {
     headers: {
       'Authorization': `Bearer ${jwt}`,
     },
@@ -26,7 +26,7 @@ export function getDashboards(userId,jwt) {
 }
 //gets the user profile using their user id and json web token
 export function getUser(userId,jwt){
-  return fetch(`http://localhost:1337/user/${userId}`,  {
+  return fetch(`http://35.182.255.76/user/${userId}`,  {
   headers: {
     'Accept': 'application/x-www-form-urlencoded',
     'Content-Type': 'application/x-www-form-urlencoded',

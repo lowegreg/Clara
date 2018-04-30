@@ -62,7 +62,7 @@ export class Dashboard extends Component {
     });
     //Checks if the user entered a title for their new dashbaord
     if (this.state.title) {
-      fetch('http://localhost:1337/dashboard', {
+      fetch('http://35.182.255.76/dashboard', {
         headers: {
           'Accept': 'application/x-www-form-urlencoded',
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -116,7 +116,7 @@ export class Dashboard extends Component {
   }
   // deletes dashbaord from user's dashboard list
   onDelete = (targetKey) => {
-    fetch(`http://localhost:1337/dashboard/${targetKey}`,{
+    fetch(`http://35.182.255.76/dashboard/${targetKey}`,{
       headers: {
         'Accept': 'application/x-www-form-urlencoded',
         'Content-Type': 'application/x-www-form-urlencoded',
