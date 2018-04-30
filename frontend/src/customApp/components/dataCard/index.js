@@ -10,7 +10,6 @@ class DataCard extends Component {
     if (status===null|| status==='rejected'){
       window.location.href =  '/dashboard/dataManagement/'+tableName
     }else if (status==='accepted'){
-      localStorage.setItem('header',tableName);
       window.location.href =  '/dashboard/insights/'+tableName
     }else{
       Modal.warning({

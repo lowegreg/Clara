@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Layout } from 'antd';
 import appActions from '../../redux/app/actions';
 import TopbarNotification from './topbarNotification';
-import TopbarSearch from './topbarSearch';
 import TopbarUser from './topbarUser';
 import TopbarWrapper from './topbar.style';
 
