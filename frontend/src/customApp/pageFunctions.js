@@ -1,3 +1,12 @@
+/* CATPROPSFUNNCION
+Purpose:take all props and put them in a category that can be best understood to create graphs out of  then send it off to be createCompare function
+How it works: 
+    - loops all props categorizing them in to 6 different categories (type(number or text), value(number), finacial(number), data, location , dimensions)
+    - date only take two of installation_data , update_date, create_date else it takes at least one 
+    - send each array to createCompare function
+Parameters: props: the data sets propIds
+returns: array that was retruned from createcompare functions
+*/
 function catPropsFunction(props){ 
     var type = [];
     var value = [];
@@ -27,7 +36,7 @@ function catPropsFunction(props){
           
       }else if(prop.dataTypes==='Location-Street'){
             location.push(prop.propId)
-      }else if(prop.dataTypes==='Number-Dimensions'){
+       }else if(prop.dataTypes==='Number-Dimensions'){
             dimensions.push(prop.propId)
       }
     });
@@ -37,6 +46,14 @@ function catPropsFunction(props){
     }
     return createCompare(type,value,finacial, date,location, dimensions);
 }
+/* OBJECTMAKER
+Purpose: create an object each potential graph 
+How it works: 
+    -loop loopVar create and object with x,y,xtype,Ytype, graph, (swap x and y if neccesary) 
+    - adds new object to compare array
+Parameters: x (Array), loopVar (y array), graph (string, graph type), compare (array of all objects),xType(x data type), yType (y data type), swap (boolean (to swap x and y or not))
+Returns: return compare Array
+*/
 function objectMaker(x,loopVar,graph, compare, xType,yType,swap){
     var object={}
     loopVar.forEach((yVar, index)=>{  
@@ -61,12 +78,22 @@ function objectMaker(x,loopVar,graph, compare, xType,yType,swap){
     })
     return compare
 }
+/* CREATECOMPARE
+Purpose: To create an array of objects that each objects contains two data types to compare and a graphs that would work best to display the relationship between data types
+How it works: 
+    -loop through each datatype array
+        - checks any of the predecided approproite datatypes to compare with the current datatype is avaible 
+            -send the two data types and the picked graph type to objectMaker to create an object for this comparison
+            -adds the object ot compare array
+Parameters: type, value , fin ,data, loc, dim (all string arrays, contain propIds)
+Returns: compare (Array)
+ */
 function createCompare(type, value, fin, date, loc,dim){
     var compare = [];
     //type vs fin --> pie
-    //type vs date  --> line
-    //type vs loc  -> heat map or bar
-    //type vs value -->
+    //type vs date  --> multip bar
+    //type vs loc  -> heat map or circlebar
+    //type vs value -->pie
     if (type.length!==0){
         type.forEach((input, index)=>{
             if (fin.length!==0){
@@ -123,18 +150,39 @@ function createCompare(type, value, fin, date, loc,dim){
     }
     return compare;
 }
+/*GET-GRAPH-OPTIONS
+Purpose: to dispatch the creation of graph data organization bases on the type of graph that is being made
+How it works: 
+     -just a switch statment
+Parameters: graphType (string , name of graph), xdata (array ), ydata (array), zdata(array not always used), yname (string , propId of y)
+Returns: options array from the function it was dispatched too (array)
+*/
 function getGraphOptions(graphType, xData,yData, zData, yName){
-    if (graphType==='line'){
-        return lineGraph(xData, yData)
-    }else if(graphType==='pie'){
-        return pieGraph(xData, yData,yName)
-    }else if (graphType==='circleBar'){
-        return circleBarGraph(xData, yData, zData)
-    }else if(graphType==='multiBar'){
-        return multiBarGraph(xData,yData,zData)
+
+    switch(graphType){
+        case 'line':
+            return lineGraph(xData, yData)
+        case 'pie':
+            return pieGraph(xData, yData,yName)
+        case 'circleBar':
+            return circleBarGraph(xData, yData, zData)
+        case 'multiBar':
+            return multiBarGraph(xData,yData,zData)
+        default:
+            return lineGraph(xData, yData)
+
     }
-    return lineGraph(xData, yData)
+
 }
+/* REMOVENULL
+Purpose: to eleimiate any fields that are labeled with something that is null or unknown to create a better representaion of data
+How it works: '
+    -loops data 
+        - checks x and y for labels of None , or unknown
+        -if it exist and the lenght of data types is >2 remove it from the data 
+Parameters: data (array, results from api call)
+Returns: tempData or data (array)
+*/
 function removeNull(data){
     var tempData=[]
     if (data.length>2){
@@ -143,9 +191,17 @@ function removeNull(data){
                 tempData.push(data[i])
             }
         }
+    }else {
+        return data
     }
     return tempData
 }
+/* GETDESCRIPTION
+Purpose: generate a desciptions based on the graph type being used
+How it works: just a swich statment
+Parameters: x (string, propId of x data), y (string , propid of y data), graph (string) 
+Returns:  descrition(string)
+*/
 function getDescripton(x,y,graph){
     var description=''
     switch(graph){
@@ -166,46 +222,52 @@ function getDescripton(x,y,graph){
     }
     return description
 }
+/* FORMATEDATA
+Purpose: create a object to pass to the graph component that contains ,data, titles, tags, description,graph  
+How it works:
+    - calculate ohow many unique values of x there are
+    - if 1
+        -change graphtype to multibar (gives a better represntaion of the data)
+    -call to get a description
+    -call to generate the options        
+
+Paramerter:  graphObjects (object,both x and y data ), xdata (array, just x data), ydata (array, just ydata), zdata (array, just zdata not always used)
+Returns:  dataout (array)
+ */
 function formatData(graphObject, xData, yData,zData){
     var dataOut={}
         //if unique y then do a bar
         //console.log(data)
     var xu=  xData.filter((v, i, a) => a.indexOf(v) === i).length  
-    
+    var graphType=graphObject.graph
     if (xu===1 ){
-        dataOut={
-            title: graphObject.x+' Vs. '+ graphObject.y,
-            description:getDescripton(graphObject.x,graphObject.y,'multiBar' ),
-            graph: 'multiBar',
-            widthOfCard:'100%',
-            tags:[
-                {name:graphObject.x, route:''},
-                {name:graphObject.y, route:''},
-                {name: 'multiBar', route:''},],
-            xName:graphObject.x,
-            yName:graphObject.y,
-            options: getGraphOptions('multiBar',xData, yData, zData,graphObject.y )
-        }
-    }else{
-        
-        dataOut={
-            title: graphObject.x+' Vs. '+ graphObject.y,
-            description:getDescripton(graphObject.x,graphObject.y,graphObject.graph ),
-            graph: graphObject.graph,
-            widthOfCard: '100%',
-            tags:[
-                {name:graphObject.x, route:''},
-                {name:graphObject.y, route:''},
-                {name:graphObject.graph, route:''},],
-            xName:graphObject.x,
-            yName:graphObject.y,
-            options: getGraphOptions(graphObject.graph,xData, yData, zData,graphObject.y )
-    
-        }
+        graphType='multiBar'
     }
-
+        
+    dataOut={
+        title: graphObject.x+' Vs. '+ graphObject.y,
+        description:getDescripton(graphObject.x,graphObject.y,graphType ),
+        graph: graphType,
+        widthOfCard: '100%',
+        tags:[
+            {name:graphObject.x, route:''},
+            {name:graphObject.y, route:''},
+            {name:graphType, route:''},],
+        xName:graphObject.x,
+        yName:graphObject.y,
+        options: getGraphOptions(graphType,xData, yData, zData,graphObject.y )
+    }
     return dataOut
 }
+/* DATACONFIG
+Purpose: to put pie graph data in the right object structure
+How it works:
+    -loop xdata 
+        - create an object that hold value of y and name of x
+        -add to data array
+Parameters: xdata(array), ydata(array)
+Returns: data (array)
+ */
 function dataConfig(xData,yData){
     var data=[]
     for (var i =0; i<xData.length; i++){
@@ -217,6 +279,14 @@ function dataConfig(xData,yData){
     }
     return(data)
 }
+/* PIEGRAPH
+Purpose: generate the options object specificaily for a pie graph 
+How it works:
+    -all standard setting are set 
+    -data is sent to dataConfig to formate it correctly
+Paramerters: xData (array), ydata (array) yName (title/ PropId for ydata)
+Returns: option (object)
+ */
 function pieGraph(xData,yData, yName){
     
     var option = {
@@ -327,7 +397,7 @@ function separateData(ux, oa, uyAll){
         }
     }
 
-    var temp=null    
+    temp=null    
     for (i=0; i<uyAll.length;i++){
         for(var j=0; j<uxArray.length;j++ ){ 
             if (uyAll[i]===uxArray[j].y){
@@ -365,11 +435,6 @@ function multiBarConfig(xData,zData,ylength,yData){
             name:xUnique[i],
             type:'bar',
             stack:'top',
-            label: {
-                normal: {
-                    //show: true,  
-                }
-            },
             data:z,
         }
         graphData.push(object)

@@ -36,7 +36,6 @@ class Sidebar extends Component {
     this.onOpenChange = this.onOpenChange.bind(this);
   }
   handleClick(e) {
-    localStorage.setItem('header',e.key);
     this.props.changeCurrent([e.key]);
     if (this.props.app.view === 'MobileView') {
       setTimeout(() => {
