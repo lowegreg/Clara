@@ -104,14 +104,14 @@ def normGeoJson():
     count =0;  
     routes = getAPIRoutes("openData.json") 
     for i in range(0, len(routes)):
-        try: 
-            route=routes[i]
-            if day == 6 or (day!= 6 and route['Update'] =='daily'): 
-                print ( route['Title'], route['API'], i)
-                oJson = urllib.request.urlopen(route['API']).read()
-                propsArray = openCSV()  
-                setnJson( propsArray, route['API'], oJson, route['Title'], route['Description'], route['Update'])
-        except:
-            print (i, 'failed')    
+        # try: 
+        route=routes[i]
+        if day == 6 or (day!= 6 and route['Update'] =='daily'): 
+            print ( route['Title'], route['API'], i)
+            oJson = urllib.request.urlopen(route['API']).read()
+            propsArray = openCSV()  
+            setnJson( propsArray, route['API'], oJson, route['Title'], route['Description'], route['Update'])
+        # except:
+        # print (i, 'failed')    
 
 normGeoJson()    

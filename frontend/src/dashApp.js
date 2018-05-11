@@ -13,6 +13,7 @@ import config, {
 import { themeConfig } from './config';
 import DashAppHolder from './dashAppStyle';
 import Boot from './redux/boot';
+import  'bootstrap/dist/css/bootstrap.css';
 
 const currentAppLocale =
   AppLocale[getCurrentLanguage(config.defaultLanguage || 'english').locale];

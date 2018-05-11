@@ -99,7 +99,7 @@ export default class  extends Component {
 		<div style={{alignContent:'center', alignItems:'ceter', marginLeft: '16px',marginTop: '16px',marginRight:'16px'}}>
 			{this.state.loading===0 &&
 				<div>
-					<h1>{this.state.tableName}</h1>
+					<h2>{this.state.tableName}</h2>
 					<Row >
 						<Col md={6} xs={6} >
 							{left.map((table, key) => ( 

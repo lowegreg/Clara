@@ -45,7 +45,7 @@ class DataCard extends Component {
         <div>
           <Clickable  onClick={() => { this.onSelect(this.props.data.name, this.props.data.statusId)}} onMouseOver={this.mouseOver.bind(this)} onMouseOut={this.mouseOut.bind(this)} >
           <DataCardWrapper>
-            <h3 className="isoCardTitle">{this.props.data.name} <Badge status={this.setStatus(this.props.data.statusId)} /></h3>
+            <h4 className="isoCardTitle">{this.props.data.name} <Badge status={this.setStatus(this.props.data.statusId)} /></h4>
             <span className="isoCardDate">
               {this.props.data.description}
             </span>

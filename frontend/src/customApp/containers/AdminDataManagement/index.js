@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
-import  'bootstrap/dist/css/bootstrap.css';
 import Box from '../../../components/utility/box';
 import { Row, Col } from 'react-flexbox-grid';
 import { Input, Tag, List, Modal } from 'antd';
@@ -261,12 +260,12 @@ class AdminDataManagement extends React.Component {
                 </Col>
             </Row>
         </Modal>
-        <BootstrapTable ref='table' data={ this.state.table } pagination={true} options={options}>
-            <TableHeaderColumn dataField='name' isKey={ true } dataSort={ true }>Data Set</TableHeaderColumn>
-            <TableHeaderColumn dataField='submittedBy'         dataSort={ true }>Submited by</TableHeaderColumn>
-            <TableHeaderColumn dataField='date'                dataSort={ true }>Submited on</TableHeaderColumn>
-            <TableHeaderColumn dataField='status'              dataSort={ true }>Status</TableHeaderColumn>
-        </BootstrapTable>
+            <BootstrapTable ref='table' data={ this.state.table } pagination={true} options={options}>
+                    <TableHeaderColumn dataField='name' isKey={ true } dataSort={ true }>Data Set</TableHeaderColumn>
+                    <TableHeaderColumn dataField='submittedBy'         dataSort={ true }>Submited by</TableHeaderColumn>
+                    <TableHeaderColumn dataField='date'                dataSort={ true }>Submited on</TableHeaderColumn>            
+                    <TableHeaderColumn dataField='status'              dataSort={ true }>Status</TableHeaderColumn>           
+            </BootstrapTable>
       </Box>
     </div>
     );

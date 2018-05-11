@@ -262,19 +262,19 @@ const formItemLayout = {
         return (
          <Row  style={{backgroundColor: "#fff", borderBottom:'1px solid #adb2ba',}}>
              <Col xs={3}>
-                <h3 style={{color:'#646466'}}>
+                <h4 style={{color:'#646466'}}>
                         Propterties
-                </h3>
+                </h4>
             </Col>
             <Col xs={3}>
-                <h3 style={{color:'#646466'}}>
+                <h4 style={{color:'#646466'}}>
                         Category
-                </h3>
+                </h4>
             </Col>
             <Col xs={6}>
-                <h3 style={{color:'#646466'}}>
+                <h4 style={{color:'#646466'}}>
                     Data type
-                </h3>   
+                </h4>   
             </Col>
         
         </Row>
@@ -306,18 +306,18 @@ const formItemLayout = {
         <div style={{marginLeft: '16px', marginRight: '16px', marginBottom: '16px', marginTop: '16px', width:'96%'}} >
             <Row >
                 <Col >
-                    <h1  style={{marginLeft: '16px'}}>Maping Data Fields</h1>
+                    <h2  style={{marginLeft: '16px'}}>Maping Data Fields</h2>
                 </Col>
                 <Col >
                     <Button  style={{ position: 'absolute',right:'32px'}} type="default"  icon="plus" onClick={this.showModal}>Data Type</Button>
                 </Col>
             </Row>
-            <h3  style={{marginLeft: '16px'}}>Help Clara make the meaningless meaningful.</h3>
+            <h4  style={{marginLeft: '16px'}}>Help Clara make the meaningless meaningful.</h4>
 
             <Box >
                 {this.state.feedback &&
                     <div style={{width:'80%'}}>
-                        <h3 style={{color:'red', fontWeight: 'bold',display:'inline'}}>Reason for rejection:{this.state.feedback}</h3>
+                        <h4 style={{color:'red', fontWeight: 'bold',display:'inline'}}>Reason for rejection:{this.state.feedback}</h4>
                     </div>
                 }
                  {this.header()}

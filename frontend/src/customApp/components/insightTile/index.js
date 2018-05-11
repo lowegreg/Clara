@@ -107,11 +107,11 @@ export default class extends Component {
             <Row  justify="center">
                 
                 <Col md={24} xs={24} >
-                    <h3>Description:</h3>
+                    <h4>Description:</h4>
                     <p>{this.props.description} </p> 
                 </Col>
                 <Col md={24} xs={24} >
-                    <h3>Tags:</h3>
+                    <h4>Tags:</h4>
                     {this.props.tags.map(function(tag){
                         return <Tag key={tag.name}>{tag.name}</Tag>
                     })

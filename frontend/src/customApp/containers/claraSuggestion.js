@@ -147,7 +147,7 @@ export default class extends Component {
 
     return (
       <div style={{alignContent:'center', alignItems:'ceter', marginLeft: '16px', marginRight: '16px',marginTop: '16px', width:600}}>
-        <h1 style={{alignContent:'center', alignItems:'ceter', marginLeft: '16px', marginTop: '16px'}}>Ask Clara Suggestions</h1>
+        <h2 style={{alignContent:'center', alignItems:'ceter', marginLeft: '16px', marginTop: '16px'}}>Ask Clara Suggestions</h2>
      
         
         <Col md={24} xs={24} style={colStyle }>
@@ -170,7 +170,7 @@ export default class extends Component {
             <Row>
                 <Col  md={3} >
                     {/* <div> */}
-                        <h3  style={{ marginBottom: '16px'}} >Cost  <i className="ion-social-usd" /></h3>
+                        <h4  style={{ marginBottom: '16px'}} >Cost  <i className="ion-social-usd" /></h4>
                         <Progress
                         type="circle"
                         percent={this.state.costPercent}
@@ -185,7 +185,7 @@ export default class extends Component {
                 </Col>
                 <Col  md={3} >
                     {/* <div> */}
-                        <h3  style={{ marginBottom: '16px'}}>Efficiency  <i className="ion-speedometer" /></h3>
+                        <h4  style={{ marginBottom: '16px'}}>Efficiency  <i className="ion-speedometer" /></h4>
                         <Progress
                         type="circle"
                         percent={this.state.efficiencyPercent}
@@ -200,7 +200,7 @@ export default class extends Component {
                 </Col>
                 <Col  md={3} >
                     {/* <div> */}
-                        <h3  style={{ marginBottom: '16px'}}>Insights  <i className="ion-android-bulb" /></h3>
+                        <h4  style={{ marginBottom: '16px'}}>Insights  <i className="ion-android-bulb" /></h4>
                         <Progress
                         type="circle"
                         percent={this.state.insightsPercent}
@@ -215,7 +215,7 @@ export default class extends Component {
                 </Col>
                 <Col  md={3} >
                     {/* <div> */}
-                        <h3  style={{ marginBottom: '16px'}}>UX   <Icon type="user" /></h3>
+                        <h4  style={{ marginBottom: '16px'}}>UX   <Icon type="user" /></h4>
                         <Progress
                         type="circle"
                         percent={this.state.uxPercent}
