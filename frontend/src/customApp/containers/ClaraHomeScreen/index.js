@@ -165,8 +165,8 @@ export class Dashboard extends Component {
       <div >
         {welcomeCard}
       <LayoutContentWrapper>
-        <h1>My Dashboards</h1>
-        <div style={{ marginLeft:'auto', marginRight:'0', marginTop:'5px'}}>
+        <h2>My Dashboards</h2>
+        <div style={{ marginLeft:'auto', marginRight:'0', marginTop:'5px', marginBottom:'5px'}}>
           <Button type='primary' size='small' onClick={this.showModal}>New Dashboard</Button>
           <Modal title="Create New Dashboard"
             visible={this.state.visible}

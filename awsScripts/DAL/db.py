@@ -95,7 +95,7 @@ def createTable(header, data, title,cursor):
     i=0
     setVal=grabBestSet(data)
     for key, value in data[setVal].items(): 
-        if isinstance(value, int) or isinstance(value, float): # checks for a  integer type
+        if isinstance(value, int) or isinstance(value, float)  or  isinstance(value, complex): # checks for a  integer type
             dataTypes = 'int'
         elif   checkDate(str(value)): # checks for date a type
             dataTypes ='date'
@@ -141,7 +141,7 @@ def updatePropertyTables(headerArray, tableId,cursor):
 
 def updateDB(njson):
     # Open database connection
-    db = pymysql.connect(host="aa3c9aa9sse4d7.clhelwr0pylt.ca-central-1.rds.amazonaws.com", port=3306, user="Clara", passwd="T1meMachine", db='Clara', autocommit=True)
+    db = pymysql.connect(host="db-l5jpoe4odyyvypgiwexyddrqfu.clhelwr0pylt.ca-central-1.rds.amazonaws.com", port=3306, user="Clara", passwd="T1meMachine", db='ClaraTest', autocommit=True)
     # prepare a cursor object using cursor() method
     cursor = db.cursor() 
 
@@ -166,6 +166,7 @@ def updateDB(njson):
         tableId =queryValue[0] 
 
     #create the new table if it does not exist
+    print (tableDNE)
     if tableDNE == 1:
         createTable(njson['header'],njson['data'],njson['title'],cursor)
     print ('entering data...')

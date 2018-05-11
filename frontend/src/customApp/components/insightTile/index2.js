@@ -43,12 +43,12 @@ export default class extends Component {
         
         <Row  justify="center">  
             <Col md={24} xs={24}  >
-                <h3>Description:</h3>
+                <h4>Description:</h4>
                 <p>{this.props.table.description} </p> 
             </Col>
             <Col md={24} xs={24} >
                 {/* {this.props.table.tags} */}
-                <h3>Tags:</h3>
+                <h4>Tags:</h4>
                     {this.props.table.tags.map(function(tag){
                     return <Tag key={tag.name}>{tag.name}</Tag>
                 })

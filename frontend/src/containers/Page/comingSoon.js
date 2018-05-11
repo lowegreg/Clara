@@ -17,11 +17,11 @@ class FourZeroFour extends React.Component {
     return (
       <FourZeroFourStyleWrapper className="iso404Page">
         <div >
-          <h1>Hey! Thank you for checking out our app.</h1>
-          <h3>
+          <h2>Hey! Thank you for checking out our app.</h2>
+          <h4>
             It’s not quite ready yet, but we are working hard and it will be
             ready in approximately:
-          </h3>
+          </h4>
           <Countdown options={options} />
         </div>
 
