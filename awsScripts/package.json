@@ -1,0 +1,17 @@
+{
+  "name": "3rdparty",
+  "version": "1.0.0",
+  "description": "",
+  "main": "3rdParty.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "kelvin-to-celsius": "^1.1.0",
+    "mysql": "^2.15.0",
+    "node-fetch": "^2.1.2",
+    "unix-timestamp": "^0.2.0"
+  }
+}
