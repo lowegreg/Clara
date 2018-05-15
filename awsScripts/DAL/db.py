@@ -141,7 +141,7 @@ def updatePropertyTables(headerArray, tableId,cursor):
 
 def updateDB(njson):
     # Open database connection
-    db = pymysql.connect(host="db-l5jpoe4odyyvypgiwexyddrqfu.clhelwr0pylt.ca-central-1.rds.amazonaws.com", port=3306, user="Clara", passwd="T1meMachine", db='ClaraTest', autocommit=True)
+    db = pymysql.connect(host="db-l5jpoe4odyyvypgiwexyddrqfu.clhelwr0pylt.ca-central-1.rds.amazonaws.com", port=3306, user="Clara", passwd="T1meMachine", db='Clara', autocommit=True)
     # prepare a cursor object using cursor() method
     cursor = db.cursor() 
 
