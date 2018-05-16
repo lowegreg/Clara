@@ -9,6 +9,7 @@ import Input from '../../../components/uielements/input';
 import Form from '../../../components/uielements/form';
 import { Modal } from 'antd';
 import authAction from '../../../redux/auth/actions';
+import InsightPage from '../insightPages'
 
 const { updateUser } = authAction;
 const FormItem = Form.Item;
@@ -43,7 +44,7 @@ export class Dashboard extends Component {
     this.onChange = this.onChange.bind(this)
   }
 
-  //removes the welcome card from the screen
+  // removes the welcome card from the screen
   clickHandler(event) {
     this.setState({
       showWelcome: false
@@ -55,12 +56,12 @@ export class Dashboard extends Component {
       visible: true,
     });
   }
-  //Creates and addes a new dashboard to a the current user
+  // Creates and addes a new dashboard to a the current user
   handleOk = () => {
     this.setState({
       confirmLoading: true,
     });
-    //Checks if the user entered a title for their new dashbaord
+    //Checks if the user entered a title for their new dashboard
     if (this.state.title) {
       fetch('http://35.182.255.76/dashboard', {
         headers: {
@@ -110,11 +111,11 @@ export class Dashboard extends Component {
   onChange(event) {  
     this.setState({title: event.target.value});
   }
-
   onTabClick = (activeKey) => {
     this.setState({activeKey: activeKey});
   }
-  // deletes dashbaord from user's dashboard list
+  
+  // deletes dashboard from user's dashboard list
   onDelete = (targetKey) => {
     fetch(`http://35.182.255.76/dashboard/${targetKey}`,{
       headers: {
@@ -152,51 +153,67 @@ export class Dashboard extends Component {
       console.log(error)
     })
   }
-
   
-   render() {
+  // displays the content of the active dashboard
+  renderDashboard = (dashboard)=> {
+    if((typeof dashboard.tiles) === 'string'){
+      dashboard.tiles = JSON.parse(dashboard.tiles);
+    }
+    if (dashboard.tiles && dashboard.tiles.length !== 0) {
+      return(
+        <div>
+          <InsightPage allData={dashboard.tiles} dashboard={dashboard} />
+        </div>)
+    }
+      return (<p style={{textAlign:'center'}}>You have no pins saved to this dashboard</p>)
+
+  }
+  render() {
     var welcomeCard = null
     if (this.state.showWelcome) {
       welcomeCard = <WelcomeCard clickHandler={this.clickHandler} />
     } else {
       welcomeCard = null
     }
+    
     return (
       <div >
         {welcomeCard}
-      <LayoutContentWrapper>
-        <h2>My Dashboards</h2>
-        <div style={{ marginLeft:'auto', marginRight:'0', marginTop:'5px', marginBottom:'5px'}}>
-          <Button type='primary' size='small' onClick={this.showModal}>New Dashboard</Button>
-          <Modal title="Create New Dashboard"
-            visible={this.state.visible}
-            onOk={this.handleOk}
-            confirmLoading={this.state.confirmLoading}
-            onCancel={this.handleCancel}
-          >
-            <Form>
-              <FormItem {...formItemLayout} label="Title" validateStatus={error[this.state.error].validateStatus} help={error[this.state.error].help} > 
-                <Input id="title" onChange={this.onChange} value={this.state.title} />
-              </FormItem>
-            </Form>
-          </Modal>
-        </div>
-        <TableStyle className="isoLayoutContent">
-          <Tabs className="isoTableDisplayTab" 
-          hideAdd
-          onChange={this.onTabClick}
-          activeKey={this.state.activeKey}
-          type="editable-card"
-          onEdit={this.onDelete}>
-            {this.state.dashboards.map(dashboard => (
-              <TabPane tab={dashboard.title} key={dashboard._id}>
-                {//display pin
-                }
-              </TabPane>
-            ))}
-          </Tabs>
-        </TableStyle>
-      </LayoutContentWrapper>
+        <LayoutContentWrapper>
+          <h1>My Dashboards</h1>
+          <div style={{ marginLeft:'auto', marginRight:'0', marginTop:'5px'}}>
+            <Button type='primary' size='small' onClick={this.showModal}>New Dashboard</Button>
+            <Modal title="Create New Dashboard"
+              visible={this.state.visible}
+              onOk={this.handleOk}
+              confirmLoading={this.state.confirmLoading}
+              onCancel={this.handleCancel}
+            >
+              <Form>
+                <FormItem {...formItemLayout} label="Title" validateStatus={error[this.state.error].validateStatus} help={error[this.state.error].help} > 
+                  <Input id="title" onChange={this.onChange} value={this.state.title} />
+                </FormItem>
+              </Form>
+            </Modal>
+          </div>
+          <TableStyle className="isoLayoutContent">
+            <Tabs className="isoTableDisplayTab" 
+            hideAdd
+            onChange={this.onTabClick}
+            activeKey={this.state.activeKey}
+            type="editable-card"
+            onEdit={this.onDelete}>
+              {this.state.dashboards.map(dashboard => (
+                <TabPane tab={dashboard.title} key={dashboard._id}>
+                  {//display pin
+                    this.renderDashboard(dashboard)
+                  }
+                                
+                </TabPane>
+              ))}
+            </Tabs>
+          </TableStyle>
+        </LayoutContentWrapper>
       </div>      
     );
   }

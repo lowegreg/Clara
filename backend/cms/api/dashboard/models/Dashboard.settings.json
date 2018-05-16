@@ -1,6 +1,6 @@
 {
   "connection": "default",
-  "collectionName": "",
+  "collectionName": "dashboard",
   "info": {
     "name": "dashboard",
     "description": ""
@@ -13,15 +13,14 @@
       "multiple": false,
       "type": "string"
     },
-    "tiles": {
-      "collection": "tile",
-      "via": "dashboards",
-      "dominant": true
-    },
     "user": {
       "model": "user",
       "via": "dashboards",
       "plugin": "users-permissions"
+    },
+    "tiles": {
+      "multiple": false,
+      "type": "json"
     }
   }
 }
