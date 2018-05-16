@@ -73,7 +73,6 @@ export default class  extends Component {
 		}
     } 
     componentDidMount (){	
-		console.log('didmount',this.state.allData)
 		var url='http://35.182.224.114:3000/dataManagement/getProps?tableName='+this.state.tableName  
 		fetch(url, {method: 'GET', mode: 'cors'})
 		.then((response) =>  response.json())
@@ -88,6 +87,7 @@ export default class  extends Component {
 			this.setState({tableName:this.props.match.params.tableName})
 		}
 	}
+	// orders tiles based on position in the dashboard so they can be displayed nicely
 	orderTiles=() =>{
 		var evenArr=[]; 
 		var oddArr = []
@@ -102,20 +102,15 @@ export default class  extends Component {
 		}
 		return {oddArr,evenArr}
 	}
-	updateDash=(allData, dashboardIndex)=> {
-		console.log('here');
-		this.setState({allData :allData, update: true});
-		}
+	// sets allData to the updated list of tiles for a dashboard
+	updateDash=(allData)=> {
+		allData ? this.setState({allData :allData, update: true}) : this.setState({update: true});
+	}
+	// make sure the update is completed properly
 	componentDidUpdate(prevProps, prevState){
-		if(this.state.tableName === 'dash'){
-		console.log('in didupdate', prevProps, prevState)
-		// 	console.log('prevprop', prevProps.allData.length)
-		// 	console.log('current state',this.state.allData.length)
-		if(!prevProps.update && this.state.update){
-			console.log('things were deleted')
-			this.setState({update: false})
-			// this.forceUpdate()
-		}}
+			if(!prevProps.update && this.state.update){
+				this.setState({update: false})
+		}
 	}
   	render() {
 		if (this.state.allData.length===0){

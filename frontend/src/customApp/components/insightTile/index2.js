@@ -50,9 +50,6 @@ export class Tile extends Component {
         this.onChange = this.onChange.bind(this)
         this.onClick = this.onClick.bind(this);
     }
-    onSelect(){
-        console.log('click');
-    }
     mouseOver(){
         this.setState({hover: true});
     }
@@ -90,7 +87,8 @@ export class Tile extends Component {
             if(dashboards.length === 1){
             this.setState({activeKey: dashboards[0]._id})
             }
-            this.setState({error: 0, title: '', confirmLoading:false, visible:false, profile: dashboards })        
+            this.setState({error: 0, title: '', confirmLoading:false, visible:false, profile: dashboards }) 
+            this.props.updateDash()      
             this.props.updateUser()
         } else {
             // displays server error
@@ -120,6 +118,7 @@ export class Tile extends Component {
     onChange(event) {  
         this.setState({title: event.target.value});
     }
+    // on click action for the list on dashboards when pinning, you can create a new dashboard or add pin to exsiting dashboard
     onClick(event){
         if (event.key === 'new') {
             this.setState({visible: true})
@@ -131,25 +130,23 @@ export class Tile extends Component {
             this.setState({savePinPopup: true, dashboardIndex: index})            
         }
     }
+    // saves pins to dashboard, by editing the tile section
     handleSavePinOk = (event) => {
         var tileList;
         var tile = Object.assign(this.props.table);
         tile.type = this.props.type;
-        console.log(tile)
         const dashboardIndex = this.state.dashboardIndex;
         var dashboard = this.state.dashboards[dashboardIndex];
         
         if(dashboard.tiles){
             tileList = (typeof dashboard.tiles==='string')? JSON.parse(dashboard.tiles):dashboard.tiles;
-            console.log(tileList)
         } else {
             tileList = [];
         }
         
         tileList.push(tile);
-        console.log(tileList)
     
-        fetch(`http://localhost:1337/dashboard/${dashboard._id}`, {
+        fetch(`http://35.182.255.76/dashboard/${dashboard._id}`, {
             headers: {
                 'Accept': 'application/x-www-form-urlencoded',
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -161,7 +158,6 @@ export class Tile extends Component {
         .then((response) =>  response.json())
         .then(responseJson=> {
             if(responseJson.n === 1 && responseJson.nModified === 1 && responseJson.ok ===1){
-                console.log('here')
                 var newDashboards = this.state.dashboards
                 newDashboards[dashboardIndex].tiles = tileList;
                 this.setState({dashboards: newDashboards, savePinPopup: false})
@@ -176,8 +172,8 @@ export class Tile extends Component {
     handleSavePinCancel = () =>{
         this.setState({ savePinPopup: false})
     }
+    // removes pins from a dashboard, by editing the tile section
     removePin = (event) => {
-        console.log('click')
         this.setState({
             tileVisibility:false
         })
@@ -194,7 +190,7 @@ export class Tile extends Component {
            (i !== tileIndex) && newTileList.push(tileList[i]);       
         }
         
-        fetch(`http://localhost:1337/dashboard/${dashboard._id}`, {
+        fetch(`http://35.182.255.76/dashboard/${dashboard._id}`, {
             headers: {
                 'Accept': 'application/x-www-form-urlencoded',
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -218,6 +214,7 @@ export class Tile extends Component {
         console.log(error);
         })
     }
+    // determines which type of button (and functionality) to an insight tile based on where it is being rendered
     renderType = () =>{
         if(this.props.type !== 'dash'){
             return (
@@ -239,7 +236,6 @@ export class Tile extends Component {
         }
     }
   render() {
-    //   if(this.state.tileVisibility){
         return (
             <Card
                     title={(this.props.type !== 'dash') ? this.props.table.title : `${this.props.table.tableName}: ${this.props.table.title}` }
@@ -248,8 +244,7 @@ export class Tile extends Component {
                         <StopPropagation>
                             {this.renderType()}              
                         </StopPropagation>
-                        }//
-                    // style={{ width: this.props.widthOfCard }}
+                        }
                 >
                 <Modal title="Create New Dashboard"
                 visible={this.state.visible}
@@ -281,12 +276,11 @@ export class Tile extends Component {
             
             <Row  justify="center">  
                 <Col md={24} xs={24}  >
-                    <h3>Description:</h3>
+                    <h4>Description:</h4>
                     <p>{this.props.table.description} </p> 
                 </Col>
                 <Col md={24} xs={24} >
-                    {/* {this.props.table.tags} */}
-                    <h3>Tags:</h3>
+                    <h4>Tags:</h4>
                         {this.props.table.tags.map(function(tag){
                         return <Tag key={tag.name}>{tag.name}</Tag>
                     })
@@ -295,11 +289,7 @@ export class Tile extends Component {
                 </Col> 
             </Row>
             </Card>
-        );
-    //   } else {
-    //       return null;
-    //   }
-    
+        );    
   }
 }
 export default connect(

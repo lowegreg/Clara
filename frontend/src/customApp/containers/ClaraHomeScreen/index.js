@@ -42,10 +42,9 @@ export class Dashboard extends Component {
     };
     this.clickHandler = this.clickHandler.bind(this)
     this.onChange = this.onChange.bind(this)
-    // this.setTile = this.setTile.bind(this)
   }
 
-  //removes the welcome card from the screen
+  // removes the welcome card from the screen
   clickHandler(event) {
     this.setState({
       showWelcome: false
@@ -57,15 +56,14 @@ export class Dashboard extends Component {
       visible: true,
     });
   }
-  //Creates and addes a new dashboard to a the current user
+  // Creates and addes a new dashboard to a the current user
   handleOk = () => {
     this.setState({
       confirmLoading: true,
     });
     //Checks if the user entered a title for their new dashboard
     if (this.state.title) {
-      // fetch('http://35.182.255.76/dashboard', {
-        fetch('http://localhost:1337/dashboard', {
+      fetch('http://35.182.255.76/dashboard', {
         headers: {
           'Accept': 'application/x-www-form-urlencoded',
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -113,14 +111,13 @@ export class Dashboard extends Component {
   onChange(event) {  
     this.setState({title: event.target.value});
   }
-
   onTabClick = (activeKey) => {
     this.setState({activeKey: activeKey});
   }
+  
   // deletes dashboard from user's dashboard list
   onDelete = (targetKey) => {
-    // fetch(`http://35.182.255.76/dashboard/${targetKey}`,{
-      fetch(`http://localhost:1337/dashboard/${targetKey}`,{
+    fetch(`http://35.182.255.76/dashboard/${targetKey}`,{
       headers: {
         'Accept': 'application/x-www-form-urlencoded',
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -156,20 +153,22 @@ export class Dashboard extends Component {
       console.log(error)
     })
   }
+  
+  // displays the content of the active dashboard
   renderDashboard = (dashboard)=> {
-    if (dashboard.tiles) {
-      if((typeof dashboard.tiles) === 'string'){
-        dashboard.tiles = JSON.parse(dashboard.tiles);
-      }
+    if((typeof dashboard.tiles) === 'string'){
+      dashboard.tiles = JSON.parse(dashboard.tiles);
+    }
+    if (dashboard.tiles && dashboard.tiles.length !== 0) {
       return(
         <div>
-          <InsightPage allData={dashboard.tiles} dashboard={dashboard} updateDash={this.updateDash} />
+          <InsightPage allData={dashboard.tiles} dashboard={dashboard} />
         </div>)
-    } else {
+    }
       return (<p style={{textAlign:'center'}}>You have no pins saved to this dashboard</p>)
-    }  
+
   }
-   render() {
+  render() {
     var welcomeCard = null
     if (this.state.showWelcome) {
       welcomeCard = <WelcomeCard clickHandler={this.clickHandler} />
