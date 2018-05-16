@@ -9,11 +9,12 @@ export default class  extends Component {
 		super(props);
 
 		this.state={
-			tableName:'',
+			tableName: this.props.allData ? 'dash' :'',
 			graphs:[],
-			allData:[],
+			allData: this.props.allData ? this.props.allData :[],
 			status:false,
 			loading: -1,
+			update: false,
 		}
 	}  
     createGraphType(props){
@@ -33,6 +34,7 @@ export default class  extends Component {
 			}
 		}
 		if (!exists){
+			dataOut.tableName = this.state.tableName;
 			allData.push(dataOut)
 			this.setState({
 				allData:allData
@@ -71,6 +73,7 @@ export default class  extends Component {
 		}
     } 
     componentDidMount (){	
+		console.log('didmount',this.state.allData)
 		var url='http://35.182.224.114:3000/dataManagement/getProps?tableName='+this.state.tableName  
 		fetch(url, {method: 'GET', mode: 'cors'})
 		.then((response) =>  response.json())
@@ -84,27 +87,57 @@ export default class  extends Component {
 		if (this.state.tableName===''){
 			this.setState({tableName:this.props.match.params.tableName})
 		}
-    }
+	}
+	orderTiles=() =>{
+		var evenArr=[]; 
+		var oddArr = []
+		var allData = this.state.allData
+
+		var i;
+		for (i = 0; i <= allData.length; i = i + 2) {
+			if (allData[i] !== undefined) {
+				evenArr.push(allData[i]);
+				allData[i+1] && oddArr.push(allData[i + 1]);
+			}
+		}
+		return {oddArr,evenArr}
+	}
+	updateDash=(allData, dashboardIndex)=> {
+		console.log('here');
+		this.setState({allData :allData, update: true});
+		}
+	componentDidUpdate(prevProps, prevState){
+		if(this.state.tableName === 'dash'){
+		console.log('in didupdate', prevProps, prevState)
+		// 	console.log('prevprop', prevProps.allData.length)
+		// 	console.log('current state',this.state.allData.length)
+		if(!prevProps.update && this.state.update){
+			console.log('things were deleted')
+			this.setState({update: false})
+			// this.forceUpdate()
+		}}
+	}
   	render() {
 		if (this.state.allData.length===0){
 			this.setGraphs();
 		}
 
 		if (this.state.allData&& this.state.loading===0){
-			var mid=this.state.allData.length/2
-			var left=this.state.allData.slice(0, Math.ceil(mid))
-			var right=this.state.allData.slice(Math.ceil(mid), this.state.allData.length)
+			var temp = this.orderTiles();
+			var left = temp.evenArr;
+			var right = temp.oddArr;
 		}
+		
 		return (
 		<div style={{alignContent:'center', alignItems:'ceter', marginLeft: '16px',marginTop: '16px',marginRight:'16px'}}>
-			{this.state.loading===0 &&
+			{(this.state.loading===0 && !this.state.update) &&
 				<div>
-					<h2>{this.state.tableName}</h2>
+					{(this.state.tableName!=='dash' )&&<h1>{this.state.tableName}</h1>}
 					<Row >
 						<Col md={6} xs={6} >
 							{left.map((table, key) => ( 
 								<div key={key} className='isoSimpleTable' style={{alignContent:'center', alignItems:'ceter', marginBottom: '16px', marginTop: '16px'}} >
-									<Tile  table={table}  />
+									<Tile  table={table} type={this.state.tableName} dashboard={this.props.dashboard} tileIndex={key} updateDash={this.updateDash}/>
 								</div>
 							))
 							}
@@ -112,7 +145,7 @@ export default class  extends Component {
 						<Col md={6} xs={6} >
 							{right.map((table, key) => ( 
 								<div key={key} className='isoSimpleTable' style={{alignContent:'center', alignItems:'ceter',marginBottom: '16px', marginTop: '16px'}}>
-									<Tile  table={table}  />	
+									<Tile  table={table} type={this.state.tableName} dashboard={this.props.dashboard} tileIndex={(2*key)+1} updateDash={this.updateDash}/>	
 								</div>
 							))
 							}

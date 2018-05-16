@@ -59,7 +59,7 @@ module.exports = {
 
   update: async (ctx, next) => {
     const data = await strapi.services.dashboard.edit(ctx.params, ctx.request.body) ;
-    console.log(data)
+
     // Send 200 `ok`
     ctx.send(data);
   },

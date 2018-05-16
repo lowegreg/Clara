@@ -39,10 +39,6 @@
       "plugin": "users-permissions",
       "configurable": false
     },
-    "dashboards": {
-      "collection": "dashboard",
-      "via": "user"
-    },
     "first name": {
       "multiple": false,
       "type": "string"
@@ -50,6 +46,10 @@
     "last name": {
       "multiple": false,
       "type": "string"
+    },
+    "dashboards": {
+      "collection": "dashboard",
+      "via": "user"
     }
   },
   "collectionName": "users-permissions_user"
