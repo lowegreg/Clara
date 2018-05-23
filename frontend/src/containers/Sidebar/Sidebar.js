@@ -2,16 +2,17 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import clone from 'clone';
 import { Link } from 'react-router-dom';
-import { Layout } from 'antd';
+import { Layout, Carousel } from 'antd';
 import { Scrollbars } from 'react-custom-scrollbars';
 import Menu from '../../components/uielements/menu';
 import IntlMessages from '../../components/utility/intlMessages';
 import getDevSidebar from '../../customApp/sidebar';
 import SidebarWrapper from './sidebar.style';
-
 import appActions from '../../redux/app/actions';
 import Logo from '../../components/utility/logo';
 import { rtl } from '../../config/withDirection';
+import Knob from 'react-canvas-knob';
+import { Row } from 'react-flexbox-grid';
 
 const SubMenu = Menu.SubMenu;
 //const MenuItemGroup = Menu.ItemGroup;
@@ -34,6 +35,53 @@ class Sidebar extends Component {
     super(props);
     this.handleClick = this.handleClick.bind(this);
     this.onOpenChange = this.onOpenChange.bind(this);
+    this.state = {
+      statsArray: [
+        {
+          title: 'Total number of data sets being used',
+          value: 20,
+          total: 300
+        },
+        {
+          title: 'Total number of open data sets being used',
+          value: 80,
+          total: 100
+        },
+        {
+          title: 'Total number of third party data sets being use',
+          value: 120,
+          total: 200
+        },
+      ]
+    }
+  }
+  setArray(data) {
+    var totalOpen = data.filter(value => value.statusId === 'accepted').length
+    var totalAll = totalOpen + 3
+    var totalThird = totalOpen + 1
+    var statsArray = this.state.statsArray
+    statsArray[0].value = totalAll
+    statsArray[0].total = data.length
+    statsArray[1].value = totalOpen
+    statsArray[1].total = data.length
+    statsArray[2].value = totalThird
+    statsArray[2].total = data.length - 23
+    this.setState({
+      statsArray: statsArray
+    })
+  }
+  componentDidMount() {
+    fetch('http://35.182.224.114:3000/tableLookUp', { method: 'GET', mode: 'cors' })
+      .then((response) => response.json())
+      .then(responseJson => {
+        responseJson.tableId.forEach(function (obj) { obj.key = responseJson.tableId });
+        this.setArray(responseJson.tableId)
+
+
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
   handleClick(e) {
     this.props.changeCurrent([e.key]);
@@ -80,6 +128,9 @@ class Sidebar extends Component {
     );
   }
 
+  handleChange = (newValue) => {
+    this.setState({ value: newValue });
+  };
   render() {
     // const { url, app, toggleOpenDrawer, bgcolor } = this.props;
     const { app, toggleOpenDrawer, customizedTheme } = this.props;
@@ -123,6 +174,33 @@ class Sidebar extends Component {
           style={styling}
         >
           <Logo collapsed={collapsed} />
+          {!collapsed &&
+            <div style={{ width: '225px', alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+              <Carousel autoplay autoplaySpeed={6000}>
+                {this.state.statsArray.map((stat, key) => (
+                  <div style={{ height: '180px' }} key={key}>
+                    <Row style={{ alignItems: 'center', justifyContent: 'center', flex: 1, marginTop: '30px', marginBottom: '20px' }}>
+                      <Knob
+                        value={stat.value}
+                        onChange={this.handleChange}
+                        width={100}
+                        height={50}
+                        max={stat.total}
+                        angleArc={180}
+                        angleOffset={-90}
+                        title={stat.title}
+                        fgColor={'#4dc3ce'}
+                        disableMouseWheel
+                      />
+                    </Row>
+                    <Row style={{ alignItems: 'center', justifyContent: 'center', flex: 1, marginTop: '0px', }}>
+                      <div style={{ width: '150px', textAlign: 'center' }}><p style={{ color: 'white' }}>{stat.title}</p></div>
+                    </Row>
+                  </div>
+                ))}
+              </Carousel >
+            </div>
+          }
           <Scrollbars
             renderView={this.renderView}
             style={{ height: scrollheight - 70 }}
@@ -228,7 +306,7 @@ class Sidebar extends Component {
                   </span>
                 </Link>
               </Menu.Item>
-              {this.props.profile.role==='Administrator' &&
+              {this.props.profile.role === 'Administrator' &&
                 <SubMenu
                   key="Admin"
                   title={
@@ -255,10 +333,10 @@ class Sidebar extends Component {
                       <IntlMessages id="sidebar.userSettings" />
                     </a>
                   </Menu.Item>
-                  
+
                 </SubMenu>
               }
-              
+
               {getDevSidebar(url, submenuColor)}
             </Menu>
           </Scrollbars>
