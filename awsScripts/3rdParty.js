@@ -12,9 +12,9 @@ var connection = mysql.createConnection({
     database : 'Clara'
   });
 function formatWeather(data){
-    var date=timestamp.toDate(timestamp.now())
-    var rise= timestamp.toDate(data.sys.sunrise)
-    var set=timestamp.toDate(data.sys.sunset)
+    var date=timestamp.toDate(timestamp.now()-14400)
+    var rise= timestamp.toDate(data.sys.sunrise-14400)
+    var set=timestamp.toDate(data.sys.sunset-14400)
 
     
     var saveData={
