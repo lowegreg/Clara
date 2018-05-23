@@ -76,8 +76,6 @@ class Sidebar extends Component {
       .then(responseJson => {
         responseJson.tableId.forEach(function (obj) { obj.key = responseJson.tableId });
         this.setArray(responseJson.tableId)
-
-
       })
       .catch((error) => {
         console.error(error);
