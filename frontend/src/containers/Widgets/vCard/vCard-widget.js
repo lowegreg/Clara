@@ -18,9 +18,9 @@ export default class VCardWidget extends Component {
             {title}
           </span>
 
-          <p className="isoDescription">
+          <div className="isoDescription">
             {description}
-          </p>
+          </div>
 
           <div className="isoWidgetSocial">
             {children}

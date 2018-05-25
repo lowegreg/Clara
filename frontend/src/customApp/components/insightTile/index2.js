@@ -246,7 +246,9 @@ export class Tile extends Component {
                         </StopPropagation>
                         }
                 >
-                <Modal title="Create New Dashboard"
+                <Modal 
+                wrapClassName="vertical-center-modal"
+                title="Create New Dashboard"
                 visible={this.state.visible}
                 onOk={this.handleOk}
                 confirmLoading={this.state.confirmLoading}
@@ -259,7 +261,9 @@ export class Tile extends Component {
                 </Form>
               </Modal>
     
-              <Modal title="Confirm Pinning"
+              <Modal 
+                wrapClassName="vertical-center-modal"
+                title="Confirm Pinning"
                 visible={this.state.savePinPopup}
                 onOk={this.handleSavePinOk}
                 confirmLoading={this.state.confirmLoading}

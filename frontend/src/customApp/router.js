@@ -47,6 +47,14 @@ export default function(url) {
   routers.push(
     <Route
       exact
+      key="user_settings"
+      path={`${url}/user/settings`}
+      component={asyncComponent(() => import('./containers/UserSetting/index'))}
+    />
+  );
+  routers.push(
+    <Route
+      exact
       key="claraSuggestion"
       path={`${url}/claraSuggestion`}
       component={asyncComponent(() => import('./containers/claraSuggestion'))}
