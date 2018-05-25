@@ -12,13 +12,15 @@ export function* loginRequest() {
     try {
       var responseBody = yield call(loginAPI, credentials.identifier, credentials.password)
       if (responseBody.jwt) {
-        var user = yield call(getUser, responseBody.user._id, responseBody.jwt)  
+        var user = yield call(getUser, responseBody.user._id, responseBody.jwt) 
         var profile = {
           userId: user._id,
           username: user.username,
           email: user.email,
           role: user.role.name,
           dashboards: user.dashboards,
+          firstName: user['first name'],
+          lastName: user['last name'],
         };
 
         yield put({

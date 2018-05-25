@@ -50,6 +50,10 @@
     "dashboards": {
       "collection": "dashboard",
       "via": "user"
+    },
+    "welcomeCard": {
+      "multiple": false,
+      "type": "boolean"
     }
   },
   "collectionName": "users-permissions_user"

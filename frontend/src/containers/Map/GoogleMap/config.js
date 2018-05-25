@@ -1,5 +1,5 @@
 // Import image for infoWindow here
-import infoWindowImg1 from '../../../image/cityHall.jpg';
+import infoWindowImg1 from '../../../image/cityPic.jpg';
 import infoWindowImg2 from '../../../image/image3.jpg';
 import infoWindowImg3 from '../../../image/image4.jpg';
 import infoWindowImg4 from '../../../image/balzac.jpg';

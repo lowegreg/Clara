@@ -13,15 +13,15 @@ const VCardWidgetWrapper = styled.div`
   padding: 50px 30px 30px;
 
   .isoVCardImage {
-    width: 70px;
-    height: 70px;
+    width: 160px;
+    height: 160px;
     display: -webkit-inline-flex;
     display: -ms-inline-flex;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    margin-bottom: 35px;
+    margin-bottom: 20px;
     ${borderRadius('50%')};
 
     img {
@@ -58,7 +58,7 @@ const VCardWidgetWrapper = styled.div`
       font-size: 13px;
       color: ${palette('text', 2)};
       font-weight: 400;
-      margin: 20px 0 0 0;
+      margin: 10px 0 0 0;
       line-height: 1.5;
     }
 
