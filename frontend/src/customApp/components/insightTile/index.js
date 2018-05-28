@@ -67,18 +67,14 @@ export default class extends Component {
     
     return (
         <Clickable onClick={this.onSelect} onMouseOver={this.mouseOver.bind(this)} onMouseOut={this.mouseOut.bind(this)} >
-      
         <Card
                 title={this.props.title}
                 bordered={true}
                  extra={ <StopPropagation><Clickable> <Icon icon={pushpin} /></Clickable> </StopPropagation>}//
                 // style={{ width: this.props.widthOfCard }}
             >
-      
           <Row  justify="center">
-         
             {/* <Box title={this.props.title}  > */}
-           
             { this.props.componentName=== 'SimpleLineCharts' &&
                 <SimpleLineCharts  datas={this.props.datas} width={this.props.width*shrink}  height={this.props.height*shrinkH} colors={this.props.colors} dataKey={this.props.dataKey} />
             } 
@@ -101,7 +97,6 @@ export default class extends Component {
                 <Doughnut  data={this.props.data}/>
             }
             {/* </Box> */}
-             
         </Row>  
         {shrink>=.90 &&
             <Row  justify="center">
