@@ -183,7 +183,9 @@ export class Dashboard extends Component {
           <h1>My Dashboards</h1>
           <div style={{ marginLeft:'auto', marginRight:'0', marginTop:'5px'}}>
             <Button type='primary' size='small' onClick={this.showModal}>New Dashboard</Button>
-            <Modal title="Create New Dashboard"
+            <Modal 
+              wrapClassName="vertical-center-modal"
+              title="Create New Dashboard"
               visible={this.state.visible}
               onOk={this.handleOk}
               confirmLoading={this.state.confirmLoading}

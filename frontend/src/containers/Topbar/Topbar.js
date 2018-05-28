@@ -50,7 +50,7 @@ class Topbar extends Component {
               onClick={() => this.setState({ selectedItem: 'user' })}
               className="isoUser"
             >
-              <TopbarUser locale={locale} />
+              <TopbarUser locale={locale} url={this.props.url} pathname={this.props.pathname} />
             </li>
           </ul>
         </Header>

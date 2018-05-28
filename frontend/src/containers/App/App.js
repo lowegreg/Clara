@@ -44,7 +44,7 @@ export class App extends Component {
                       )}
                   />
                 </Debounce>
-                <Topbar url={url} profile={this.props.profile}/>
+                <Topbar url={url} profile={this.props.profile} pathname={this.props.location.pathname} />
                 <Layout style={{ flexDirection: 'row', overflowX: 'hidden' }}>
                   <Sidebar url={url} />
                   <Layout

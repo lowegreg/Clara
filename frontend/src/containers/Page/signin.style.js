@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { palette } from 'styled-theme';
-import bgImage from '../../image/cityPic.jpg';
+import bgImage from '../../image/cityHall.jpg';
 import WithDirection from '../../config/withDirection';
 
 const SignInStyleWrapper = styled.div`
@@ -11,15 +11,15 @@ const SignInStyleWrapper = styled.div`
   justify-content: flex-end;
   align-items: center;
   position: relative;
-  background: url(${bgImage}) no-repeat center center;
-  background-size: cover;
+  background: url(${bgImage}) no-repeat left top;
+  background-size: 75% 100%;
 
   &:before {
     content: '';
     width: 100%;
     height: 100%;
     display: flex;
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(32, 37, 48, 0.07);
     position: absolute;
     z-index: 1;
     top: 0;
