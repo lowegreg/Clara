@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Layout, LocaleProvider } from 'antd';
 import { IntlProvider } from 'react-intl';
@@ -27,6 +28,10 @@ export class App extends Component {
     const { url } = this.props.match;
     const { locale, selectedTheme } = this.props;
     const currentAppLocale = AppLocale[locale];
+    const to = { pathname: '/signin' };
+    if(!this.props.isLoggedIn){
+      return <Redirect to={to}/>;
+    }
     return (
       <LocaleProvider locale={currentAppLocale.antd}>
         <IntlProvider
@@ -86,7 +91,7 @@ export default connect(
     locale: state.LanguageSwitcher.toJS().language.locale,
     selectedTheme: state.ThemeSwitcher.toJS().changeThemes.themeName,
     profile: state.Auth.get('profile'),
-
+    isLoggedIn: state.Auth.get('profile')!==null && state.Auth.get('idToken') !== null ? true : false,
   }),
   { logout, toggleAll }
 )(App);

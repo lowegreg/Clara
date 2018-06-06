@@ -7,7 +7,7 @@ const WDDataCardWrapper = styled.div`
   padding: 15px;
   background-color: #ffffff;
   position: relative;
-  margin-bottom: 5px;
+  margin: 10px 10px 5px 10px;
   text-align:center;
   ${boxShadow('0 0 1px rgba(0,0,0,0.15)')};
 

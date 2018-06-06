@@ -8,7 +8,7 @@ const SidebarWrapper = styled.div`
     z-index: 1000;
     background: ${palette('secondary', 0)};
     width: 280px;
-    flex: 0 0 280px;
+    flex: 1 0 280px;
 
     @media only screen and (max-width: 767px) {
       width: 240px !important;

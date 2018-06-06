@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import clone from 'clone';
 import { Link } from 'react-router-dom';
 import { Layout, Carousel } from 'antd';
-import { Scrollbars } from 'react-custom-scrollbars';
 import Menu from '../../components/uielements/menu';
 import IntlMessages from '../../components/utility/intlMessages';
 import getDevSidebar from '../../customApp/sidebar';
@@ -150,7 +149,8 @@ class Sidebar extends Component {
     };
     const scrollheight = app.height;
     const styling = {
-      backgroundColor: customizedTheme.backgroundColor
+      backgroundColor: customizedTheme.backgroundColor,
+      height: scrollheight, overflow: 'auto',overflowX:'hidden'
     };
     const submenuStyle = {
       backgroundColor: 'rgba(0,0,0,0.3)',
@@ -161,7 +161,7 @@ class Sidebar extends Component {
     };
     return (
       <SidebarWrapper>
-        <Sider
+        <Sider 
           trigger={null}
           collapsible={true}
           collapsed={collapsed}
@@ -199,10 +199,7 @@ class Sidebar extends Component {
               </Carousel >
             </div>
           }
-          <Scrollbars
-            renderView={this.renderView}
-            style={{ height: scrollheight - 70 }}
-          >
+          
             <Menu
               onClick={this.handleClick}
               theme="dark"
@@ -337,7 +334,6 @@ class Sidebar extends Component {
 
               {getDevSidebar(url, submenuColor)}
             </Menu>
-          </Scrollbars>
         </Sider>
       </SidebarWrapper>
     );
