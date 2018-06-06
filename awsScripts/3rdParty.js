@@ -28,11 +28,14 @@ function formatWeather(data){
         windSpeed: data.wind.speed,
         sunRise: rise.getFullYear()+'-'+rise.getMonth()+'-'+rise.getDate()+' '+rise.getHours()+':'+rise.getMinutes()+':'+rise.getSeconds(), 
         sunSet: set.getFullYear()+'-'+set.getMonth()+'-'+set.getDate()+' '+set.getHours()+':'+set.getMinutes()+':'+set.getSeconds(), 
-        clouds: data.clouds.all
+        clouds: data.clouds.all,
+        weatherCondition: data.weather[0].main,
+        weatherDescrip: data.weather[0].description,
+        icon:  parseInt(data.weather[0].icon.substring(1,3))
 
     }
 
-    var sql='insert into Weather  (date, temp, pressure, humidity, tempMin, tempMax, visibility, windSpeed, sunRise, sunSet, clouds) values (\''+saveData.date+'\','+saveData.temp+','+saveData.pressure+','+saveData.humidity+','+saveData.tempMin+','+saveData.tempMax+','+saveData.visibility+','+saveData.windSpeed+',\''+saveData.sunRise+'\',\''+saveData.sunSet+'\','+saveData.clouds+')'
+    var sql='insert into Weather  (date, temp, pressure, humidity, tempMin, tempMax, visibility, windSpeed, sunRise, sunSet, clouds, weatherCondition, weatherDescrip, icon) values (\''+saveData.date+'\','+saveData.temp+','+saveData.pressure+','+saveData.humidity+','+saveData.tempMin+','+saveData.tempMax+','+saveData.visibility+','+saveData.windSpeed+',\''+saveData.sunRise+'\',\''+saveData.sunSet+'\','+saveData.clouds+',\''+saveData.weatherCondition+'\',\''+saveData.weatherDescrip+'\',\''+saveData.icon+'\')'
     connection.query(sql, function(err, rows){ });
     console.log(sql)
  }

@@ -244,6 +244,18 @@ app.get('/selectGraphData', function(req, res){
     }
   });
 })
+
+app.get('/weather', function(req, res){
+  var sql = 'SELECT * FROM Weather order by date desc'
+  con.query(sql, function(err, rows){
+    if (err){
+      res.json({"Error": true, "Message":"Error Execute Sql"});
+    } else {
+      res.json({"Error": false,"Message": "Success", "id" : rows});
+    }
+  })
+})
+
 app.listen(3000, function () {
   console.log(' REST server started.');
 });
