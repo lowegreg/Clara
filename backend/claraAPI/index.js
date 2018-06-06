@@ -251,8 +251,6 @@ app.get('/weather', function(req, res){
     if (err){
       res.json({"Error": true, "Message":"Error Execute Sql"});
     } else {
-      console.log('here')
-      console.log(rows)
       res.json({"Error": false,"Message": "Success", "id" : rows});
     }
   })
