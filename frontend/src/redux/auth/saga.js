@@ -21,6 +21,8 @@ export function* loginRequest() {
           dashboards: user.dashboards,
           firstName: user['first name'],
           lastName: user['last name'],
+          department: user.department.name,
+          employeeId: user.employeeId,
         };
 
         yield put({

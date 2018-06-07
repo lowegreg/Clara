@@ -54,6 +54,14 @@
     "welcomeCard": {
       "multiple": false,
       "type": "boolean"
+    },
+    "department": {
+      "model": "department",
+      "via": "users"
+    },
+    "employeeId": {
+      "multiple": false,
+      "type": "integer"
     }
   },
   "collectionName": "users-permissions_user"
