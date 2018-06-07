@@ -68,7 +68,11 @@ export class Tile extends Component {
     });
     //Checks if the user entered a title for their new dashboard
     if (this.state.title) {
-        
+        var tileList = [];
+        var tile = Object.assign(this.props.table);
+        tile.type = this.props.type;
+        tileList.push(tile);
+
         fetch('http://35.182.255.76/dashboard', {
         headers: {
             'Accept': 'application/x-www-form-urlencoded',
@@ -76,7 +80,7 @@ export class Tile extends Component {
             'Authorization': `Bearer ${this.props.jwt}`
         },
         method: "POST",
-        body: `user=${this.props.profile.userId}&title=${this.state.title}`,
+        body: `user=${this.props.profile.userId}&title=${this.state.title}&tiles=${JSON.stringify(tileList)}`,
         })
         .then((response) =>  response.json())
         .then(responseJson=> {
