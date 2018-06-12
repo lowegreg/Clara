@@ -100,7 +100,7 @@ export class NotificationItem extends React.Component {
                     <p className="notif-text">
                         <span>{this.state.list}</span>
                         {' ' + this.state.content + ': "'}
-                        <span>{postTitle}</span>".
+                        <span>{postTitle}</span>
                     </p>
                 </div>
                 <p className="notif-timestamp">{this.getTimeElapsed(this.props.date)}</p>
