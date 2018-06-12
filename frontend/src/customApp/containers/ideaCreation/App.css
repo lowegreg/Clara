@@ -1,0 +1,35 @@
+.App {
+  text-align: center;
+  align-items: center;
+  align-content: center;
+  font-family: "Lato";
+}
+
+.main-page {
+  display: inline-flex;
+  justify-content: center;
+  overflow: hidden;
+  padding-top: 64px;
+}
+
+.main-sidebar-left,
+.main-sidebar-right {
+  width: 300px;
+  height: 100%;
+  overflow: visible; 
+}
+
+.main-content {
+  position: relative;
+  width: 900px;
+ 
+}
+
+@media (max-width:1879px) {
+  
+  .main-content {
+    position: relative;
+    width: 600px;
+  
+  }
+}

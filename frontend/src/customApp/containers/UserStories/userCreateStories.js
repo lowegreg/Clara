@@ -240,7 +240,6 @@ export default class extends Component {
     } 
     submit(){
         if (this.state.form.graphType===null||this.state.form.d1.property===null||this.state.form.d2.property===null||this.state.form.title===''||this.state.form.description===''||this.state.form.tag===''){
-            console.log('errror fiil it all', this.state.form)
             return;
         }
         // get data for x and y via api call

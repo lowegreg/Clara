@@ -1,0 +1,16 @@
+.notification-settings {
+    font-size: 16px;
+    text-align: left;
+    min-height: 225px;
+    padding: 10px;
+}
+
+.password-success {
+    font-size: 20px;
+    color: black;
+    padding-top: 72px;
+}
+
+.checkbox-group {
+    margin: 20px;
+}
