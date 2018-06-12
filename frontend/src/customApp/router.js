@@ -84,5 +84,22 @@ export default function(url) {
       component={asyncComponent(() => import('./containers/insightPages/index'))}
     />
   );
+  routers.push(
+    <Route
+      exact
+      key="ideas"
+      path={`${url}/ideas`}
+      component={asyncComponent(() => import('./containers/ideaCreation/App'))}
+    />
+  );
+  routers.push(
+    <Route
+      exact
+      key="adminSuggestions"
+      path={`${url}/adminSuggestions`}
+      component={asyncComponent(() => import('./containers/ideaCreation/AdminSetUp'))}
+    />
+  );
+  
   return routers;
 }

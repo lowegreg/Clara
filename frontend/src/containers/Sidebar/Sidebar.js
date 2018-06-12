@@ -319,7 +319,7 @@ class Sidebar extends Component {
                     </Link>
                   </Menu.Item>
                   <Menu.Item style={submenuStyle} key="Suggestion Manager" >
-                    <Link style={submenuColor} to={`${url}/comingSoon`}>
+                    <Link style={submenuColor} to={`${url}/adminSuggestions`}>
                       <IntlMessages id="sidebar.suggestionManage" />
                     </Link>
                   </Menu.Item>

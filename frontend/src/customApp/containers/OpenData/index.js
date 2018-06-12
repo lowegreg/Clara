@@ -109,7 +109,7 @@ export default class OpenDataTable extends React.Component {
       },
       {
         title: 'Under Review',
-        number: this.state.tables.filter(value => value.statusId === 'sumbitted').length,
+        number:  this.state.tables.filter(value => value.statusId === 'sumbitted').length,
         description: 'Number of open data sets currently under review by clara',
         colour: 'orange'
       },
@@ -140,7 +140,7 @@ export default class OpenDataTable extends React.Component {
                 onChange={value => this.searchText(value)}
                 style={{ width: '80%' }}
               />
-            </Col><Col xs={1} style={{ marginLeftt: '0px' }}>
+            </Col><Col xs={1} style={{ marginLeft: '0px' }}>
 
               <MuiThemeProvider>
                 <SuperSelectField
