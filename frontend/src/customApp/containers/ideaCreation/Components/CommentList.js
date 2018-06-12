@@ -4,7 +4,7 @@ import UserProfile from '../UserProfile';
 import './Comment.css';
 import SendIcon from '@material-ui/icons/Send';
 import Snackbar from '@material-ui/core/Snackbar';
-import  CircularProgress  from '@material-ui/core/CircularProgress';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 export class CommentList extends React.Component {
     constructor(props) {
@@ -65,7 +65,7 @@ export class CommentList extends React.Component {
         } catch (e) {
             console.log(e);
         }
-        setTimeout(() => this.setState({ loading: false }, () => { 
+        setTimeout(() => this.setState({ loading: false }, () => {
             // automatically scroll to the bottom of the comment list to see the newly posted comment
             if (!initial) document.getElementById("comment-list").scrollTop = document.getElementById("comment-list").scrollHeight;
         }), 500);
@@ -73,7 +73,7 @@ export class CommentList extends React.Component {
 
     renderComments() {
         if (this.state.loading) { // render loading wheel
-            return <CircularProgress 
+            return <CircularProgress
                 size={30}
                 style={{ margin: "16px" }}
             />
@@ -128,7 +128,7 @@ export class CommentList extends React.Component {
                         body: JSON.stringify({
                             postID: this.props.postID,
                         })
-                    }).then(() => {});     
+                    }).then(() => { });
                 });
             } catch (error) {
                 console.log(error);
@@ -251,205 +251,206 @@ export class CommentList extends React.Component {
             //     } catch (err) {
             //         console.log(err);
             //     }
-    //             var subList;
-    //             try {
-    //                 let response = await fetch(UserProfile.getDatabase() + 'subscriptions/' + this.props.postID);
-    //                 let responseJson = await response.json();
-    //                 if (response.status >= 200 && response.status < 300) {
-    //                     subList = responseJson;
-    //                 } else {
-    //                     let error = responseJson;
-    //                     throw error;
-    //                 }
-    //             } catch (e) {
-    //                 console.log(e);
-    //             }
-    //             if (subList.length > 0) {
-    //                 for (let i = 0; i < subList.length; i++) {
-    //                     let empID = subList[i].empID;
-    //                     if (this.props.empID !== subList[i].empID) {
-    //                         try {
-    //                             let response = await fetch(UserProfile.getDatabase() + 'notify/getNotif', {
-    //                                 method: 'POST',
-    //                                 headers: {
-    //                                     'Accept': 'application/json',
-    //                                     'Content-Type': 'application/json',
-    //                                 },
-    //                                 body: JSON.stringify({
-    //                                     empID: subList[i].empID,
-    //                                     postID: this.props.postID,
-    //                                     event: 'Follow',
-    //                                 })
-    //                             });
-    //                             let responseJson = await response.json();
-    //                             if (responseJson.length > 0) {
-    //                                 let list = responseJson[0].peopleList.split(',');
-    //                                 let commaList = list;
-    //                                 for (let i = 0; i < list.length; i++) {
-    //                                     if (commaList[i].trim() === UserProfile.getName()) {
-    //                                         list.splice(i, 1);
-    //                                         let newList = list[0];
-    //                                         for (let i = 1; i < list.length; i++) {
-    //                                             newList = newList + ',' + list[i];
-    //                                         }
-    //                                         try {
-    //                                             fetch(UserProfile.getDatabase() + 'notify/updateNotif', {
-    //                                                 method: 'POST',
-    //                                                 headers: {
-    //                                                     'Accept': 'application/json',
-    //                                                     'Content-Type': 'application/json',
-    //                                                 },
-    //                                                 body: JSON.stringify({
-    //                                                     newList: newList,
-    //                                                     empID: empID,
-    //                                                     postID: this.props.postID,
-    //                                                     event: 'Follow',
-    //                                                 })
-    //                                             }).then(() => {
-    //                                                 try {
-    //                                                     fetch(UserProfile.getDatabase() + 'notify/add', {
-    //                                                         method: 'POST',
-    //                                                         headers: {
-    //                                                             'Accept': 'application/json',
-    //                                                             'Content-Type': 'application/json',
-    //                                                         },
-    //                                                         body: JSON.stringify({
-    //                                                             noteEvent: 'Follow',
-    //                                                             firstName: UserProfile.getName(),
-    //                                                             noteDetails: 'commented on an idea you follow',
-    //                                                             noteDate: localDate,
-    //                                                             empID: empID,
-    //                                                             postID: this.props.postID,
-    //                                                         })
-    //                                                     })
-    //                                                 } catch (err) {
-    //                                                     console.log(err);
-    //                                                 }
-    //                                                 try {
-    //                                                     fetch(UserProfile.getDatabase() + 'notify/addFollowNotify', {
-    //                                                         method: 'POST',
-    //                                                         headers: {
-    //                                                             'Accept': 'application/json',
-    //                                                             'Content-Type': 'application/json',
-    //                                                         },
-    //                                                         body: JSON.stringify({
-    //                                                             empID: empID,
-    //                                                         })
-    //                                                     })
-    //                                                 } catch (err) {
-    //                                                     console.log(err);
-    //                                                 }
-    //                                             });
+            //             var subList;
+            //             try {
+            //                 let response = await fetch(UserProfile.getDatabase() + 'subscriptions/' + this.props.postID);
+            //                 let responseJson = await response.json();
+            //                 if (response.status >= 200 && response.status < 300) {
+            //                     subList = responseJson;
+            //                 } else {
+            //                     let error = responseJson;
+            //                     throw error;
+            //                 }
+            //             } catch (e) {
+            //                 console.log(e);
+            //             }
+            //             if (subList.length > 0) {
+            //                 for (let i = 0; i < subList.length; i++) {
+            //                     let empID = subList[i].empID;
+            //                     if (this.props.empID !== subList[i].empID) {
+            //                         try {
+            //                             let response = await fetch(UserProfile.getDatabase() + 'notify/getNotif', {
+            //                                 method: 'POST',
+            //                                 headers: {
+            //                                     'Accept': 'application/json',
+            //                                     'Content-Type': 'application/json',
+            //                                 },
+            //                                 body: JSON.stringify({
+            //                                     empID: subList[i].empID,
+            //                                     postID: this.props.postID,
+            //                                     event: 'Follow',
+            //                                 })
+            //                             });
+            //                             let responseJson = await response.json();
+            //                             if (responseJson.length > 0) {
+            //                                 let list = responseJson[0].peopleList.split(',');
+            //                                 let commaList = list;
+            //                                 for (let i = 0; i < list.length; i++) {
+            //                                     if (commaList[i].trim() === UserProfile.getName()) {
+            //                                         list.splice(i, 1);
+            //                                         let newList = list[0];
+            //                                         for (let i = 1; i < list.length; i++) {
+            //                                             newList = newList + ',' + list[i];
+            //                                         }
+            //                                         try {
+            //                                             fetch(UserProfile.getDatabase() + 'notify/updateNotif', {
+            //                                                 method: 'POST',
+            //                                                 headers: {
+            //                                                     'Accept': 'application/json',
+            //                                                     'Content-Type': 'application/json',
+            //                                                 },
+            //                                                 body: JSON.stringify({
+            //                                                     newList: newList,
+            //                                                     empID: empID,
+            //                                                     postID: this.props.postID,
+            //                                                     event: 'Follow',
+            //                                                 })
+            //                                             }).then(() => {
+            //                                                 try {
+            //                                                     fetch(UserProfile.getDatabase() + 'notify/add', {
+            //                                                         method: 'POST',
+            //                                                         headers: {
+            //                                                             'Accept': 'application/json',
+            //                                                             'Content-Type': 'application/json',
+            //                                                         },
+            //                                                         body: JSON.stringify({
+            //                                                             noteEvent: 'Follow',
+            //                                                             firstName: UserProfile.getName(),
+            //                                                             noteDetails: 'commented on an idea you follow',
+            //                                                             noteDate: localDate,
+            //                                                             empID: empID,
+            //                                                             postID: this.props.postID,
+            //                                                         })
+            //                                                     })
+            //                                                 } catch (err) {
+            //                                                     console.log(err);
+            //                                                 }
+            //                                                 try {
+            //                                                     fetch(UserProfile.getDatabase() + 'notify/addFollowNotify', {
+            //                                                         method: 'POST',
+            //                                                         headers: {
+            //                                                             'Accept': 'application/json',
+            //                                                             'Content-Type': 'application/json',
+            //                                                         },
+            //                                                         body: JSON.stringify({
+            //                                                             empID: empID,
+            //                                                         })
+            //                                                     })
+            //                                                 } catch (err) {
+            //                                                     console.log(err);
+            //                                                 }
+            //                                             });
 
-    //                                         } catch (err) {
-    //                                             console.log(err);
-    //                                         }
-    //                                     }
-    //                                 }
-    //                             } else {
-    //                                 try {
-    //                                     fetch(UserProfile.getDatabase() + 'notify/add', {
-    //                                         method: 'POST',
-    //                                         headers: {
-    //                                             'Accept': 'application/json',
-    //                                             'Content-Type': 'application/json',
-    //                                         },
-    //                                         body: JSON.stringify({
-    //                                             noteEvent: 'Follow',
-    //                                             firstName: UserProfile.getName(),
-    //                                             noteDetails: 'commented on an idea you follow',
-    //                                             noteDate: localDate,
-    //                                             empID: subList[i].empID,
-    //                                             postID: this.props.postID,
-    //                                         })
-    //                                     })
-    //                                 } catch (err) {
-    //                                     console.log(err);
-    //                                 }
-    //                                 try {
-    //                                     fetch(UserProfile.getDatabase() + 'notify/addFollowNotify', {
-    //                                         method: 'POST',
-    //                                         headers: {
-    //                                             'Accept': 'application/json',
-    //                                             'Content-Type': 'application/json',
-    //                                         },
-    //                                         body: JSON.stringify({
-    //                                             empID: subList[i].empID,
-    //                                         })
-    //                                     })
-    //                                 } catch (err) {
-    //                                     console.log(err);
-    //                                 }
-    //                             }
-    //                         } catch (err) {
-    //                             console.log(err);
-    //                         }
-    //                     }
-    //                     try {
-    //                         let response = await fetch(UserProfile.getDatabase() + 'auth/GetEmailSettings', {
-    //                             method: 'POST',
-    //                             headers: {
-    //                                 'Accept': 'application/json',
-    //                                 'Content-Type': 'application/json',
-    //                             },
-    //                             body: JSON.stringify({
-    //                                 empID: empID,
-    //                             })
-    //                         });
-    //                         let responseJson = await response.json();
-    //                         if (responseJson.length > 0) {
-    //                             if (!!+responseJson[0].myComment && this.props.empID === empID) {
-    //                                 try {
-    //                                     fetch(UserProfile.getDatabase() + 'mail/EmailNotification', {
-    //                                         method: 'POST',
-    //                                         headers: {
-    //                                             'Accept': 'application/json',
-    //                                             'Content-Type': 'application/json',
-    //                                         },
-    //                                         body: JSON.stringify({
-    //                                             user: responseJson[0].email,
-    //                                             subject: 'Someone commented on your idea',
-    //                                             message: "Hey, someone just posted a commment on your idea!",
-    //                                             title: this.props.title,
-    //                                             type: "Comment",
-    //                                             content: comment
-    //                                         })
-    //                                     })
-    //                                 } catch (err) {
-    //                                     console.log(err);
-    //                                 }
-    //                             } else if (!!+responseJson[0].followComment && this.props.empID !== empID) {
-    //                                 try {
-    //                                     fetch(UserProfile.getDatabase() + 'mail/EmailNotification', {
-    //                                         method: 'POST',
-    //                                         headers: {
-    //                                             'Accept': 'application/json',
-    //                                             'Content-Type': 'application/json',
-    //                                         },
-    //                                         body: JSON.stringify({
-    //                                             user: responseJson[0].email,
-    //                                             subject: 'Someone commmented on an idea you follow',
-    //                                             message: "Hey, someone just commented on an idea you follow!",
-    //                                             title: this.props.title,
-    //                                             type: "Comment",
-    //                                             content: comment
-    //                                         })
-    //                                     })
-    //                                 } catch (err) {
-    //                                     console.log(err);
-    //                                 }
-    //                             }
-    //                         }
-    //                     } catch (err) {
-    //                         console.log(err);
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     } else {
-    //         alert("Comment must not be empty.");
-    //     }
-    }}
+            //                                         } catch (err) {
+            //                                             console.log(err);
+            //                                         }
+            //                                     }
+            //                                 }
+            //                             } else {
+            //                                 try {
+            //                                     fetch(UserProfile.getDatabase() + 'notify/add', {
+            //                                         method: 'POST',
+            //                                         headers: {
+            //                                             'Accept': 'application/json',
+            //                                             'Content-Type': 'application/json',
+            //                                         },
+            //                                         body: JSON.stringify({
+            //                                             noteEvent: 'Follow',
+            //                                             firstName: UserProfile.getName(),
+            //                                             noteDetails: 'commented on an idea you follow',
+            //                                             noteDate: localDate,
+            //                                             empID: subList[i].empID,
+            //                                             postID: this.props.postID,
+            //                                         })
+            //                                     })
+            //                                 } catch (err) {
+            //                                     console.log(err);
+            //                                 }
+            //                                 try {
+            //                                     fetch(UserProfile.getDatabase() + 'notify/addFollowNotify', {
+            //                                         method: 'POST',
+            //                                         headers: {
+            //                                             'Accept': 'application/json',
+            //                                             'Content-Type': 'application/json',
+            //                                         },
+            //                                         body: JSON.stringify({
+            //                                             empID: subList[i].empID,
+            //                                         })
+            //                                     })
+            //                                 } catch (err) {
+            //                                     console.log(err);
+            //                                 }
+            //                             }
+            //                         } catch (err) {
+            //                             console.log(err);
+            //                         }
+            //                     }
+            //                     try {
+            //                         let response = await fetch(UserProfile.getDatabase() + 'auth/GetEmailSettings', {
+            //                             method: 'POST',
+            //                             headers: {
+            //                                 'Accept': 'application/json',
+            //                                 'Content-Type': 'application/json',
+            //                             },
+            //                             body: JSON.stringify({
+            //                                 empID: empID,
+            //                             })
+            //                         });
+            //                         let responseJson = await response.json();
+            //                         if (responseJson.length > 0) {
+            //                             if (!!+responseJson[0].myComment && this.props.empID === empID) {
+            //                                 try {
+            //                                     fetch(UserProfile.getDatabase() + 'mail/EmailNotification', {
+            //                                         method: 'POST',
+            //                                         headers: {
+            //                                             'Accept': 'application/json',
+            //                                             'Content-Type': 'application/json',
+            //                                         },
+            //                                         body: JSON.stringify({
+            //                                             user: responseJson[0].email,
+            //                                             subject: 'Someone commented on your idea',
+            //                                             message: "Hey, someone just posted a commment on your idea!",
+            //                                             title: this.props.title,
+            //                                             type: "Comment",
+            //                                             content: comment
+            //                                         })
+            //                                     })
+            //                                 } catch (err) {
+            //                                     console.log(err);
+            //                                 }
+            //                             } else if (!!+responseJson[0].followComment && this.props.empID !== empID) {
+            //                                 try {
+            //                                     fetch(UserProfile.getDatabase() + 'mail/EmailNotification', {
+            //                                         method: 'POST',
+            //                                         headers: {
+            //                                             'Accept': 'application/json',
+            //                                             'Content-Type': 'application/json',
+            //                                         },
+            //                                         body: JSON.stringify({
+            //                                             user: responseJson[0].email,
+            //                                             subject: 'Someone commmented on an idea you follow',
+            //                                             message: "Hey, someone just commented on an idea you follow!",
+            //                                             title: this.props.title,
+            //                                             type: "Comment",
+            //                                             content: comment
+            //                                         })
+            //                                     })
+            //                                 } catch (err) {
+            //                                     console.log(err);
+            //                                 }
+            //                             }
+            //                         }
+            //                     } catch (err) {
+            //                         console.log(err);
+            //                     }
+            //                 }
+            //             }
+            //         }
+            //     } else {
+            //         alert("Comment must not be empty.");
+            //     }
+        }
+    }
 
     // handling changes in comment input box
     handleInputChange(event) {

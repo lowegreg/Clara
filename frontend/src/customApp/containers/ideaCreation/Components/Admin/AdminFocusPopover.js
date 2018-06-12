@@ -1,10 +1,10 @@
 import React from 'react';
 import './Admin.css';
-import MenuItem  from '@material-ui/core/MenuItem';
+import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import Input from '@material-ui/core/Input';
-import InputLabel  from '@material-ui/core/InputLabel';
-import FormControl  from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
 import SendIcon from '@material-ui/icons/Send';
 import CloseIcon from '@material-ui/icons/Close';
@@ -38,7 +38,7 @@ export default class AdminFocusPopover extends React.Component {
     handleStatusChange(e) {
         this.setState({ status: e.target.value });
 
-        switch(e.target.value) {
+        switch (e.target.value) {
             case "inReview": this.setState({ message: "This idea went under review by the Committee.", sendable: true }); break;
             case "inProgress": this.setState({ message: "The Committee approved this idea and sent it to the Lab to be implemented.", sendable: true }); break;
             case "Completed": this.setState({ message: "Implementation of this idea is complete.", sendable: true }); break;
@@ -49,7 +49,7 @@ export default class AdminFocusPopover extends React.Component {
             case "": this.setState({ sendable: false }); break;
             default: break;
         }
-        
+
     }
 
     handleMessageChange(e) {
@@ -67,7 +67,7 @@ export default class AdminFocusPopover extends React.Component {
             this.props.onSend(this.state.status, this.state.message);
         }
     }
-    
+
     handleClose(e) {
         let currentTarget = e.currentTarget;
 
@@ -80,13 +80,13 @@ export default class AdminFocusPopover extends React.Component {
 
     render() {
         return (
-            
+
             <div id="admin-focus-popover" tabIndex="3" className="admin-focus-popover" >
-                 <div className="admin-focus-popover-header">
+                <div className="admin-focus-popover-header">
                     <h1 className="admin-popover-title">Status Update</h1>
                     <div className="admin-popover-close" onClick={this.props.onClose}><CloseIcon style={{ height: 20 }} /></div>
                 </div>
-                <div className="admin-focus-popover-row"> 
+                <div className="admin-focus-popover-row">
                     <FormControl className="admin-popover-select">
                         <InputLabel>New Status</InputLabel>
                         <Select
@@ -105,10 +105,10 @@ export default class AdminFocusPopover extends React.Component {
                             <MenuItem className="status-list-item" value={"notPursued"}>Not Pursued</MenuItem>
                             <MenuItem className="status-list-item" value={"duplicated"}>Duplicated</MenuItem>
                         </Select>
-                       
+
                     </FormControl>
-                     <div className={"admin-submit-update-" + this.state.sendable.toString()} onClick={this.handleSendUpdate}><SendIcon /></div>
-                 </div>
+                    <div className={"admin-submit-update-" + this.state.sendable.toString()} onClick={this.handleSendUpdate}><SendIcon /></div>
+                </div>
                 <TextField
                     id="admin-popover-input"
                     fullWidth
@@ -117,8 +117,8 @@ export default class AdminFocusPopover extends React.Component {
                     value={this.state.message}
                     onChange={this.handleMessageChange}
                 />
-                </div>
-            
+            </div>
+
         );
     }
 }

@@ -77,7 +77,7 @@ class NewsArticle extends React.Component {
                     <div className="bar-Complete" />
                 </div>
             );
-        }else if (this.props.status === 'inReview') {
+        } else if (this.props.status === 'inReview') {
             return (
                 <div className="progress">
                     <div className="bar-step" style={{ marginRight: '75%' }}>

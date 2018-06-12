@@ -2,8 +2,8 @@ import React from 'react';
 import './ListView.css';
 import { IdeaCard } from './IdeaCard';
 import UserProfile from '../UserProfile';
-import  CircularProgress  from '@material-ui/core/CircularProgress';
-import  FormControlLabel  from '@material-ui/core/FormControlLabel';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import StatusUpdatePopover from './StatusUpdatePopover';
 import ExpandIcon from '@material-ui/icons/ExpandMore';
@@ -55,7 +55,7 @@ export class ListView extends React.Component {
         }
 
         // this is meant for tab changes from the nav bar, which has since been removed
-        let  status;
+        let status;
         switch (nextProps.tab) {
             case 0:
                 status = ["live", "inReview"];
@@ -92,11 +92,11 @@ export class ListView extends React.Component {
     async getPosts(sort, statuses, refresh = false, departments = this.props.filters) {
         // store all postIDs in an array so that we don't fetch ideas already displayed
         // if doing a refresh, the array is empty
-        let postIDs =  refresh ? [] : this.state.posts.map(post => post.postID);
-        if (sort === 'me' ) { // fetching list for "your ideas"
+        let postIDs = refresh ? [] : this.state.posts.map(post => post.postID);
+        if (sort === 'me') { // fetching list for "your ideas"
 
             try {
-                let response = await fetch(UserProfile.getDatabase() + 'postOrder/me', { 
+                let response = await fetch(UserProfile.getDatabase() + 'postOrder/me', {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
@@ -125,7 +125,7 @@ export class ListView extends React.Component {
                         if (response2.status >= 200 && response2.status < 300) {
                             let newPostArray = responseJson.value.concat(responseJson2.value);
                             newPostArray.sort(function (a, b) { return new Date(b.date).getTime() - new Date(a.date).getTime() });
-                            
+
                             if (newPostArray.length > 0) {
                                 if (newPostArray.length < 10) { // if we received fewer than 10 ideas, we know there are no more ideas to fetch
                                     this.setState({ noMore: true });
@@ -133,8 +133,8 @@ export class ListView extends React.Component {
                                 // add fetched ideas to the list, after a delay of 300ms
                                 // the purpose of the delay is to set a lower bound for the duration of the loading wheel
                                 // reset renderMore to false
-                               
-                                setTimeout(() => this.setState({ loading: false, posts: this.state.posts.concat(newPostArray.slice(0,10)), renderMore: false }), 300);
+
+                                setTimeout(() => this.setState({ loading: false, posts: this.state.posts.concat(newPostArray.slice(0, 10)), renderMore: false }), 300);
                             } else { // no more ideas to fetch if the response is empty
                                 this.setState({ loading: false, noMore: true, renderMore: false });
                             }
@@ -171,7 +171,7 @@ export class ListView extends React.Component {
                     })
                 });
                 let responseJson = await response.json();
-                if (response.status >= 200 && response.status < 300&& this.state.noMore===false) {
+                if (response.status >= 200 && response.status < 300 && this.state.noMore === false) {
                     if (responseJson.value.length > 0) {
                         if (responseJson.value.length < 10) { // if we received fewer than 10 ideas, we know there are no more ideas to fetch
                             this.setState({ noMore: true });
@@ -207,14 +207,14 @@ export class ListView extends React.Component {
             this.setState({ updating: false });
         }
     }
-    checkIfDeleted(post){
-        if (post==='deleted'){
-            return 
+    checkIfDeleted(post) {
+        if (post === 'deleted') {
+            return
         }
 
         return (<IdeaCard key={post.postID} id={post.postID} title={post.title} authorFirst={post.firstName} authorLast={post.lastName} date={post.date}
             follow={!!+post.followVal} targetDep={post.targetDep} desc={post.descrip} rating={post.rating} empID={post.empID} like={!!+post.boolVal} flagged={post.adminFlag}
-            status={post.status} numComments={post.comments} tab={this.state.stateTab}tabChange ={this.handleTabChange}refresh={this.refresh} onDeepDive={this.props.onDeepDive} onUpdate={this.openUpdatePopover} />)
+            status={post.status} numComments={post.comments} tab={this.state.stateTab} tabChange={this.handleTabChange} refresh={this.refresh} onDeepDive={this.props.onDeepDive} onUpdate={this.openUpdatePopover} />)
     }
 
     // render idea cards
@@ -229,7 +229,7 @@ export class ListView extends React.Component {
         } else {
             if (this.state.posts.length > 0) {
                 return this.state.posts.map(post =>
-                    
+
                     this.checkIfDeleted(post)
                 );
             } else {
@@ -259,7 +259,7 @@ export class ListView extends React.Component {
         if (this.state.statuses.indexOf(status) === -1) {
             newStatuses = this.state.statuses.concat([status]);
         } else {
-            newStatuses =  this.state.statuses.filter((s) => s !== status);
+            newStatuses = this.state.statuses.filter((s) => s !== status);
         }
         this.refresh(this.state.sort, newStatuses); // refresh with new status array
     }
@@ -288,7 +288,7 @@ export class ListView extends React.Component {
         if (this.state.stateTab !== 3) {
             if (!this.state.loading) { // don't change tab if we're already trying to load one
                 let statuses;
-                switch(tab) { // default statuses for each tab
+                switch (tab) { // default statuses for each tab
                     case 0: statuses = ["live", "inReview"]; break;
                     case 1: statuses = ["internal", "lab"]; break;
                     case 2: statuses = ["Completed"]; break;
@@ -316,7 +316,7 @@ export class ListView extends React.Component {
         }
 
         let sort;
-        switch(this.state.sort) {
+        switch (this.state.sort) {
             case "recent": sort = "Date Posted"; break;
             case "latest": sort = "Last Updated"; break;
             case "highRating": sort = "Popularity"; break;
@@ -325,7 +325,7 @@ export class ListView extends React.Component {
 
         let sortMenu;
         if (this.state.sortMenu) {
-            sortMenu = 
+            sortMenu =
                 <div id="list-view-sort-menu" className="list-view-sort-menu" tabIndex="5" onBlur={() => this.setState({ sortMenu: false })}>
                     <p onClick={() => this.handleSortChange("recent")}>Date Posted</p>
                     <p onClick={() => this.handleSortChange("latest")}>Last Updated</p>
@@ -341,20 +341,20 @@ export class ListView extends React.Component {
                 <div className="list-view-secondary-control">
                     <FormControlLabel
                         control={<Checkbox
-                                checked={this.state.statuses.indexOf("live") !== -1}
-                                onChange={() => this.toggleStatus("live")}
-                                disableRipple
-                                style={styles.checkbox}
+                            checked={this.state.statuses.indexOf("live") !== -1}
+                            onChange={() => this.toggleStatus("live")}
+                            disableRipple
+                            style={styles.checkbox}
                         />}
                         label={<span style={{ margin: "0px 0px 0px -8px", padding: "0px", fontWeight: 300, fontSize: 14 }}>Live</span>}
                         style={styles.checkboxContainer}
                     />
                     <FormControlLabel
                         control={<Checkbox
-                                checked={this.state.statuses.indexOf("inReview") !== -1}
-                                onChange={() => this.toggleStatus("inReview")}
-                                disableRipple
-                                style={styles.checkbox}
+                            checked={this.state.statuses.indexOf("inReview") !== -1}
+                            onChange={() => this.toggleStatus("inReview")}
+                            disableRipple
+                            style={styles.checkbox}
                         />}
                         label={<span style={{ margin: "0px 0px 0px -8px", padding: "0px", fontWeight: 300, fontSize: 14 }}>In Review</span>}
                         style={styles.checkboxContainer}
@@ -365,40 +365,40 @@ export class ListView extends React.Component {
                 <div className="list-view-secondary-control">
                     <FormControlLabel
                         control={<Checkbox
-                                checked={this.state.statuses.indexOf("internal") !== -1}
-                                onChange={() => this.toggleStatus("internal")}
-                                disableRipple
-                                style={styles.checkbox}
+                            checked={this.state.statuses.indexOf("internal") !== -1}
+                            onChange={() => this.toggleStatus("internal")}
+                            disableRipple
+                            style={styles.checkbox}
                         />}
                         label={<span style={{ margin: "0px 0px 0px -8px", padding: "0px", fontWeight: 300, fontSize: 14 }}>Internal </span>}
                         style={styles.checkboxContainer}
                     />
                     <FormControlLabel
                         control={<Checkbox
-                                checked={this.state.statuses.indexOf("lab") !== -1}
-                                onChange={() => this.toggleStatus("lab")}
-                                disableRipple
-                                style={styles.checkbox}
+                            checked={this.state.statuses.indexOf("lab") !== -1}
+                            onChange={() => this.toggleStatus("lab")}
+                            disableRipple
+                            style={styles.checkbox}
                         />}
                         label={<span style={{ margin: "0px 0px 0px -8px", padding: "0px", fontWeight: 300, fontSize: 14 }}>Lab</span>}
                         style={styles.checkboxContainer}
                     />
                     <FormControlLabel
                         control={<Checkbox
-                                checked={this.state.statuses.indexOf("garaged") !== -1}
-                                onChange={() => this.toggleStatus("garaged")}
-                                disableRipple
-                                style={styles.checkbox}
+                            checked={this.state.statuses.indexOf("garaged") !== -1}
+                            onChange={() => this.toggleStatus("garaged")}
+                            disableRipple
+                            style={styles.checkbox}
                         />}
                         label={<span style={{ margin: "0px 0px 0px -8px", padding: "0px", fontWeight: 300, fontSize: 14 }}>Garaged</span>}
                         style={styles.checkboxContainer}
                     />
                     <FormControlLabel
                         control={<Checkbox
-                                checked={this.state.statuses.indexOf("notPursued") !== -1}
-                                onChange={() => this.toggleStatus("notPursued")}
-                                disableRipple
-                                style={styles.checkbox}
+                            checked={this.state.statuses.indexOf("notPursued") !== -1}
+                            onChange={() => this.toggleStatus("notPursued")}
+                            disableRipple
+                            style={styles.checkbox}
                         />}
                         label={<span style={{ margin: "0px 0px 0px -8px", padding: "0px", fontWeight: 300, fontSize: 14 }}>Not Pursued</span>}
                         style={styles.checkboxContainer}
@@ -407,8 +407,8 @@ export class ListView extends React.Component {
         }
 
         return (
-           
-            <div className="list-view"  onScroll={this.handleScroll}>
+
+            <div className="list-view" onScroll={this.handleScroll}>
                 {popover}
                 {/* fade out list view control when viewing your own ideas */}
                 <div className={"list-view-control " + ((this.state.stateTab === 0 || this.state.stateTab === 1) ? "secondary " : "") + (this.state.stateTab === 3 ? "lvc-disabled" : "")}>

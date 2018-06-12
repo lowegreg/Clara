@@ -7,7 +7,7 @@ export class NotificationItem extends React.Component {
         super(props);
 
         // background color set to white or blue based on whether or not the notification has been clicked on
-        let color = "white"; 
+        let color = "white";
         if (!this.props.status) {
             color = "rgb(232, 232, 255)";
         }

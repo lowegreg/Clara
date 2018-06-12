@@ -11,42 +11,26 @@ class AdminSetup extends Component {
 		super(props);
 
 		this.state = {
-
 			loggedIn: false,
-	
-	
-
 			adminView: false,
 		};
-
-
 		this.handleExitAdmin = this.handleExitAdmin.bind(this);
 	}
-
-	
-
-
 
 	handleExitAdmin() {
 		this.setState({ adminView: false });
 	}
-
 	render() {
-		
-			let mainContent; // conditional rendering of main content based on current view
-			
-				mainContent = <AdminPage onExitAdmin={this.handleExitAdmin} />;
-			
-			
-			
-			return (
-				<div className="App">
-					<div style={styles.background} />
-					
-					{mainContent}
-				</div>
-			);
-		
+
+		let mainContent; // conditional rendering of main content based on current view
+		mainContent = <AdminPage onExitAdmin={this.handleExitAdmin} />;
+		return (
+			<div className="App">
+				<div style={styles.background} />
+				{mainContent}
+			</div>
+		);
+
 	}
 }
 

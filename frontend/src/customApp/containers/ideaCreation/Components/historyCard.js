@@ -13,17 +13,17 @@ export class HistoryCard extends React.Component {
 		super(props);
 
 		const dateString = this.getTimeElapsed(this.props.date);
- 
+
 		this.state = {
 			message: this.props.message,
 			date: dateString,
-            previous: this.props.previous,
-            new: this.props.new,
+			previous: this.props.previous,
+			new: this.props.new,
 			menuAnchorEl: null,
 			menuOpen: false,
 		}
 
-		
+
 	}
 
 	getTimeElapsed(date) {
@@ -70,22 +70,22 @@ export class HistoryCard extends React.Component {
 			color = "rgb(0, 0, 216)";
 		}
 
-	
+
 		return (
 			<div className={"comment-card" + (this.props.parent ? this.props.parent : "")}>
 				<div className="deep-dive-row">
-                    {/* <p className="comment-author" style={{ color: color }}>{this.state.previous}</p> */}
-                    <Row>
-                        <Col xs={3}> <p className={"admin-status-" + this.state.previous}>{this.state.previous}</p></Col>
-                        <Col xs={1}><p  className="comment-author"style={{ color: 'grey' }} > to </p></Col>
-						<Col xs={3}><p className={"admin-status-" + this.state.new} style={{ color: color,  textAlign: 'left'  }}>{this.state.new}</p></Col>
+					{/* <p className="comment-author" style={{ color: color }}>{this.state.previous}</p> */}
+					<Row>
+						<Col xs={3}> <p className={"admin-status-" + this.state.previous}>{this.state.previous}</p></Col>
+						<Col xs={1}><p className="comment-author" style={{ color: 'grey' }} > to </p></Col>
+						<Col xs={3}><p className={"admin-status-" + this.state.new} style={{ color: color, textAlign: 'left' }}>{this.state.new}</p></Col>
 						<Col xs={4}><p className="comment-timestamp" style={{ textAlign: 'right' }}>{this.state.date}</p></Col>
-                    </Row>
-                    {/* <p className="comment-author" style={{ color: color }}>{this.state.previous}</p><p>to</p><p>{this.state.new}</p> */}
-					
+					</Row>
+					{/* <p className="comment-author" style={{ color: color }}>{this.state.previous}</p><p>to</p><p>{this.state.new}</p> */}
+
 				</div>
 				<div className="comment-body-row">
-					<p className="comment-text" style={{ textAlign: 'left' }} >{this.state.message}</p>	
+					<p className="comment-text" style={{ textAlign: 'left' }} >{this.state.message}</p>
 				</div>
 			</div>
 		);

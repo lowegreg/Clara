@@ -15,7 +15,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuButtonIcon from '@material-ui/icons/MoreVert';
 import Menu from '@material-ui/core/Menu';
-import MenuItem  from '@material-ui/core/MenuItem';
+import MenuItem from '@material-ui/core/MenuItem';
 
 
 
@@ -27,19 +27,19 @@ export class IdeaCard extends React.Component {
 
 		let ellipses = "";
 		let cardType = "";
-		
+
 		if (this.props.desc.length > 300) {
 			ellipses = "...";
 			cardType = "-expandable";
 		}
-		
+
 		let likeColor = "rgb(153, 153, 153)";
 		let like = false;
 		if (this.props.like) {
 			likeColor = "#4482ff";
 			like = true;
 		}
-	
+
 
 		let followColor = "rgb(153, 153, 153)";
 		let follow = false;
@@ -85,8 +85,8 @@ export class IdeaCard extends React.Component {
 		this.handleStatus = this.handleStatus.bind(this);
 	}
 	componentDidMount() {
-		
-        fetch(UserProfile.getDatabase() + 'findLike' , {
+
+		fetch(UserProfile.getDatabase() + 'findLike', {
 			method: 'POST',
 			headers: {
 				'Accept': 'application/json',
@@ -95,21 +95,22 @@ export class IdeaCard extends React.Component {
 			body: JSON.stringify({
 				empID: UserProfile.getID(),
 				postID: this.props.id,
-	
-			})})
-			.then((response) =>  response.json())
-			.then(responseJson=>{
-				if (responseJson.value.length>0){
-					this.setState({liked:true})
+
+			})
+		})
+			.then((response) => response.json())
+			.then(responseJson => {
+				if (responseJson.value.length > 0) {
+					this.setState({ liked: true })
 				}
 
-			}  )
+			})
 			.catch((error) => {
 				console.error(error);
 			});
-		
-	
-    }
+
+
+	}
 	showSuccess = () => { //show nackbar
 		this.setState({ successOpen: true });
 	};
@@ -119,7 +120,7 @@ export class IdeaCard extends React.Component {
 	};
 
 	componentWillReceiveProps(nextProps) {
-		if (this.props.like !== undefined && this.props.like !== nextProps.like) { 
+		if (this.props.like !== undefined && this.props.like !== nextProps.like) {
 			let likeColor = "rgb(153, 153, 153)";
 			if (nextProps.like) {
 				likeColor = "#4482ff";
@@ -136,7 +137,7 @@ export class IdeaCard extends React.Component {
 	getTimeElapsed(date) {
 		const postDate = new Date(date);
 		const now = new Date();
-		const timeElapsed =  Math.abs(now.getTime() - postDate.getTime());
+		const timeElapsed = Math.abs(now.getTime() - postDate.getTime());
 
 		let elapsed = timeElapsed / 1000;
 		if (elapsed / 60 >= 1) {
@@ -491,7 +492,7 @@ export class IdeaCard extends React.Component {
 		this.setState({ numComments: numComments });
 	}
 
-	handleMenuClick = event => {	
+	handleMenuClick = event => {
 		this.setState({ menuOpen: true, menuAnchorEl: event.currentTarget });
 	};
 
@@ -517,7 +518,7 @@ export class IdeaCard extends React.Component {
 					postID: this.props.id,
 					empID: this.props.empID,
 				})
-			}).then(()=> {
+			}).then(() => {
 				// try {
 				// 	fetch(UserProfile.getDatabase() + 'posts/deletePostNotifs', {
 				// 		method: 'POST',
@@ -529,30 +530,30 @@ export class IdeaCard extends React.Component {
 				// 			postID: this.props.id,
 				// 		})
 				// 	}).then(() => {
-					
-						try {
-							fetch(UserProfile.getDatabase() + 'posts/UpdatePostHistory', {
-								method: 'POST',
-								headers: {
-									'Accept': 'application/json',
-									'Content-Type': 'application/json',
-								},
-								body: JSON.stringify({
-									postID: this.props.id,
-									empID: this.props.empID,
-									type: 'Status',
-									previous: this.props.status,
-									new: 'deleted',
-									date: localDate
-								})
-							}).then(() => {
-								this.props.refresh();
-							});
-						} catch (err) {
-							console.log(err);
-						}
-								
-				 	});
+
+				try {
+					fetch(UserProfile.getDatabase() + 'posts/UpdatePostHistory', {
+						method: 'POST',
+						headers: {
+							'Accept': 'application/json',
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify({
+							postID: this.props.id,
+							empID: this.props.empID,
+							type: 'Status',
+							previous: this.props.status,
+							new: 'deleted',
+							date: localDate
+						})
+					}).then(() => {
+						this.props.refresh();
+					});
+				} catch (err) {
+					console.log(err);
+				}
+
+			});
 			// 	} catch (err) {
 			// 		console.log(err);
 			// 	}
@@ -560,15 +561,15 @@ export class IdeaCard extends React.Component {
 		} catch (err) {
 			console.log(err);
 		}
-		this.props.tabChange(0, true); 
+		this.props.tabChange(0, true);
 	}
 
 
 	handleClose = () => {
-		this.setState({ menuAnchorEl: null ,  adminMenuOpen: false,menuOpen: false});
+		this.setState({ menuAnchorEl: null, adminMenuOpen: false, menuOpen: false });
 	};
 
-	
+
 	handleStatus(status) {
 		console.log(status)
 		this.handleRequestClose();
@@ -578,22 +579,22 @@ export class IdeaCard extends React.Component {
 	handleFlag() {
 		try {
 			fetch(UserProfile.getDatabase() + "admin/UpdateAdminFlag", {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    flag: !this.state.flagged,
-                    postID: this.props.id,
-                })
-            }).then(() => {
+				method: 'POST',
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					flag: !this.state.flagged,
+					postID: this.props.id,
+				})
+			}).then(() => {
 				this.setState({ flagged: !this.state.flagged });
 			});
 		} catch (e) {
 			console.log(e);
 		}
-	} 
+	}
 
 
 	render() {
@@ -705,29 +706,29 @@ export class IdeaCard extends React.Component {
 		if (UserProfile.getView() === 'admin' || UserProfile.getView() === 'lab') {
 			adminItem = (
 				<div>
-				{/* only "live" ideas can be sent to review */}
-				<MenuItem disabled={this.props.status !== "live"} style={{ fontSize: 14, paddingTop: 6, paddingBottom: 6 }} onClick={() => this.handleStatus('inReview')}>Send to Review</MenuItem>
-					
+					{/* only "live" ideas can be sent to review */}
+					<MenuItem disabled={this.props.status !== "live"} style={{ fontSize: 14, paddingTop: 6, paddingBottom: 6 }} onClick={() => this.handleStatus('inReview')}>Send to Review</MenuItem>
+
 					<MenuItem
 						id="disposition-button"
 						aria-owns={this.state.adminMenuOpen ? 'admin-card-menu' : null}
 						aria-haspopup="true"
 						disabled={this.props.status !== "inReview"} // only ideas in review can be moved to disposition
-						style={{ fontSize: 14, paddingTop: 6, paddingBottom: 6, zIndex: 800  }}
+						style={{ fontSize: 14, paddingTop: 6, paddingBottom: 6, zIndex: 800 }}
 						onClick={this.handleAdminMenuClick}
-					><ArrowDropLeft style={{ height: 20, marginLeft:0, paddingLeft:0 }} />  Disposition
-						
+					><ArrowDropLeft style={{ height: 20, marginLeft: 0, paddingLeft: 0 }} />  Disposition
+
 					</MenuItem>
 					<Menu
 						id="admin-card-menu"
 						anchorEl={this.state.adminMenuAnchorEl}
 						open={this.state.adminMenuOpen}
 						////onRequestClose={this.handleRequestClose}
-						style={{zIndex: 800 }}
+						style={{ zIndex: 800 }}
 						onClose={this.handleClose}
 						transitionDuration={100}
 					>
-						<MenuItem key="placeholder" style={{display: "none"}} />
+						<MenuItem key="placeholder" style={{ display: "none" }} />
 						<MenuItem style={{ fontSize: 14, paddingTop: 6, paddingBottom: 6 }} onClick={() => this.handleStatus('internal')}>Internal </MenuItem>
 						<MenuItem style={{ fontSize: 14, paddingTop: 6, paddingBottom: 6 }} onClick={() => this.handleStatus('lab')} divider>Innovation Lab</MenuItem>
 						<MenuItem style={{ fontSize: 14, paddingTop: 6, paddingBottom: 6 }} onClick={() => this.handleStatus('garaged')}>Garaged</MenuItem>
@@ -759,17 +760,17 @@ export class IdeaCard extends React.Component {
 					////onRequestClose={this.handleRequestClose}
 					onClose={this.handleClose}
 					style={{ marginTop: 35, marginLeft: -25, padding: '0px', zIndex: 7 }}
-					// transitionDuration={100}
-					// MenuListProps={{
-					// 	onMouseEnter: this.enterMenu,
-					// 	onMouseLeave: this.leaveMenu,
-					// }}
+				// transitionDuration={100}
+				// MenuListProps={{
+				// 	onMouseEnter: this.enterMenu,
+				// 	onMouseLeave: this.leaveMenu,
+				// }}
 				>
 					<MenuItem key="placeholder" style={{ display: "none" }} />
 					<MenuItem style={{ fontSize: 14, paddingTop: 6, paddingBottom: 6 }} onClick={this.handleDelete} divider>Delete</MenuItem>
 					{adminItem}
 				</Menu>
-				
+
 			</div>
 		);
 		if (this.props.status !== 'inReview' && this.props.status !== 'inProgress' && this.props.status !== "internal" && this.props.status !== "lab" && this.props.status !== 'Completed') {
@@ -779,7 +780,7 @@ export class IdeaCard extends React.Component {
 		} else if (UserProfile.getView() === 'admin' || UserProfile.getView() === 'lab') {
 			menuButton = button;
 		}
-		
+
 		return (
 			<div className="Card">
 				<div className="Card-row" onClick={this.handleExpandDesc}>
@@ -788,7 +789,7 @@ export class IdeaCard extends React.Component {
 						{statusCircle}
 						<h2 className="Card-date">{this.state.date}</h2>
 					</div>
-					
+
 				</div>
 				<div className="Card-row" id="clickable" onClick={this.handleDeepDive}>
 					<p className="Card-body">{this.state.desc}</p>
@@ -798,7 +799,7 @@ export class IdeaCard extends React.Component {
 						<div className={"tooltip Card-interaction-" + this.state.liked.toString() + ((this.props.status !== "live" && this.props.status !== "inReview") ? ' disabled-button' : '')}
 							onClick={(this.props.status === "live" || this.props.status === "inReview") ? this.handleLike : null}>
 							<LikeIcon />
-							
+
 							<h2 className="Card-interaction-num">{this.state.rating}</h2>
 							<span className="tooltiptext"> {likeTooltip} </span>
 						</div>
@@ -811,14 +812,14 @@ export class IdeaCard extends React.Component {
 					</div>
 					{/* {expandDescButton} */}
 					<h2 className="author">{this.props.targetDep}&nbsp;&nbsp;|&nbsp;&nbsp;<span style={{ color: authorColor }}>{this.props.authorFirst + " " + this.props.authorLast.substr(0, 1)}.</span>{menuButton}</h2>
-					
-				
-				
-				
+
+
+
+
 				</div>
 				{commentList}
 
-				
+
 			</div>
 		);
 	}
