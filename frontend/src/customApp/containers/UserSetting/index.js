@@ -105,7 +105,7 @@ export class Settings extends Component {
                 style={{ height: '450px' }}
                 src={userpic}
                 name={`${this.state.profile.firstName} ${this.state.profile.lastName}`}
-                title={this.state.profile.role}
+                title={this.state.profile.department}
                 description={
                   <div>
                     <Col>
@@ -125,8 +125,16 @@ export class Settings extends Component {
                           <p>{this.state.profile.email}</p>
                         </Col>
                       </Row>
+                      <Row> 
+                        <Col style={{ textAlign:'right'}} xs={6}>
+                          <b>Employee Id</b>
+                        </Col>
+                        <Col style={{ textAlign:'left'}} xs={6}>
+                          <p>{this.state.profile.employeeId}</p>
+                        </Col>
+                      </Row>
                     </Col>
-                    <Row style={{paddingTop: '15%'}}>
+                    <Row style={{paddingTop: '10%'}}>
                       <Col style={{ textAlign:'right'}} xs={6}>
                         <Button size='small' type="primary" onClick={() => this.setState({passwordModal: true})}>Change Password</Button>
                       </Col>

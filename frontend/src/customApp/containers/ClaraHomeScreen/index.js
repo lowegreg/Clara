@@ -9,7 +9,8 @@ import Input from '../../../components/uielements/input';
 import Form from '../../../components/uielements/form';
 import { Modal } from 'antd';
 import authAction from '../../../redux/auth/actions';
-import InsightPage from '../insightPages'
+import InsightPage from '../insightPages';
+import Weather from '../../components/weatherCard';
 
 const { updateUser } = authAction;
 const FormItem = Form.Item;
@@ -28,6 +29,7 @@ const error = [
   {validateStatus: 'error', help: 'Please enter title'},
   {validateStatus: 'warning', help: 'The server is down, please try again later'},
 ]
+
 export class Dashboard extends Component {
   constructor(props) {
     super(props);
@@ -38,7 +40,7 @@ export class Dashboard extends Component {
       title: '',
       error: 0,
       dashboards: this.props.profile.dashboards,
-      activeKey: (this.props.profile.dashboards[0] ? this.props.profile.dashboards[0]._id : '')
+      activeKey: (this.props.profile.dashboards[0] ? this.props.profile.dashboards[0]._id : ''),
     };
     this.clickHandler = this.clickHandler.bind(this)
     this.onChange = this.onChange.bind(this)
@@ -175,12 +177,12 @@ export class Dashboard extends Component {
     } else {
       welcomeCard = null
     }
-    
     return (
       <div >
         {welcomeCard}
-        <LayoutContentWrapper>
-          <h1>My Dashboards</h1>
+        <Weather/>
+        <LayoutContentWrapper style={{paddingTop: '20px'}} >
+          <h1 style={{paddingBottom: '5px'}} >My Dashboards</h1>
           <div style={{ marginLeft:'auto', marginRight:'0', marginTop:'5px'}}>
             <Button type='primary' size='small' onClick={this.showModal}>New Dashboard</Button>
             <Modal 

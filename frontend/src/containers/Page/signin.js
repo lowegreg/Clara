@@ -41,6 +41,7 @@ class SignIn extends Component {
     if (this.state.redirectToReferrer) {
       return <Redirect to={from} onChange={this.handleLogin} history={this.props.history}/>;
     }
+
     return (
       <SignInStyleWrapper className="isoSignInPage">
         <div className="isoLoginContentWrapper">
@@ -100,7 +101,7 @@ class SignIn extends Component {
 }
 export default connect(
   state => ({
-    isLoggedIn: state.Auth.get('idToken') !== null ? true : false,
+    isLoggedIn: state.Auth.get('profile')!==null && state.Auth.get('idToken') !== null ? true : false,
     errorMesssage: state.Auth.get('errorMessage'),
     profile: state.Auth.get('profile'),
   }),
