@@ -10,7 +10,7 @@ import SidebarWrapper from './sidebar.style';
 import appActions from '../../redux/app/actions';
 import Logo from '../../components/utility/logo';
 import { rtl } from '../../config/withDirection';
-import Knob from 'react-canvas-knob';
+import Knob from '../../customApp/components/react/react-canvas-knob';
 import { Row } from 'react-flexbox-grid';
 import './styles.css';
 

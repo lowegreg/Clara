@@ -19,10 +19,10 @@ export function* loginRequest() {
           email: user.email,
           role: user.role.name,
           dashboards: user.dashboards,
-          firstName: user['first name'],
-          lastName: user['last name'],
-          department: user.department.name,
-          employeeId: user.employeeId,
+          firstName: user['first name'] ? user['first name'] : 'empty',
+          lastName: user['last name'] ? user['last name'] : 'empty' ,
+          department: user.department ? user.department.name : 'empty',
+          employeeId: user.employeeId ? user.employeeId : 0,
         };
 
         yield put({
