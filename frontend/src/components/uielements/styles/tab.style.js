@@ -11,7 +11,7 @@ const AntTab = ComponentName => styled(ComponentName)`
     .ant-tabs-nav {
       .ant-tabs-tab {
         margin: ${props =>
-          props['data-rtl'] === 'rtl' ? '0 0 0 24px' : '0 24px 0 0'};
+          props['data-rtl'] === 'rtl' ? '0 0 0 1px' : '0 1px 0 0'};
 
         .anticon:not(.anticon-close) {
           margin: ${props =>

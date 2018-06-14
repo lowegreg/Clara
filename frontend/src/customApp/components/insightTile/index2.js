@@ -126,6 +126,8 @@ export class Tile extends Component {
     onClick(event){
         if (event.key === 'new') {
             this.setState({visible: true})
+        } else if (event.key === 'all'){
+            this.setState({ savePinPopup: true, dashboardIndex: -1 })
         } else {
             var dashboard = this.state.dashboards.filter(function(object){
                 return object._id === event.key;
@@ -134,22 +136,8 @@ export class Tile extends Component {
             this.setState({savePinPopup: true, dashboardIndex: index})            
         }
     }
-    // saves pins to dashboard, by editing the tile section
-    handleSavePinOk = (event) => {
-        var tileList;
-        var tile = Object.assign(this.props.table);
-        tile.type = this.props.type;
-        const dashboardIndex = this.state.dashboardIndex;
-        var dashboard = this.state.dashboards[dashboardIndex];
-        
-        if(dashboard.tiles){
-            tileList = (typeof dashboard.tiles==='string')? JSON.parse(dashboard.tiles):dashboard.tiles;
-        } else {
-            tileList = [];
-        }
-        
-        tileList.push(tile);
-    
+
+    addPin = (dashboard, tileList, index) => {
         fetch(`http://35.182.255.76/dashboard/${dashboard._id}`, {
             headers: {
                 'Accept': 'application/x-www-form-urlencoded',
@@ -163,15 +151,46 @@ export class Tile extends Component {
         .then(responseJson=> {
             if(responseJson.n === 1 && responseJson.nModified === 1 && responseJson.ok ===1){
                 var newDashboards = this.state.dashboards
-                newDashboards[dashboardIndex].tiles = tileList;
+                newDashboards[index].tiles = tileList;
                 this.setState({dashboards: newDashboards, savePinPopup: false})
                 this.props.updateUser()
             }
         })
         .catch((error) => {
-        // displays server error
-        console.log(error);
+            // displays server error
+            console.log(error);
         })
+    }
+
+    // saves pins to dashboard, by editing the tile section
+    handleSavePinOk = (event) => {
+        var tileList;
+        var tile = Object.assign(this.props.table);
+        tile.type = this.props.type;
+        if (this.state.dashboardIndex !== -1){
+            const dashboardIndex = this.state.dashboardIndex;
+            var dashboard = this.state.dashboards[dashboardIndex];
+            
+            if(dashboard.tiles){
+                tileList = (typeof dashboard.tiles==='string')? JSON.parse(dashboard.tiles):dashboard.tiles;
+            } else {
+                tileList = [];
+            }
+            tileList.push(tile);
+            this.addPin(dashboard, tileList, this.state.dashboardIndex)
+        } else {
+            for (let i = 0; i < this.state.dashboards.length; i++) {
+                const dashboard = this.state.dashboards[i];
+                if(dashboard.tiles){
+                    tileList = (typeof dashboard.tiles==='string')? JSON.parse(dashboard.tiles):dashboard.tiles;
+                } else {
+                    tileList = [];
+                }
+                tileList.push(tile);
+                this.addPin(dashboard, tileList, i);                
+            }
+
+        }
     }
     handleSavePinCancel = () =>{
         this.setState({ savePinPopup: false})
@@ -191,7 +210,7 @@ export class Tile extends Component {
         }
         var newTileList = [];
         for (let i = 0; i < tileList.length; i++) {
-           (i !== tileIndex) && newTileList.push(tileList[i]);       
+           (i !== tileIndex) && newTileList.push(tileList[i]); 
         }
         
         fetch(`http://35.182.255.76/dashboard/${dashboard._id}`, {
@@ -227,6 +246,8 @@ export class Tile extends Component {
                         {this.state.dashboards.map(dashboard => (
                         <Menu.Item  key={dashboard._id}> {dashboard.title} </Menu.Item>
                   ))}
+                  { this.state.dashboards.length >1 &&
+                    <Menu.Item  key='all'> All Dashboards </Menu.Item>}
                   <Menu.Item  key='new'> Create New Dashboard </Menu.Item>
                   </Menu>
                 } >
@@ -238,6 +259,16 @@ export class Tile extends Component {
                 <Button icon="close" type="button" onClick={this.removePin} ghost />
             )
         }
+    }
+    componentWillUnmount(){
+        this.setState({visible: false,
+            confirmLoading: false,
+            title: '',
+            error: 0,
+            savePinPopup: false,
+            dashboardIndex: 0,
+            type: this.props.type,
+            tileVisibility:true})
     }
   render() {
         return (
@@ -273,7 +304,8 @@ export class Tile extends Component {
                 confirmLoading={this.state.confirmLoading}
                 onCancel={this.handleSavePinCancel}
               >
-                <p> Would you like to add <b>{this.props.table.title}</b> to <b>{this.state.dashboards[this.state.dashboardIndex].title}</b> </p>
+                { this.state.dashboards[0] &&
+                    <p> Would you like to add <b>{this.props.table.title}</b> to <b>{ this.state.dashboardIndex !== -1 ? this.state.dashboards[this.state.dashboardIndex].title : 'All Dashboards' }</b> </p>}
               </Modal>
               
               <Row  justify="center">
