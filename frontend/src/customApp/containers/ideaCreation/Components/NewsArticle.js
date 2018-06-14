@@ -6,11 +6,9 @@ class NewsArticle extends React.Component {
         super(props);
 
         const dateString = this.getTimeElapsed(this.props.date);
-
         this.state = {
             date: dateString,
         }
-
         this.handleClick = this.handleClick.bind(this);
     }
 

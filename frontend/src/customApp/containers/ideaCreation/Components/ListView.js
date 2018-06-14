@@ -8,9 +8,9 @@ import Checkbox from '@material-ui/core/Checkbox';
 import StatusUpdatePopover from './StatusUpdatePopover';
 import ExpandIcon from '@material-ui/icons/ExpandMore';
 import Lightbulb from '@material-ui/icons/LightbulbOutline';
+import { connect } from 'react-redux';
 
-
-export class ListView extends React.Component {
+class ListView extends React.Component {
     constructor(props) {
         super(props);
 
@@ -103,7 +103,7 @@ export class ListView extends React.Component {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        empID: UserProfile.getID(),
+                        empID: this.props.profile.employeeId,
                         ids: postIDs,
                     })
                 })
@@ -117,7 +117,7 @@ export class ListView extends React.Component {
                                 'Content-Type': 'application/json',
                             },
                             body: JSON.stringify({
-                                empID: UserProfile.getID(),
+                                empID: this.props.profile.employeeId,
                                 ids: postIDs,
                             })
                         })
@@ -155,6 +155,13 @@ export class ListView extends React.Component {
                 console.error(e);
             }
         } else { // regular fetching of ideas
+            var dept = new Array();
+            if (departments.length === 0) {
+                dept[0] = 'none'
+            } else if (departments.length < 2) {
+                dept[0] = departments[0]
+            }
+
             try {
                 let response = await fetch(UserProfile.getDatabase() + 'postOrder/' + sort, {
                     method: 'POST',
@@ -163,10 +170,10 @@ export class ListView extends React.Component {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        empID: UserProfile.getID(),
+                        empID: this.props.profile.employeeId,
                         status: statuses,
                         ids: postIDs,
-                        deps: departments,
+                        deps: dept,
                         date: null
                     })
                 });
@@ -457,3 +464,7 @@ const styles = {
         color: "#4482ff",
     }
 }
+
+export default connect(state => ({
+    profile: state.Auth.get('profile'),
+}))(ListView);

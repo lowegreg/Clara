@@ -32,7 +32,7 @@ export default class StatusUpdateItem extends React.Component {
 
         let date = new Date(this.props.date);
 
-        return(
+        return (
             <div className="update-item">
                 <p className="update-desc">{this.props.message}</p>
                 <p className="update-date">{date.toDateString()}</p>

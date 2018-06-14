@@ -1,8 +1,6 @@
 import React from 'react';
 import LikeIcon from '@material-ui/icons/ThumbUp';
 import CommentIcon from '@material-ui/icons/ChatBubble';
-
-
 import Lightbulb from '@material-ui/icons/LightbulbOutline';
 import YellowBulb from '../images/Yellow.svg';
 import OrangeBulb from '../images/Orange.svg';
@@ -11,9 +9,9 @@ import './IdeaCard.css';
 import './FocusView.css';
 import UserProfile from '../UserProfile';
 import "typeface-roboto";
+import { connect } from 'react-redux';
 
-
-export class MyLatestIdeaCard extends React.Component {
+class MyLatestIdeaCard extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -75,7 +73,6 @@ export class MyLatestIdeaCard extends React.Component {
 		this.handleDelete = this.handleDelete.bind(this);
 		this.handleFlag = this.handleFlag.bind(this);
 		this.handleStatus = this.handleStatus.bind(this);
-
 		this.showSuccess = this.showSuccess.bind(this);
 		this.hideSuccess = this.hideSuccess.bind(this);
 	}
@@ -147,7 +144,7 @@ export class MyLatestIdeaCard extends React.Component {
 						'Content-Type': 'application/json',
 					},
 					body: JSON.stringify({
-						empID: UserProfile.getID(),
+						empID: this.props.profil.employeeId,
 						postID: this.props.id,
 					})
 				})
@@ -162,14 +159,14 @@ export class MyLatestIdeaCard extends React.Component {
 						'Content-Type': 'application/json',
 					},
 					body: JSON.stringify({
-						empID: UserProfile.getID(),
+						empID: this.props.profil.employeeId,
 						postID: this.props.id,
 					})
 				})
 			} catch (error) {
 				console.log(error);
 			}
-			if (this.props.empID !== UserProfile.getID()) {
+			if (this.props.empID !== this.props.profil.employeeId) {
 				var localDate = new Date();
 				localDate.setSeconds(localDate.getSeconds() - 1);
 				try {
@@ -191,7 +188,7 @@ export class MyLatestIdeaCard extends React.Component {
 						let commaList = list;
 						console.log(list.length);
 						for (let i = 0; i < list.length; i++) {
-							if (commaList[i].trim() === UserProfile.getName()) {
+							if (commaList[i].trim() === this.props.profil.firstName) {
 								list.splice(i, 1);
 								console.log("new list: " + list);
 								let newList = list[0];
@@ -261,7 +258,7 @@ export class MyLatestIdeaCard extends React.Component {
 								},
 								body: JSON.stringify({
 									noteEvent: 'Like',
-									firstName: UserProfile.getName(),
+									firstName: this.props.profil.firstName,
 									noteDetails: 'liked your idea',
 									noteDate: localDate,
 									empID: this.props.empID,
@@ -288,7 +285,7 @@ export class MyLatestIdeaCard extends React.Component {
 					}
 				} catch (err) {
 					console.log(err);
-				}		
+				}
 			}
 			var subList;
 			try {
@@ -365,7 +362,7 @@ export class MyLatestIdeaCard extends React.Component {
 						console.log(err);
 					}
 				}
-			}	
+			}
 			this.setState({ rating: this.state.rating + 1, liked: true, likeColor: "#4482ff" });
 		} else {
 			try {
@@ -376,7 +373,7 @@ export class MyLatestIdeaCard extends React.Component {
 						'Content-Type': 'application/json',
 					},
 					body: JSON.stringify({
-						empID: UserProfile.getID(),
+						empID: this.props.profil.employeeId,
 						postID: this.props.id,
 					})
 				})
@@ -391,7 +388,7 @@ export class MyLatestIdeaCard extends React.Component {
 						'Content-Type': 'application/json',
 					},
 					body: JSON.stringify({
-						empID: UserProfile.getID(),
+						empID: this.props.profil.employeeId,
 						postID: this.props.id,
 					})
 				})
@@ -412,7 +409,7 @@ export class MyLatestIdeaCard extends React.Component {
 				},
 				body: JSON.stringify({
 					postID: this.props.id,
-					empID: UserProfile.getID(),
+					empID: this.props.profil.employeeId,
 				})
 			})
 		} catch (err) {
@@ -432,7 +429,7 @@ export class MyLatestIdeaCard extends React.Component {
 				},
 				body: JSON.stringify({
 					postID: this.props.id,
-					empID: UserProfile.getID(),
+					empID: this.props.profil.employeeId,
 				})
 			})
 		} catch (err) {
@@ -490,7 +487,7 @@ export class MyLatestIdeaCard extends React.Component {
 					postID: this.props.id,
 					empID: this.props.empID,
 				})
-			}).then(()=> {
+			}).then(() => {
 				// try {
 				// 	fetch(UserProfile.getDatabase() + 'posts/deletePostNotifs', {
 				// 		method: 'POST',
@@ -502,28 +499,28 @@ export class MyLatestIdeaCard extends React.Component {
 				// 			postID: this.props.id,
 				// 		})
 				// 	}).then(() => {
-						try {
-							fetch(UserProfile.getDatabase() + 'posts/UpdatePostHistory', {
-								method: 'POST',
-								headers: {
-									'Accept': 'application/json',
-									'Content-Type': 'application/json',
-								},
-								body: JSON.stringify({
-									postID: this.props.id,
-									empID: this.props.empID,
-									type: 'Status',
-									previous: this.props.status,
-									new: 'deleted',
-									date: localDate
-								})
-							}).then(() => {
-								this.props.tabChange(this.props.tab);
-							});
-						} catch (err) {
-							console.log(err);
-						}
-								
+				try {
+					fetch(UserProfile.getDatabase() + 'posts/UpdatePostHistory', {
+						method: 'POST',
+						headers: {
+							'Accept': 'application/json',
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify({
+							postID: this.props.id,
+							empID: this.props.empID,
+							type: 'Status',
+							previous: this.props.status,
+							new: 'deleted',
+							date: localDate
+						})
+					}).then(() => {
+						this.props.tabChange(this.props.tab);
+					});
+				} catch (err) {
+					console.log(err);
+				}
+
 				// 	});
 				// } catch (err) {
 				// 	console.log(err);
@@ -603,7 +600,7 @@ export class MyLatestIdeaCard extends React.Component {
 								body: JSON.stringify({
 									empID: empID,
 								})
-							}).then( async () => {
+							}).then(async () => {
 								try {
 									let response = await fetch(UserProfile.getDatabase() + 'auth/GetEmailSettings', {
 										method: 'POST',
@@ -616,7 +613,7 @@ export class MyLatestIdeaCard extends React.Component {
 										})
 									});
 									let responseJson = await response.json();
-									if(!!+responseJson[0].myAdminStatus && this.props.empID === empID ){
+									if (!!+responseJson[0].myAdminStatus && this.props.empID === empID) {
 										try {
 											fetch(UserProfile.getDatabase() + 'mail/EmailNotification', {
 												method: 'POST',
@@ -627,16 +624,16 @@ export class MyLatestIdeaCard extends React.Component {
 												body: JSON.stringify({
 													user: responseJson[0].email,
 													subject: 'Status Change on your idea',
-													message: 'The status of your idea has changed to '+newStatus,
+													message: 'The status of your idea has changed to ' + newStatus,
 													title: this.props.title,
 													type: "New Status",
 													content: newStatus
 												})
 											})
-										}catch(err){
+										} catch (err) {
 											console.log(err);
 										}
-									}else if(!!+responseJson[0].followAdminStatus && this.props.empID !== empID){
+									} else if (!!+responseJson[0].followAdminStatus && this.props.empID !== empID) {
 										try {
 											fetch(UserProfile.getDatabase() + 'mail/EmailNotification', {
 												method: 'POST',
@@ -647,17 +644,17 @@ export class MyLatestIdeaCard extends React.Component {
 												body: JSON.stringify({
 													user: responseJson[0].email,
 													subject: 'Status Change on an idea you follow',
-													message: 'The status of an idea you follow has changed to '+newStatus,
+													message: 'The status of an idea you follow has changed to ' + newStatus,
 													title: this.props.title,
 													type: "New Status",
 													content: newStatus
 												})
 											})
-										}catch(err){
+										} catch (err) {
 											console.log(err);
 										}
 									}
-								}catch(err) {
+								} catch (err) {
 									console.log(err);
 								}
 							})
@@ -666,9 +663,9 @@ export class MyLatestIdeaCard extends React.Component {
 						}
 					}
 				}
-			}).then( () => {
-				
-				
+			}).then(() => {
+
+
 				try {
 					fetch(UserProfile.getDatabase() + 'posts/UpdatePostHistory', {
 						method: 'POST',
@@ -678,7 +675,7 @@ export class MyLatestIdeaCard extends React.Component {
 						},
 						body: JSON.stringify({
 							postID: this.props.id,
-							empID: UserProfile.getID(),
+							empID: this.props.profil.employeeId,
 							previous: this.props.status,
 							type: 'Status',
 							new: newStatus,
@@ -699,16 +696,16 @@ export class MyLatestIdeaCard extends React.Component {
 	handleFlag() {
 		try {
 			fetch(UserProfile.getDatabase() + "admin/UpdateAdminFlag", {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    flag: !this.state.flagged,
-                    postID: this.props.id,
-                })
-            }).then(() => {
+				method: 'POST',
+				headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					flag: !this.state.flagged,
+					postID: this.props.id,
+				})
+			}).then(() => {
 				this.setState({ flagged: !this.state.flagged });
 			});
 		} catch (e) {
@@ -808,8 +805,6 @@ export class MyLatestIdeaCard extends React.Component {
 		// 	}
 		// }
 
-	
-
 		return (
 			<div className="MyLatestIdeaCard-Card" onClick={this.handleDeepDive} style={{ cursor: 'pointer' }}>
 				<div className="Card-row" onClick={this.handleExpandDesc}>
@@ -836,3 +831,6 @@ export class MyLatestIdeaCard extends React.Component {
 		);
 	}
 };
+export default connect(state => ({
+	profile: state.Auth.get('profile'),
+}))(MyLatestIdeaCard);

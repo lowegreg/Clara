@@ -20,7 +20,7 @@ export class AdminPage extends React.Component {
         this.handleFocus = this.handleFocus.bind(this);
         this.handleListFlag = this.handleListFlag.bind(this);
         this.handleFocusFlag = this.handleFocusFlag.bind(this);
-        this.showFilters= this.showFilters.bind(this)
+        this.showFilters = this.showFilters.bind(this)
     }
 
     handleFolderChange(newFolder) {
@@ -44,23 +44,24 @@ export class AdminPage extends React.Component {
     handleFocusFlag() {
         this.setState({ listFlagToggle: !this.state.listFlagToggle });
     }
-    showFilters(){
+    showFilters() {
         this.setState({
             filtersToggle: !this.state.filtersToggle
         })
     }
+
     render() {
         return (
-            <div > 
-                <h1 style={{margin:'16px', textAlign:'left'}}>Ideas Admin</h1>
-                    <div className="admin-container">
-                        {this.state.filtersToggle===true &&
-                            <AdminFolders onFolderChange={this.handleFolderChange} onExitAdmin={this.props.onExitAdmin} />
-                        }
-                        <AdminList activeFolder={this.state.activeFolder} focusID={this.state.focusID} onFocus={this.handleFocus} onFlag={this.handleListFlag} showFilters={this.showFilters} />      
-                        <AdminFocus postID={this.state.focusID} flagToggle={this.state.focusFlagToggle} refresh={this.handleFocusFlag} />
-                    </div>
-               
+            <div >
+                <h1 style={{ margin: '16px', textAlign: 'left' }}>Ideas Admin</h1>
+                <div className="admin-container">
+                    {this.state.filtersToggle === true &&
+                        <AdminFolders onFolderChange={this.handleFolderChange} onExitAdmin={this.showFilters} />
+                    }
+                    <AdminList activeFolder={this.state.activeFolder} focusID={this.state.focusID} onFocus={this.handleFocus} onFlag={this.handleListFlag} showFilters={this.showFilters} />
+                    <AdminFocus postID={this.state.focusID} flagToggle={this.state.focusFlagToggle} refresh={this.handleFocusFlag} />
+                </div>
+
             </div>
         );
     }

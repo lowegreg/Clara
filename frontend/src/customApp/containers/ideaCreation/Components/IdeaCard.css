@@ -57,7 +57,7 @@
     padding: 16px 24px 6px;
     width: auto;
     background: white;
-    box-shadow: 0px 2px 6px -2px grey;
+    /* box-shadow: 0px 2px 6px -2px grey; */
     font-family: "Lato";
 }
 
@@ -130,7 +130,7 @@ p.Card-body {
     color: #4482ff;
 } .Card-interaction-true:hover {
     cursor: pointer;
-    color: #4482ff;
+    color: #387aff;
 }
 
 h2.Card-interaction-num {
@@ -215,7 +215,7 @@ h2.author {
     transform: translateX(-50%); */
     padding: 16px;
     margin-top: 36px;
-    box-shadow: 1px 1px 12px 1px rgb(121, 121, 121);
+    /* box-shadow: 1px 1px 12px 1px rgb(121, 121, 121); */
     outline: none;
     margin-bottom: 128px;
     z-index: 800;
@@ -290,9 +290,12 @@ h2.author {
     padding: 8px;
     width: auto;
     background: white;
-    box-shadow: 0px 1px 9px -2px grey;
-    border-radius: 3px;
+    /* box-shadow: 0px 1px 9px -2px grey; */
+    /* border-radius: 3px; */
+    border: 1px solid grey;
     font-family: "Lato";
+    border-width: thin;
+    border-radius: 4px;
 }
 
 .MyLatestIdeaCard-title {

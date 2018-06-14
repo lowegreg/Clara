@@ -2,12 +2,12 @@ import React from 'react';
 import './NewIdea.css';
 import SendIcon from '@material-ui/icons/Send';
 import UserProfile from '../UserProfile';
-import Fuse from 'fuse.js';
+
 import Snackbar from '@material-ui/core/Snackbar';
-import  FormControlLabel  from '@material-ui/core/FormControlLabel';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button, { ButtonGroup } from '../../../../components/uielements/button';
-
+import { connect } from 'react-redux';
 import Progress from '../../../../components/uielements/progress';
 
 import { Row, Col } from 'react-flexbox-grid';
@@ -25,8 +25,8 @@ class NewIdea extends React.Component {
             costPercent: 20,
             efficiencyPercent: 20,
             insightsPercent: 20,
-            uxPercent:20,
-            totalPercent:20,
+            uxPercent: 20,
+            totalPercent: 20,
             title: '',
             description: '',
             titleCap: 100,
@@ -51,101 +51,97 @@ class NewIdea extends React.Component {
         this.handleHaveAnIdea = this.handleHaveAnIdea.bind(this);
         this.handleCancelIdea = this.handleCancelIdea.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-
-        // this.handleDeepDive = this.handleDeepDive.bind(this);
         this.handleEnterDesc = this.handleEnterDesc.bind(this);
         this.showConfirmation = this.showConfirmation.bind(this);
         this.hideConfirmation = this.hideConfirmation.bind(this);
         this.handleDepChange = this.handleDepChange.bind(this);
-
-        
     }
     increase = (category) => {
         let percent;
-        
-        if (this.state.totalPercent>0){
-            percent= this.state.totalPercent -5
+
+        if (this.state.totalPercent > 0) {
+            percent = this.state.totalPercent - 5
             this.setState({ totalPercent: percent });
-        
-            switch(category){
+
+            switch (category) {
                 case 'cost':
                     percent = this.state.costPercent + 5;
                     if (percent > 100) {
-                    percent = 100;
+                        percent = 100;
                     }
                     this.setState({ costPercent: percent });
                     break;
                 case 'efficiency':
                     percent = this.state.efficiencyPercent + 5;
                     if (percent > 100) {
-                    percent = 100;
+                        percent = 100;
                     }
                     this.setState({ efficiencyPercent: percent });
                     break;
                 case 'insights':
                     percent = this.state.insightsPercent + 5;
                     if (percent > 100) {
-                    percent = 100;
+                        percent = 100;
                     }
                     this.setState({ insightsPercent: percent });
                     break;
                 case 'ux':
                     percent = this.state.uxPercent + 5;
                     if (percent > 100) {
-                    percent = 100;
+                        percent = 100;
                     }
                     this.setState({ uxPercent: percent });
                     break;
-                default:    
+                default:
             }
         }
     }
     decline = (category) => {
-        const total= this.state.totalPercent
-        if (total < 100){
-            
+        const total = this.state.totalPercent
+        if (total < 100) {
+
             let percent;
-            switch(category){
+            switch (category) {
                 case 'cost':
                     percent = this.state.costPercent - 5;
                     if (percent < 0) {
-                    percent = 0;
-                    }else{
-                        this.setState({ totalPercent: total+5 });
+                        percent = 0;
+                    } else {
+                        this.setState({ totalPercent: total + 5 });
                     }
                     this.setState({ costPercent: percent });
                     break;
                 case 'efficiency':
                     percent = this.state.efficiencyPercent - 5;
                     if (percent < 0) {
-                    percent = 0;
-                    }else{
-                        this.setState({ totalPercent: total+5 });
+                        percent = 0;
+                    } else {
+                        this.setState({ totalPercent: total + 5 });
                     }
                     this.setState({ efficiencyPercent: percent });
                     break;
                 case 'insights':
                     percent = this.state.insightsPercent - 5;
                     if (percent < 0) {
-                    percent = 0;
-                    }else{
-                        this.setState({ totalPercent: total+5 });
+                        percent = 0;
+                    } else {
+                        this.setState({ totalPercent: total + 5 });
                     }
                     this.setState({ insightsPercent: percent });
                     break;
                 case 'ux':
                     percent = this.state.uxPercent - 5;
                     if (percent < 0) {
-                    percent = 0;
-                    }else{
-                        this.setState({ totalPercent: total+5 });
+                        percent = 0;
+                    } else {
+                        this.setState({ totalPercent: total + 5 });
                     }
                     this.setState({ uxPercent: percent });
-                    break; 
-                default:    
+                    break;
+                default:
             }
         }
-    } 
+    }
     componentWillReceiveProps(nextProps) {
         this.setState({ message: "" });
     }
@@ -157,11 +153,6 @@ class NewIdea extends React.Component {
     hideConfirmation() {
         this.setState({ confirmationOpen: false });
     };
-
-  
-
-    // apply Fuse.js search algorithm to the stored array to find similar ideas
-   
 
     // expand form when entering title box
     handleHaveAnIdea() {
@@ -182,7 +173,7 @@ class NewIdea extends React.Component {
         setTimeout(() => {
             if (!currentTarget.contains(document.activeElement)) { // only exit if clicking outside of the form
                 if (!document.getElementById("deepDive")) { // don't exit while in deep dive
-                   
+
                     if (document.getElementById("descBox")) { // don't exit if the description box has content in it
                         if (document.getElementById("descBox").value === "") {
                             // exit, reset placeholder and message
@@ -196,7 +187,6 @@ class NewIdea extends React.Component {
 
     // when entering description
     handleEnterDesc() {
-
         // set message text as character count for description
         this.setState({ message: "Description: " + this.state.description.length + "/" + this.state.descCap, messageStyle: NewIdea.regStyle });
     }
@@ -227,25 +217,24 @@ class NewIdea extends React.Component {
 
     // pressing Esc closes the duplicate prevention dropdown
     handleKeyDown(e) {
-         console.log(e.keyCode);
-        
+        // console.log(e.keyCode);
+
     }
 
     // checks and db calls for submitting an idea
     async handleSubmit() {
-        
+
         if (this.state.title.trim() === '') { // set error message if something is wrong
             this.setState({ message: "Idea has no title.", messageStyle: NewIdea.errorStyle });
         } else if (this.state.description.trim() === '') {
             this.setState({ message: "Idea has no description.", messageStyle: NewIdea.errorStyle });
-        } else if (UserProfile.getID() === '' || UserProfile.getDep() === '') {
+        } else if (this.props.profile.employeeId === '' || this.props.profile.department === '') {
             this.setState({ message: "Cannot post anonymously, please login.", messageStyle: NewIdea.errorStyle });
-        } else if(this.state.totalPercent>0){
+        } else if (this.state.totalPercent > 0) {
             this.setState({ message: "Need to distribute all points", messageStyle: NewIdea.errorStyle });
-        }else {
+        } else {
             var localDate = new Date();
             localDate.setSeconds(localDate.getSeconds() - 1);
-
             try {
                 fetch(UserProfile.getDatabase() + 'posts', { // post idea
                     method: 'POST',
@@ -255,45 +244,47 @@ class NewIdea extends React.Component {
                     },
                     body: JSON.stringify({
                         postID: '',
-                        empID: UserProfile.getID(),
-                        targetDep: this.state.depOnly ? UserProfile.getDep() : "Innovation",
+                        empID: this.props.profile.employeeId,
+                        targetDep: this.state.depOnly ? this.props.profile.department : "Innovation",
                         title: this.state.title,
                         descrip: this.state.description,
+                        firstName: this.props.profile.firstName,
+                        lastName: this.props.profile.lastName,
                         rating: 0,
                         numClicks: 0,
                         numRatings: 0,
                         date: localDate,
                         status: 'live',
-                        comments:0,
-                        adminFlag:false,
+                        comments: 0,
+                        adminFlag: false,
                         cost: this.state.costPercent,
                         efficiency: this.state.efficiencyPercent,
                         insights: this.state.insightsPercent,
-                        ux:this.state.uxPercent
+                        ux: this.state.uxPercent
                     })
                 }).then((response) => {
                     return response.json();
-                //}).then((parsedData) => {
-                //     try {
-                //         fetch(UserProfile.getDatabase() + 'subscriptions/add', { // follow your newly submitted idea
-                //             method: 'POST',
-                //             headers: {
-                //                 'Accept': 'application/json',
-                //                 'Content-Type': 'application/json',
-                //             },
-                //             body: JSON.stringify({
-                //                 postID: parsedData.insertId,
-                //                 empID: UserProfile.getID(),
-                //             })
-                //         })
-                //     } catch (err) {
-                //         alert(err);
-                //     }
+                    //}).then((parsedData) => {
+                    //     try {
+                    //         fetch(UserProfile.getDatabase() + 'subscriptions/add', { // follow your newly submitted idea
+                    //             method: 'POST',
+                    //             headers: {
+                    //                 'Accept': 'application/json',
+                    //                 'Content-Type': 'application/json',
+                    //             },
+                    //             body: JSON.stringify({
+                    //                 postID: parsedData.insertId,
+                    //                 empID: UserProfile.getID(),
+                    //             })
+                    //         })
+                    //     } catch (err) {
+                    //         alert(err);
+                    //     }
                 }).then(() => { // once submitted,
                     this.showConfirmation(); // show confirmation snackbar
                     this.props.tabChange(0, true); // go to recent tab or refresh if already there to see the new idea
-                    this.setState({ title: '', description: '', composing: false, submissionFormBottomPadding: 10,costPercent:20, efficiencyPercent:20, insightsPercent:20, uxPercent:20, total:20 }); // reset form
-                 });
+                    this.setState({ title: '', description: '', composing: false, submissionFormBottomPadding: 10, costPercent: 20, efficiencyPercent: 20, insightsPercent: 20, uxPercent: 20, total: 20 }); // reset form
+                });
             } catch (err) {
                 alert(err);
             }
@@ -325,7 +316,7 @@ class NewIdea extends React.Component {
     }
 
     render() {
-        
+
         const marginStyle = {
             margin: rtl === 'rtl' ? '0 0 10px 10px' : '0 10px 10px 0',
         };
@@ -342,87 +333,87 @@ class NewIdea extends React.Component {
             ideaFormBody = (
                 <div>
                     <div className='description-container'>
-                        <p style={{textAlign:'left'}}>You get 100 point to destribute between the categories.</p>
+                        <p style={{ textAlign: 'left' }}>You get 100 point to destribute between the categories.</p>
                         <Row>
-                            <div style={{ width:400, marginLeft: '16px'}}>
+                            <div style={{ width: 400, marginLeft: '16px' }}>
                                 <Progress percent={this.state.totalPercent} status='active' />
                             </div>
                             <div>
-                                <p style={{color:'red', fontWeight: 'bold',marginLeft: '16px'}}>{this.state.pointError}</p>
-                        </div>     
-                            
-                        </Row>    
+                                <p style={{ color: 'red', fontWeight: 'bold', marginLeft: '16px' }}>{this.state.pointError}</p>
+                            </div>
+
+                        </Row>
                         <Row>
-                            <Col  md={3} >
+                            <Col md={3} >
                                 <div>
-                                    <h4  style={{ marginBottom: '16px'}} >Cost  <i className="ion-social-usd" /></h4>
-                                    
+                                    <h4 style={{ marginBottom: '16px' }} >Cost  <i className="ion-social-usd" /></h4>
+
                                     <Progress
-                                    type="circle"
-                                    percent={this.state.costPercent}
-                                    style={marginStyle}
-                                    status='active'
-                                    width={110}
-                                   
+                                        type="circle"
+                                        percent={this.state.costPercent}
+                                        style={marginStyle}
+                                        status='active'
+                                        width={110}
+
                                     />
-                                    
+
                                     <ButtonGroup>
-                                        <Button onClick={()=>this.decline('cost')} icon="minus" />
-                                        <Button onClick={()=>this.increase('cost')} icon="plus" />
+                                        <Button onClick={() => this.decline('cost')} icon="minus" />
+                                        <Button onClick={() => this.increase('cost')} icon="plus" />
                                     </ButtonGroup>
 
-                                </div> 
+                                </div>
                             </Col>
-                            <Col  md={3} >
+                            <Col md={3} >
                                 {/* <div> */}
-                                    <h4  style={{ marginBottom: '16px'}}>Efficiency  <i className="ion-speedometer" /></h4>
-                                    <Progress
+                                <h4 style={{ marginBottom: '16px' }}>Efficiency  <i className="ion-speedometer" /></h4>
+                                <Progress
                                     type="circle"
                                     percent={this.state.efficiencyPercent}
                                     style={marginStyle}
                                     status='active'
                                     width={110}
-                                    />
-                                    <ButtonGroup>
-                                        <Button onClick={()=>this.decline('efficiency')} icon="minus" />
-                                        <Button onClick={()=>this.increase('efficiency')} icon="plus" />
-                                    </ButtonGroup>
+                                />
+                                <ButtonGroup>
+                                    <Button onClick={() => this.decline('efficiency')} icon="minus" />
+                                    <Button onClick={() => this.increase('efficiency')} icon="plus" />
+                                </ButtonGroup>
                                 {/* </div>  */}
                             </Col>
-                            <Col  md={3} >
+                            <Col md={3} >
                                 {/* <div> */}
-                                    <h4  style={{ marginBottom: '16px'}}>Insights  <i className="ion-android-bulb" /></h4>
-                                    <Progress
+                                <h4 style={{ marginBottom: '16px' }}>Insights  <i className="ion-android-bulb" /></h4>
+                                <Progress
                                     type="circle"
                                     percent={this.state.insightsPercent}
                                     style={marginStyle}
                                     status='active'
                                     width={110}
-                                    />
-                                    <ButtonGroup>
-                                        <Button onClick={()=>this.decline('insights')} icon="minus" />
-                                        <Button onClick={()=>this.increase('insights')} icon="plus" />
-                                    </ButtonGroup>
+                                />
+                                <ButtonGroup>
+                                    <Button onClick={() => this.decline('insights')} icon="minus" />
+                                    <Button onClick={() => this.increase('insights')} icon="plus" />
+                                </ButtonGroup>
                                 {/* </div>  */}
                             </Col>
-                            <Col  md={3} >
+                            <Col md={3} >
                                 {/* <div> */}
-                                    <h4  style={{ marginBottom: '16px'}}>UX   <Icon type="user" /></h4>
-                                    <Progress
+                                <h4 style={{ marginBottom: '16px' }}>UX   <Icon type="user" /></h4>
+                                <Progress
                                     type="circle"
                                     percent={this.state.uxPercent}
                                     style={marginStyle}
                                     status='active'
                                     width={110}
-                                    />
-                                    <ButtonGroup >
-                                        <Button onClick={()=>this.decline('ux')} icon="minus" />
-                                        <Button onClick={()=>this.increase('ux')} icon="plus" />
-                                    </ButtonGroup>
+                                />
+                                <ButtonGroup >
+                                    <Button onClick={() => this.decline('ux')} icon="minus" />
+                                    <Button onClick={() => this.increase('ux')} icon="plus" />
+                                </ButtonGroup>
                                 {/* </div>  */}
                             </Col>
-            
-                        
+
+
                         </Row>
                     </div>
                     <div className='description-container'>
@@ -432,13 +423,13 @@ class NewIdea extends React.Component {
                     <div className='button-container'>
                         <FormControlLabel
                             control={
-                            <Checkbox 
-                                checked={this.state.depOnly}
-                                onChange={this.handleDepChange}
-                                disableRipple={true}
-                                style={{ height: 12, margin: "0px" }} 
-                            />}
-                            label={<span style={{ margin: "0px 0px 0px -8px", padding: "0px", fontWeight: 300, fontSize: 14 }}>{UserProfile.getDep()} Cluster only</span>}
+                                <Checkbox
+                                    checked={this.state.depOnly}
+                                    onChange={this.handleDepChange}
+                                    disableRipple={true}
+                                    style={{ height: 12, margin: "0px" }}
+                                />}
+                            label={<span style={{ margin: "0px 0px 0px -8px", padding: "0px", fontWeight: 300, fontSize: 14 }}>{this.props.profile.department} Cluster only</span>}
                             style={{ margin: "0px", padding: "0px" }}
                         />
                         <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
@@ -471,4 +462,7 @@ class NewIdea extends React.Component {
     }
 };
 
-export default NewIdea;
+
+export default connect(state => ({
+    profile: state.Auth.get('profile'),
+}))(NewIdea);

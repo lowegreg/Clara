@@ -16,16 +16,21 @@ export default class AdminFolders extends React.Component {
             priorityOpen: true,
             liveOpen: true,
             otherOpen: false,
+            catOpen: false,
         };
 
         this.handlePriorityToggle = this.handlePriorityToggle.bind(this);
         this.handleLiveToggle = this.handleLiveToggle.bind(this);
         this.handleOtherToggle = this.handleOtherToggle.bind(this);
         this.handleFolderChange = this.handleFolderChange.bind(this);
+        this.handleCatToggle = this.handleCatToggle.bind(this);
     }
 
     handlePriorityToggle() {
         this.setState({ priorityOpen: !this.state.priorityOpen });
+    }
+    handleCatToggle() {
+        this.setState({ catOpen: !this.state.catOpen });
     }
 
     handleLiveToggle() {
@@ -58,6 +63,24 @@ export default class AdminFolders extends React.Component {
                         </ListItem>
                         <ListItem button onClick={() => this.handleFolderChange(1)} divider>
                             <ListItemText primary="Cold" className="nested" />
+                        </ListItem>
+                    </Collapse>
+                    <ListItem button onClick={this.handleCatToggle}>
+                        <ListItemText primary="Category" />
+                        {this.state.catOpen ? <ExpandLess /> : <ExpandMore />}
+                    </ListItem>
+                    <Collapse in={this.state.catOpen} timeout="auto" unmountOnExit>
+                        <ListItem selected button onClick={() => this.handleFolderChange(10)}>
+                            <ListItemText primary="Cost" className="nested" />
+                        </ListItem>
+                        <ListItem button onClick={() => this.handleFolderChange(11)} >
+                            <ListItemText primary="Efficiency" className="nested" />
+                        </ListItem>
+                        <ListItem button onClick={() => this.handleFolderChange(12)} >
+                            <ListItemText primary="Insights" className="nested" />
+                        </ListItem>
+                        <ListItem button onClick={() => this.handleFolderChange(13)} divider>
+                            <ListItemText primary="UX" className="nested" />
                         </ListItem>
                     </Collapse>
                     <ListItem button onClick={this.handleLiveToggle}>
@@ -96,7 +119,7 @@ export default class AdminFolders extends React.Component {
                             <ListItemText primary="Duplicated" className="nested" />
                         </ListItem>
                     </Collapse>
-                </List> 
+                </List>
             </div>
         );
     }

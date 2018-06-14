@@ -3,15 +3,14 @@ import React, { Component } from 'react';
 import NewIdea from './Components/NewIdea';
 import SidebarLeft from './Components/SidebarLeft';
 import SidebarRight from './Components/SidebarRight';
-import { ListView } from './Components/ListView';
-import { FocusView } from './Components/FocusView';
+import ListView from './Components/ListView';
+import FocusView from './Components/FocusView';
 import { AdminPage } from './Components/Admin/AdminPage';
 import './App.css';
 import './Components/IdeaCard.css';
 import bkg from './bkg2.png';
 import SettingsPage from './Components/SettingsPage';
-import UserProfile from './UserProfile';
-
+import { connect } from 'react-redux';
 class App extends Component {
 	constructor(props) {
 		super(props);
@@ -21,7 +20,7 @@ class App extends Component {
 			explicitRefresh: false,
 			loggedIn: false,
 			departments: true,
-			activeFilters: ['Innovation', UserProfile.getDep()],
+			activeFilters: ['Innovation', this.props.profile.department],
 			deepDive: false,
 			deepDiveID: 0,
 			deepDiveOrigin: "",
@@ -42,7 +41,7 @@ class App extends Component {
 
 	handleLogin = (login) => {
 		if (login) {
-			this.setState({ loggedIn: true, activeFilters: ['Innovation', UserProfile.getDep()] });
+			this.setState({ loggedIn: true, activeFilters: ['Innovation', this.props.profile.department] });
 		}
 	}
 
@@ -92,53 +91,45 @@ class App extends Component {
 	}
 
 	render() {
-		
-			let mainContent; // conditional rendering of main content based on current view
-			if (this.state.adminView) {
-				mainContent = <AdminPage onExitAdmin={this.handleExitAdmin} />;
-			} else if (this.state.settingsOn) {
-				mainContent = <SettingsPage toggleSettings={this.toggleSettings.bind(this)} />
-			} else { 
-				// home page
-				let filters;
-				if (this.state.departments) { // this is always true unless we manually disable departments
-					filters = this.state.activeFilters;
-				}
 
-				let deepDive;
-				if (this.state.deepDive) {
-					deepDive = <FocusView id={this.state.deepDiveID} closeDeepDive={this.handleResurface} />
-				}
-
-				mainContent =
-					<div className="main-page">
-						{deepDive}
-						<div className="main-sidebar-left">
-							<SidebarLeft onDeepDive={this.handleDeepDive} handleFilters={this.handleFilters.bind(this)} departments={this.state.departments} filters={filters} />
-							<SidebarRight onDeepDive={this.handleDeepDive} />
-						</div>
-						<div className="main-content">
-							<NewIdea tabChange={this.handleTabChange} onDeepDive={this.handleDeepDive} />
-							<ListView tab={this.state.activeTab} filters={filters} onDeepDive={this.handleDeepDive} explicitRefresh={this.state.explicitRefresh} />
-						</div>
-						
-					</div>;
+		let mainContent; // conditional rendering of main content based on current view
+		if (this.state.adminView) {
+			mainContent = <AdminPage onExitAdmin={this.handleExitAdmin} />;
+		} else if (this.state.settingsOn) {
+			mainContent = <SettingsPage toggleSettings={this.toggleSettings.bind(this)} />
+		} else {
+			// home page
+			let filters;
+			if (this.state.departments) { // this is always true unless we manually disable departments
+				filters = this.state.activeFilters;
 			}
-			return (
-				<div className="App">
-					<div style={styles.background} />
-					{/* <NavBar	// same nav bar for home, admin, and settings pages
-						onTabChange={this.handleTabChange}
-						onDeepDive={this.handleDeepDive}
-						onLogout={this.handleLogout.bind(this)}
-						onSwitchToAdmin={this.handleSwitchToAdmin}
-						toggleSettings={this.toggleSettings.bind(this)}
-						settingsMode={this.state.settingsOn}
-					/> */}
-					{mainContent}
-				</div>
-			);
-		
+
+			let deepDive;
+			if (this.state.deepDive) {
+				deepDive = <FocusView id={this.state.deepDiveID} closeDeepDive={this.handleResurface} />
+			}
+
+			mainContent =
+				<div className="main-page">
+					{deepDive}
+					<div className="main-sidebar-left">
+						<SidebarLeft onDeepDive={this.handleDeepDive} handleFilters={this.handleFilters.bind(this)} departments={this.state.departments} filters={filters} />
+						<SidebarRight onDeepDive={this.handleDeepDive} />
+					</div>
+					<div className="main-content">
+						<NewIdea tabChange={this.handleTabChange} onDeepDive={this.handleDeepDive} />
+						<ListView tab={this.state.activeTab} filters={filters} onDeepDive={this.handleDeepDive} explicitRefresh={this.state.explicitRefresh} />
+					</div>
+
+				</div>;
+		}
+		return (
+			<div className="App">
+				<div style={styles.background} />
+				{mainContent}
+			</div>
+		);
+
 	}
 }
 
@@ -156,4 +147,7 @@ const styles = {
 	},
 }
 
-export default App;
+//export default App;
+export default connect(state => ({
+	profile: state.Auth.get('profile'),
+}))(App);

@@ -4,15 +4,16 @@ import Active from './Active.png';
 import inActive from './inActive.png';
 import "typeface-roboto";
 import "typeface-lato";
-import { MyLatestIdeaCard } from './MyLatestIdeaCard';
+import MyLatestIdeaCard from './MyLatestIdeaCard';
 import UserProfile from '../UserProfile';
+import { connect } from 'react-redux';
 
 class SidebarLeft extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             departments: this.props.departments,
-            filters: ['Innovation', UserProfile.getDep()],
+            filters: ['Innovation', this.props.profile.department],
             activeFilter: this.props.filters,
             myPosts: []
         }
@@ -29,14 +30,14 @@ class SidebarLeft extends React.Component {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    empID: UserProfile.getID()
+                    empID: this.props.profile.employeeId
                 })
             })
             let responseJson = await response.json();
-            if(responseJson.value.length > 0) {
+            if (responseJson.value.length > 0) {
                 this.setState({ myPosts: responseJson.value });
             }
-        }catch(err) {
+        } catch (err) {
             console.log(err);
         }
     }
@@ -48,7 +49,7 @@ class SidebarLeft extends React.Component {
                     follow={!!+post.followVal} targetDep={post.targetDep} desc={post.descrip} rating={post.rating} empID={post.empID} like={!!+post.boolVal} flagged={post.adminFlag}
                     status={post.status} numComments={post.comments} tab={this.state.stateTab} tabChange={this.props.tabChange} onDeepDive={this.props.onDeepDive} onUpdate={this.openUpdatePopover} />
             );
-        }else {
+        } else {
             return null;
         }
     }
@@ -105,7 +106,7 @@ class SidebarLeft extends React.Component {
     // render the side bar, displaying internal wide posts and the users 
     // own cluster, as well as render 2 most recently updated posts
     render() {
-        let dep = UserProfile.getDep();
+        let dep = this.props.profile.department;
         return (
             <div>
                 <div className='left-sidebar'>
@@ -117,7 +118,7 @@ class SidebarLeft extends React.Component {
                                 <img className="filter-img" alt="no img" name="all-img" id="Innovation" src={Active} />
                             </div>
                         </button>
-                        
+
                         <button type="button" onClick={this.handleClick.bind(this)} name="it-dep-button" id="it-dep" value={dep}>
                             <div className="filter-row">
                                 <p>{dep} Cluster</p>
@@ -135,4 +136,9 @@ class SidebarLeft extends React.Component {
     }
 }
 
-export default SidebarLeft;
+
+export default connect(
+    state => ({
+        profile: state.Auth.get('profile'),
+    }),
+)(SidebarLeft);

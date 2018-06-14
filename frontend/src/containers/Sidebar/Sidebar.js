@@ -12,6 +12,7 @@ import Logo from '../../components/utility/logo';
 import { rtl } from '../../config/withDirection';
 import Knob from 'react-canvas-knob';
 import { Row } from 'react-flexbox-grid';
+import './styles.css';
 
 const SubMenu = Menu.SubMenu;
 //const MenuItemGroup = Menu.ItemGroup;
@@ -150,7 +151,11 @@ class Sidebar extends Component {
     const scrollheight = app.height;
     const styling = {
       backgroundColor: customizedTheme.backgroundColor,
-      height: scrollheight, overflow: 'auto',overflowX:'hidden'
+      height: scrollheight, overflow: 'auto', overflowX: 'hidden'
+    };
+    const styling2 = {
+      backgroundColor: customizedTheme.backgroundColor,
+      height: scrollheight, overflow: 'hidden'
     };
     const submenuStyle = {
       backgroundColor: 'rgba(0,0,0,0.3)',
@@ -161,7 +166,7 @@ class Sidebar extends Component {
     };
     return (
       <SidebarWrapper>
-        <Sider 
+        <Sider
           trigger={null}
           collapsible={true}
           collapsed={collapsed}
@@ -169,37 +174,38 @@ class Sidebar extends Component {
           className="isomorphicSidebar"
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
-          style={styling}
+          style={styling2}
         >
           <Logo collapsed={collapsed} />
-          {!collapsed &&
-            <div style={{ width: '225px', alignItems: 'center', justifyContent: 'center', flex: 1 }}>
-              <Carousel autoplay autoplaySpeed={6000}>
-                {this.state.statsArray.map((stat, key) => (
-                  <div style={{ height: '180px' }} key={key}>
-                    <Row style={{ alignItems: 'center', justifyContent: 'center', flex: 1, marginTop: '30px', marginBottom: '20px' }}>
-                      <Knob
-                        value={stat.value}
-                        onChange={this.handleChange}
-                        width={100}
-                        height={50}
-                        max={stat.total}
-                        angleArc={180}
-                        angleOffset={-90}
-                        title={stat.title}
-                        fgColor={'#4dc3ce'}
-                        disableMouseWheel
-                      />
-                    </Row>
-                    <Row style={{ alignItems: 'center', justifyContent: 'center', flex: 1, marginTop: '0px', }}>
-                      <div style={{ width: '150px', textAlign: 'center' }}><p style={{ color: 'white' }}>{stat.title}</p></div>
-                    </Row>
-                  </div>
-                ))}
-              </Carousel >
-            </div>
-          }
-          
+          <div style={styling} className="scrollbar" id="style-1">
+            {!collapsed &&
+              <div style={{ width: '225px', alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+                <Carousel autoplay autoplaySpeed={6000}>
+                  {this.state.statsArray.map((stat, key) => (
+                    <div style={{ height: '180px' }} key={key}>
+                      <Row style={{ alignItems: 'center', justifyContent: 'center', flex: 1, marginTop: '30px', marginBottom: '20px' }}>
+                        <Knob
+                          value={stat.value}
+                          onChange={this.handleChange}
+                          width={100}
+                          height={50}
+                          max={stat.total}
+                          angleArc={180}
+                          angleOffset={-90}
+                          title={stat.title}
+                          fgColor={'#4dc3ce'}
+                          disableMouseWheel
+                        />
+                      </Row>
+                      <Row style={{ alignItems: 'center', justifyContent: 'center', flex: 1, marginTop: '0px', }}>
+                        <div style={{ width: '150px', textAlign: 'center' }}><p style={{ color: 'white' }}>{stat.title}</p></div>
+                      </Row>
+                    </div>
+                  ))}
+                </Carousel >
+              </div>
+            }
+
             <Menu
               onClick={this.handleClick}
               theme="dark"
@@ -208,6 +214,7 @@ class Sidebar extends Component {
               selectedKeys={app.current}
               onOpenChange={this.onOpenChange}
               className="isoDashboardMenu"
+
             >
               <Menu.Item key=" " >
                 <Link to={`${url}`}>
@@ -224,7 +231,7 @@ class Sidebar extends Component {
                 key="stories"
                 title={
                   <span className="isoMenuHolder" style={submenuColor}>
-                    <i className="ion-android-bulb" />
+                    <i className="ion-stats-bars" />
                     <span className="nav-text">
                       <IntlMessages id="sidebar.stories" />
                     </span>
@@ -292,9 +299,9 @@ class Sidebar extends Component {
                 </Link>
               </Menu.Item>
               <Menu.Item key="Clara Suggestions" >
-                <Link to={`${url}/claraSuggestion`}>
+                <Link to={`${url}/ideas`}>
                   <span className="isoMenuHolder" style={submenuColor}>
-                    <i className="ion-android-happy" />
+                    <i className="ion-android-bulb" />
                     <span className="nav-text">
                       <IntlMessages id="sidebar.suggestions" />
                     </span>
@@ -334,6 +341,7 @@ class Sidebar extends Component {
 
               {getDevSidebar(url, submenuColor)}
             </Menu>
+          </div>
         </Sider>
       </SidebarWrapper>
     );

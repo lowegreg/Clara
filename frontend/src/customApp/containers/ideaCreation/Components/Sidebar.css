@@ -4,7 +4,7 @@
     padding: 10px;
     background: white;
     border-radius: 3px;
-    box-shadow: 0px 2px 6px -2px gray;
+    /* box-shadow: 0px 2px 6px -2px gray; */
     /* opacity: 0.8; */
     font-family: "Lato";
 }
@@ -25,7 +25,7 @@
     padding: 10px;
     background: white;
     border-radius: 3px;
-    box-shadow: 0px 2px 6px -2px gray;
+    /* box-shadow: 0px 2px 6px -2px gray; */
     /* opacity: 0.8; */
     font-family: "Lato";
 }
@@ -48,7 +48,7 @@
 }
 
 .filters-container button:active {
-    box-shadow: 0 2px #666;
+    /* box-shadow: 0 2px #666; */
     transform: translateY(4px);
     outline: none;
     border: none;
@@ -115,7 +115,7 @@ h2.sidebar-header {
 }
 
 .news-container button:active {
-    box-shadow: 0 2px #666;
+    /* box-shadow: 0 2px #666; */
     transform: translateY(4px);
     outline: none;
 }
@@ -127,11 +127,17 @@ h2.sidebar-header {
 .article-author {
     margin-top: -10px;
 }
-
+.deleted-article {
+    border: 1px solid grey;
+    border-radius: 4px;
+    /* box-shadow: 0px 2px 6px -2px rgb(50, 50, 248); */
+} .deleted-article:hover {
+    cursor: pointer;
+}
 .inReview-article {
     border: 1px solid rgb(50, 50, 248);
     border-radius: 4px;
-    box-shadow: 0px 2px 6px -2px rgb(50, 50, 248);
+    /* box-shadow: 0px 2px 6px -2px rgb(50, 50, 248); */
 } .inReview-article:hover {
     cursor: pointer;
 }
@@ -139,21 +145,21 @@ h2.sidebar-header {
 .inProgress-article {
     border: 1px solid orange;
     border-radius: 4px;
-    box-shadow: 0px 2px 6px -2px orange;
+    /* box-shadow: 0px 2px 6px -2px orange; */
 } .inProgress-article:hover {
     cursor: pointer;
 }
 .internal-article {
     border: 1px solid orange;
     border-radius: 4px;
-    box-shadow: 0px 2px 6px -2px orange;
+    /* box-shadow: 0px 2px 6px -2px orange; */
 } .internal-article:hover {
     cursor: pointer;
 }
 .lab-article {
     border: 1px solid orange;
     border-radius: 4px;
-    box-shadow: 0px 2px 6px -2px orange;
+    /* box-shadow: 0px 2px 6px -2px orange; */
 } .lab-article:hover {
     cursor: pointer;
 }
@@ -161,7 +167,7 @@ h2.sidebar-header {
 .Completed-article {
     border: 1px solid #009d3c;
     border-radius: 4px;
-    box-shadow: 0px 2px 6px -2px #009d3c;
+    /* box-shadow: 0px 2px 6px -2px #009d3c; */
 } .Completed-article:hover {
     cursor: pointer;
 }

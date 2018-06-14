@@ -13,6 +13,7 @@ import Lightbulb from '@material-ui/icons/LightbulbOutline';
 import { NotificationPanel } from './NotificationPanel';
 import './NavBar.css';
 import './NewIdea.css';
+import { connect } from 'react-redux';
 
 class NavBar extends Component {
     constructor(props) {
@@ -21,7 +22,7 @@ class NavBar extends Component {
         this.state = {
             search: [],
             searchField: '', //initialize search input to empty
-            settingAnchorEl: null, 
+            settingAnchorEl: null,
             settingOpen: false, //this controls if the settings dropdown is displayed
             searchOn: false, //this controls if the search dropdown is displayed
         };
@@ -54,8 +55,8 @@ class NavBar extends Component {
         this.setState({ settingOpen: true, settingAnchorEl: event.currentTarget });
     };
     handleClose = () => {
-		this.setState({ settingOpen: false});
-	};
+        this.setState({ settingOpen: false });
+    };
     handleRequestClose = () => { //close settings menu
         this.setState({ settingOpen: false });
     };
@@ -70,7 +71,7 @@ class NavBar extends Component {
         if (value.substr(-1) === ' ') {
             this.createOptions();
             document.getElementById("nav-myDropdown").classList.add("show");
-        } else if(value.trim() === '') {
+        } else if (value.trim() === '') {
             this.removeSearch();
         }
     };
@@ -92,16 +93,16 @@ class NavBar extends Component {
                 distance: 100,
                 maxPatternLength: 32,
                 minMatchCharLength: 3,
-                keys: ['title','descrip','firstName']
+                keys: ['title', 'descrip', 'firstName']
             };
             var fuse = new Fuse(this.state.search, options);
             var post = fuse.search(this.state.searchField);
-            if(post.length < 1){
+            if (post.length < 1) {
                 let node = document.createElement("a");
                 let textnode = document.createTextNode('0 results');
                 node.appendChild(textnode);
                 myNode.appendChild(node);
-            }else {
+            } else {
                 for (var i = 0; i < post.length; i++) {
                     let node = document.createElement("a");
                     let textnode = document.createTextNode(post[i].title);
@@ -147,43 +148,43 @@ class NavBar extends Component {
                         onChange={this.handleSearch}
                         onFocus={this.handleSearch}
                     />
-                    <CloseIcon style={{ marginLeft: 8, cursor: "pointer"}} onClick={this.toggleSearch}/>
+                    <CloseIcon style={{ marginLeft: 8, cursor: "pointer" }} onClick={this.toggleSearch} />
                     <div id="nav-myDropdown" className="nav-dropdown-content"> </div>
                 </div>
             );
         } else { //display buttons
             navPanel = (
                 <div className="nav-buttons">
-                    
+
                     {/* Notification button and all related functions */}
                     <NotificationPanel onDeepDive={this.handleDeepDive} />
 
                     {/* search icon */}
                     <IconButton
-                    onClick={this.toggleSearch}
-                    style={styles.iconButton}
-                    > 
-                        <SearchIcon style={styles.icon}/> 
+                        onClick={this.toggleSearch}
+                        style={styles.iconButton}
+                    >
+                        <SearchIcon style={styles.icon} />
                     </IconButton>
 
                     {/* setting icon */}
-                    <IconButton 
-                    aria-owns={this.state.settingOpen ? 'simple-menu' : null}
-                    aria-haspopup="true"
-                    onClick={this.handleSettingClick}
-                    style={styles.iconButton}
-                    > 
-                        <SettingsIcon style={styles.icon}/> 
+                    <IconButton
+                        aria-owns={this.state.settingOpen ? 'simple-menu' : null}
+                        aria-haspopup="true"
+                        onClick={this.handleSettingClick}
+                        style={styles.iconButton}
+                    >
+                        <SettingsIcon style={styles.icon} />
                     </IconButton>
 
                     {/* setting dropdown */}
                     <Menu
-                    id="simple-menu"
-                    anchorEl={this.state.settingAnchorEl}
-                    open={this.state.settingOpen}
-                    // //onRequestClose={this.handleRequestClose}
-                    style={styles.dropdownMenu}
-                    onClose={this.handleClose}
+                        id="simple-menu"
+                        anchorEl={this.state.settingAnchorEl}
+                        open={this.state.settingOpen}
+                        // //onRequestClose={this.handleRequestClose}
+                        style={styles.dropdownMenu}
+                        onClose={this.handleClose}
                     >
                         <MenuItem key="placeholder" style={{ display: "none" }} />
                         <MenuItem onClick={() => { this.props.toggleSettings(); this.handleRequestClose(); }}>Settings</MenuItem>
@@ -202,7 +203,7 @@ class NavBar extends Component {
                         <p onClick={() => this.props.onTabChange(0, true)}><Lightbulb />&nbsp;&nbsp;Home</p>
                         &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
                         {/* clicking on your name changes ListView to show all ideas you posted and are following, ordered by date posted */}
-                        <p onClick={() => this.props.onTabChange(3, true)}><PersonIcon />&nbsp;&nbsp;{UserProfile.getName()}</p>
+                        <p onClick={() => this.props.onTabChange(3, true)}><PersonIcon />&nbsp;&nbsp;{this.props.profile.firstName}</p>
                     </div>
                     <div className="nav-title">
                         <img src={logo} style={{ height: 40 }} />
@@ -214,7 +215,7 @@ class NavBar extends Component {
     }
 }
 
-export default NavBar;
+
 
 const styles = {
     iconButton: {
@@ -231,3 +232,7 @@ const styles = {
         top: 35,
     },
 }
+
+export default connect(state => ({
+    profile: state.Auth.get('profile'),
+}))(NavBar);

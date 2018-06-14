@@ -1,19 +1,17 @@
 import React from 'react';
 import './Comment.css';
 import './Admin/Admin.css'
-import UserProfile from '../UserProfile';
 import MenuButtonIcon from '@material-ui/icons/MoreHoriz';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Row, Col } from 'react-flexbox-grid';
+import { connect } from 'react-redux';
 
-export class HistoryCard extends React.Component {
+class HistoryCard extends React.Component {
 	constructor(props) {
 		super(props);
-
 		const dateString = this.getTimeElapsed(this.props.date);
-
 		this.state = {
 			message: this.props.message,
 			date: dateString,
@@ -22,15 +20,12 @@ export class HistoryCard extends React.Component {
 			menuAnchorEl: null,
 			menuOpen: false,
 		}
-
-
 	}
 
 	getTimeElapsed(date) {
 		const postDate = new Date(date);
 		const now = new Date();
 		const timeElapsed = Math.abs(now.getTime() - postDate.getTime());
-
 		let elapsed = timeElapsed / 1000;
 		if (elapsed / 60 >= 1) {
 			elapsed /= 60;
@@ -66,11 +61,9 @@ export class HistoryCard extends React.Component {
 
 	render() {
 		let color;
-		if (UserProfile.getID() === this.props.empID) {
+		if (this.props.profile.employeeId === this.props.empID) {
 			color = "rgb(0, 0, 216)";
 		}
-
-
 		return (
 			<div className={"comment-card" + (this.props.parent ? this.props.parent : "")}>
 				<div className="deep-dive-row">
@@ -91,3 +84,7 @@ export class HistoryCard extends React.Component {
 		);
 	}
 }
+
+export default connect(state => ({
+	profile: state.Auth.get('profile'),
+}))(HistoryCard);

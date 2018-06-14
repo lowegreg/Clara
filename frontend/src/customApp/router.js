@@ -2,7 +2,7 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import asyncComponent from '../helpers/AsyncFunc';
 
-export default function(url) {
+export default function (url) {
   const routers = [];
   routers.push(
     <Route
@@ -55,9 +55,9 @@ export default function(url) {
   routers.push(
     <Route
       exact
-      key="claraSuggestion"
-      path={`${url}/claraSuggestion`}
-      component={asyncComponent(() => import('./containers/claraSuggestion'))}
+      key="ideas"
+      path={`${url}/ideas`}
+      component={asyncComponent(() => import('./containers/ideaCreation/App'))}
     />
   );
   routers.push(
@@ -87,19 +87,11 @@ export default function(url) {
   routers.push(
     <Route
       exact
-      key="ideas"
-      path={`${url}/ideas`}
-      component={asyncComponent(() => import('./containers/ideaCreation/App'))}
-    />
-  );
-  routers.push(
-    <Route
-      exact
       key="adminSuggestions"
       path={`${url}/adminSuggestions`}
       component={asyncComponent(() => import('./containers/ideaCreation/AdminSetUp'))}
     />
   );
-  
+
   return routers;
 }

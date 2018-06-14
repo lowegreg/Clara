@@ -1,21 +1,19 @@
 import React from 'react';
 import './Admin.css';
 import AdminFocusPopover from './AdminFocusPopover';
-
+import { connect } from 'react-redux';
 import UserProfile from '../../UserProfile';
 import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem'; 
-
-
-
+import MenuItem from '@material-ui/core/MenuItem';
 import StarIcon from '@material-ui/icons/Star';
-
 import { Row, Col } from 'react-flexbox-grid';
+import CommentCard from '../CommentCard.js';
+import HistoryCard from '../historyCard.js';
+import Progress from '../../../../../components/uielements/progress';
+import { rtl } from '../../../../../config/withDirection';
+import { Icon } from 'antd';
 
-import { CommentCard } from '../CommentCard.js';
-import { HistoryCard } from '../historyCard.js';
-
-export default class AdminFocus extends React.Component {
+class AdminFocus extends React.Component {
     constructor(props) {
         super(props);
 
@@ -36,10 +34,14 @@ export default class AdminFocus extends React.Component {
             updateMenuAnchor: null,
             updating: false,
             activeTab: 0,
-            likes:0, 
-            comments:[],
-            hisory:[],
-            numContribute:0
+            likes: 0,
+            comments: [],
+            hisory: [],
+            numContribute: 0,
+            cost: 0,
+            efficiency: 0,
+            insights: 0,
+            ux: 0,
         };
 
         this.setActiveTab = this.setActiveTab.bind(this);
@@ -64,43 +66,47 @@ export default class AdminFocus extends React.Component {
     // get base data for idea
     async getData(id) {
         try {
-            fetch(UserProfile.getDatabase() + "findPost" , {
+            fetch(UserProfile.getDatabase() + "findPost", {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    empID: UserProfile.getID(),
+                    empID: this.props.profile.employeeId,
                     postID: id
                 }),
-            }).then((response) => 
-                 response.json()     
-            ).then((parsedData) => {
-                if (parsedData.value.length < 1) {
-                    console.log("can't find idea");
-                } else {
-                    let date = new Date(parsedData.value[0].date)
+            }).then((response) =>
+                response.json()
+                ).then((parsedData) => {
+                    if (parsedData.value.length < 1) {
+                        console.log("can't find idea");
+                    } else {
+                        let date = new Date(parsedData.value[0].date)
 
-                    this.setState({
-                        title: parsedData.value[0].title,
-                        desc: parsedData.value[0].descrip,
-                        date: date.toDateString(),
-                        empID: parsedData.value[0].empID,
-                        authorFirst: parsedData.value[0].firstName,
-                        authorLast: parsedData.value[0].lastName,
-                        rating: parsedData.value[0].rating,
-                        numComments: parsedData.value[0].comments,
-                        status: parsedData.value[0].status,
-                        postID: parsedData.value[0].postID,
-                        targetDep: parsedData.value[0].targetDep,
-                        flagged: Boolean(parsedData.value[0].adminFlag),
-                    });
-                    this.getComments(this.props.postID)
-                    this.getHistory(this.props.postID)
-                    this.getContributors(this.props.postID)
-                }
-            });
+                        this.setState({
+                            title: parsedData.value[0].title,
+                            desc: parsedData.value[0].descrip,
+                            date: date.toDateString(),
+                            empID: parsedData.value[0].empID,
+                            authorFirst: parsedData.value[0].firstName,
+                            authorLast: parsedData.value[0].lastName,
+                            rating: parsedData.value[0].rating,
+                            numComments: parsedData.value[0].comments,
+                            status: parsedData.value[0].status,
+                            postID: parsedData.value[0].postID,
+                            targetDep: parsedData.value[0].targetDep,
+                            flagged: Boolean(parsedData.value[0].adminFlag),
+                            cost: parsedData.value[0].cost,
+                            efficiency: parsedData.value[0].efficiency,
+                            insights: parsedData.value[0].insights,
+                            ux: parsedData.value[0].ux,
+                        });
+                        this.getComments(this.props.postID)
+                        this.getHistory(this.props.postID)
+                        this.getContributors(this.props.postID)
+                    }
+                });
         } catch (e) {
             console.log(e);
         }
@@ -126,66 +132,69 @@ export default class AdminFocus extends React.Component {
     }
 
 
-    
+
     async getContributors(postID) {
-        fetch(UserProfile.getDatabase() + 'contributors' , {
-			method: 'POST',
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				postID:postID,
-	
-			})})
-			.then((response) =>  response.json())
-			.then(responseJson=>{
-                
-                this.setState({  numContribute: responseJson.value.length})
-			}  )
-			.catch((error) => {
-				console.error(error);
-        });
+        fetch(UserProfile.getDatabase() + 'contributors', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                postID: postID,
+
+            })
+        })
+            .then((response) => response.json())
+            .then(responseJson => {
+
+                this.setState({ numContribute: responseJson.value.length })
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     }
     async getComments(postID) {
-        fetch(UserProfile.getDatabase() + 'getComments' , {
-			method: 'POST',
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				postID:postID,
-	
-			})})
-			.then((response) =>  response.json())
-			.then(responseJson=>{
-                this.setState({  comments:responseJson.value, numComments: responseJson.value.length})
-			}  )
-			.catch((error) => {
-				console.error(error);
-        });
+        fetch(UserProfile.getDatabase() + 'getComments', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                postID: postID,
+
+            })
+        })
+            .then((response) => response.json())
+            .then(responseJson => {
+                this.setState({ comments: responseJson.value, numComments: responseJson.value.length })
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     }
     async getHistory(postID) {
-        fetch(UserProfile.getDatabase() + 'posts/GetPostStatusHistory' , {
-			method: 'POST',
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				postID:postID,
-	
-			})})
-			.then((response) =>  response.json())
-			.then(responseJson=>{
-                this.setState({  history:responseJson.value, })
-			}  )
-			.catch((error) => {
-				console.error(error);
-        });
-    } 
-  
+        fetch(UserProfile.getDatabase() + 'posts/GetPostStatusHistory', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                postID: postID,
+
+            })
+        })
+            .then((response) => response.json())
+            .then(responseJson => {
+                this.setState({ history: responseJson.value, })
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+
     // backend calls for sending a status update
     async handleStatusChange(status, message) {
         let date = new Date();
@@ -194,31 +203,31 @@ export default class AdminFocus extends React.Component {
         try {
             fetch(UserProfile.getDatabase() + "admin/ChangeStatus", {
                 method: 'POST',
-				headers: {
-					'Accept': 'application/json',
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({
-					status: status,
-					postID: this.props.postID,
-				})
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    status: status,
+                    postID: this.props.postID,
+                })
             }).then(() => {
                 try {
                     fetch(UserProfile.getDatabase() + "posts/UpdatePostHistory", {
                         method: 'POST',
-						headers: {
-							'Accept': 'application/json',
-							'Content-Type': 'application/json',
-						},
-						body: JSON.stringify({
-							postID: this.props.postID,
-							empID: UserProfile.getID(),
-							previous: this.state.status,
-							type: 'Status',
-							new: status,
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            postID: this.props.postID,
+                            empID: this.props.profile.employeeId,
+                            previous: this.state.status,
+                            type: 'Status',
+                            new: status,
                             date: date,
                             message: message,
-						})
+                        })
                     })
                 } catch (e) {
                     console.log(e);
@@ -271,7 +280,7 @@ export default class AdminFocus extends React.Component {
             }).then(() => {
                 this.handleCancelUpdate();
             })
-        } catch(e) {
+        } catch (e) {
             console.log(e);
         }
     }
@@ -300,52 +309,55 @@ export default class AdminFocus extends React.Component {
         }
     }
     handleDelete() {
-       
-		var localDate = new Date();
-		localDate.setSeconds(localDate.getSeconds() - 1);
-		try {
-			fetch(UserProfile.getDatabase() + 'posts/deletePostByStatus', {
-				method: 'POST',
-				headers: {
-					'Accept': 'application/json',
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({
-					postID: this.state.postID,
-					empID: this.state.empID,
-				})
-			}).then(()=> {
-						try {
-							fetch(UserProfile.getDatabase() + 'posts/UpdatePostHistory', {
-								method: 'POST',
-								headers: {
-									'Accept': 'application/json',
-									'Content-Type': 'application/json',
-								},
-								body: JSON.stringify({
-									postID: this.state.postID,
-									empID: this.state.empID,
-									type: 'Status',
-									previous: this.state.status,
-									new: 'deleted',
-									date: localDate
-								})
-							}).then(() => { // change state to deleted
-								this.setState({
-                                    status: 'deleted'
-                                })
-							});
-						} catch (err) {
-							console.log(err);
-						}
-			});
-		} catch (err) {
-			console.log(err);
-		}
-	}
+
+        var localDate = new Date();
+        localDate.setSeconds(localDate.getSeconds() - 1);
+        try {
+            fetch(UserProfile.getDatabase() + 'posts/deletePostByStatus', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    postID: this.state.postID,
+                    empID: this.state.empID,
+                })
+            }).then(() => {
+                try {
+                    fetch(UserProfile.getDatabase() + 'posts/UpdatePostHistory', {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            postID: this.state.postID,
+                            empID: this.state.empID,
+                            type: 'Status',
+                            previous: this.state.status,
+                            new: 'deleted',
+                            date: localDate
+                        })
+                    }).then(() => { // change state to deleted
+                        this.setState({
+                            status: 'deleted'
+                        })
+                    });
+                } catch (err) {
+                    console.log(err);
+                }
+            });
+        } catch (err) {
+            console.log(err);
+        }
+    }
     render() {
+        const marginStyle = {
+            margin: rtl === 'rtl' ? '0 0 10px 10px' : '0 10px 10px 0',
+        };
         let popover; // conditionally display update popover
-        
+
         if (this.state.updating) {
             popover = <AdminFocusPopover type="update" onSend={this.handleStatusChange} onClose={this.handleCancelUpdate} />
         }
@@ -358,17 +370,17 @@ export default class AdminFocus extends React.Component {
                 </div>
             );
         } else {
-           
+
             return (
                 <div className="admin-focus" >
                     <div className="admin-focus-toolbar">
-                    {/* currently, only the update button on the toolbar works */}
+                        {/* currently, only the update button on the toolbar works */}
                         <p className="admin-toolbar-button" onClick={this.handleUpdateMenuOpen}>Update</p>
                         <Menu // this menu is not in use right now
                             id="admin-update-menu"
                             anchorEl={this.state.updateMenuAnchor}
                             open={this.state.updateMenuOpen}
-                            //onRequestClose={this.handleUpdateMenuClose}
+                        //onRequestClose={this.handleUpdateMenuClose}
                         >
                             <MenuItem>Review</MenuItem>
                         </Menu>
@@ -397,45 +409,97 @@ export default class AdminFocus extends React.Component {
                         </div>
                     </div>
                     <div>
-                        
-                     
-                        <div style={{marginLeft:'20px'}}>
-                            {this.state.activeTab===0 &&
-                                <div>
-                                    <Row><Col xs={5}><h4 style={{textAlign:'right', marginBottom: '10px'}}>Likes:</h4></Col ><Col xs={6}><h5 style={{textAlign:'left', marginBottom: '10px'}}>{this.state.rating}</h5></Col></Row>
-                                    <Row><Col xs={5}><h4 style={{textAlign:'right', marginBottom: '10px'}}>Comments:</h4></Col><Col xs={6}><h5 style={{textAlign:'left', marginBottom: '10px'}}>{this.state.numComments}</h5></Col></Row>
-                                    <Row><Col xs={5}><h4 style={{textAlign:'right'}}>Number of contributors:</h4></Col><Col xs={6}><h5 style={{textAlign:'left'}}>{this.state.numContribute}</h5></Col></Row>
-                                    
-                                
+
+
+                        <div style={{ marginLeft: '20px' }}>
+                            {this.state.activeTab === 0 &&
+                                <div >
+                                    <div style={{ justifyContent: 'center', display: 'inline-flex' }}>
+                                        <Row>
+                                            <Col xs={3}>
+                                                <h4 style={{ marginBottom: '16px' }} >Cost  <i className="ion-social-usd" /></h4>
+                                                <Progress
+                                                    type="circle"
+                                                    percent={this.state.cost}
+                                                    style={marginStyle}
+                                                    status='active'
+                                                    width={70}
+                                                />
+                                            </Col>
+
+                                            <Col xs={4}>
+                                                <h4 style={{ marginBottom: '16px' }}>Efficiency  <i className="ion-speedometer" /></h4>
+
+                                                <Progress
+                                                    type="circle"
+                                                    percent={this.state.efficiency}
+                                                    style={marginStyle}
+                                                    status='active'
+                                                    width={70}
+                                                />
+                                            </Col>
+
+                                            <Col xs={3}>
+                                                <h4 style={{ marginBottom: '16px' }}>Insights  <i className="ion-android-bulb" /></h4>
+                                                <Progress
+                                                    type="circle"
+                                                    percent={this.state.insights}
+                                                    style={marginStyle}
+                                                    status='active'
+                                                    width={70}
+                                                />
+                                            </Col>
+                                            <Col xs={2}>
+                                                <h4 style={{ marginBottom: '16px' }}>UX   <Icon type="user" /></h4>
+                                                <Progress
+                                                    type="circle"
+                                                    percent={this.state.ux}
+                                                    style={marginStyle}
+                                                    status='active'
+                                                    width={70}
+                                                />
+                                            </Col>
+                                        </Row>
+                                    </div>
+
+                                    <Row style={{ textAlign: 'center', justifyContent: 'center' }}><Col xs={4}><h4 style={{ textAlign: 'right', marginBottom: '10px' }}>Likes:</h4></Col ><Col xs={4}><h5 style={{ textAlign: 'left', marginBottom: '10px' }}>{this.state.rating}</h5></Col></Row>
+                                    <Row style={{ textAlign: 'center', justifyContent: 'center' }}><Col xs={4}><h4 style={{ textAlign: 'right', marginBottom: '10px' }}>Comments:</h4></Col><Col xs={4}><h5 style={{ textAlign: 'left', marginBottom: '10px' }}>{this.state.numComments}</h5></Col></Row>
+                                    <Row style={{ textAlign: 'center', justifyContent: 'center' }}><Col xs={5}><h4 style={{ textAlign: 'right' }}>Number of contributors:</h4></Col><Col xs={5}><h5 style={{ textAlign: 'left' }}>{this.state.numContribute}</h5></Col></Row>
+
+
                                 </div>
                             }
-                            {this.state.activeTab===1 &&
+                            {this.state.activeTab === 1 &&
                                 // <div > comments</div>
-                            
+
                                 this.state.comments.map(post => { // render comments
                                     return <div key={post.commentID} id="comment-list" style={{ overflowY: 'scroll', maxHeight: "320px", margin: "0px -24px", padding: "0px 24px" }}>
-                                    <CommentCard key={post.commentID} id={post.commentID} postID={this.props.postID} author={post.firstName} date={post.date}
-                                        desc={post.desc} empID={post.empID} live={this.props.status} getComments={this.getComments} parent={this.props.parent} admin />
-                                    </div>   
+                                        <CommentCard key={post.commentID} id={post.commentID} postID={this.props.postID} author={post.firstName} date={post.date}
+                                            desc={post.desc} empID={post.empID} live={this.props.status} getComments={this.getComments} parent={this.props.parent} admin />
+                                    </div>
                                 })
                             }
-                            {this.state.activeTab===2 &&
-                            
-                                 this.state.history.map(hist => { // render comments
+                            {this.state.activeTab === 2 &&
+
+                                this.state.history.map(hist => { // render comments
                                     return <div id="comment-list" key={hist.histID} style={{ overflowY: 'scroll', maxHeight: "320px", margin: "0px -24px", padding: "0px 24px" }}>
                                         {/* <h1>{hist.empID}</h1><h1>{hist.previous}</h1><h1>{hist.type}</h1><h1>{hist.message}</h1><h1>{hist.date}</h1> */}
                                         <HistoryCard key={hist.histID} id={hist.histID} postID={this.props.postID} previous={hist.previous} new={hist.new} date={hist.date}
-                                        message={hist.message} empID={hist.empID} live={this.props.status}  parent={this.props.parent} admin />
-                                    </div>   
+                                            message={hist.message} empID={hist.empID} live={this.props.status} parent={this.props.parent} admin />
+                                    </div>
                                 })
                             }
-                            
+
                         </div>
-                   
-                    </div>    
+
+                    </div>
                 </div>
-                
+
             );
         }
     }
 }
+
+export default connect(state => ({
+    profile: state.Auth.get('profile'),
+}))(AdminFocus);

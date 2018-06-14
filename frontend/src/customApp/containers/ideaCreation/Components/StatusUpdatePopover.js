@@ -1,18 +1,18 @@
 import React from 'react';
 import './IdeaCard.css';
 
-import MenuItem  from '@material-ui/core/MenuItem';
+import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import Input from '@material-ui/core/Input';
-import  InputLabel from '@material-ui/core/InputLabel';
-import  FormControl  from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
 import SendIcon from '@material-ui/icons/Send';
 import CloseIcon from '@material-ui/icons/Close';
 import UserProfile from '../UserProfile';
+import { connect } from 'react-redux';
 
-
-export default class StatusUpdatePopover extends React.Component {
+class StatusUpdatePopover extends React.Component {
     constructor(props) {
         super(props);
 
@@ -66,7 +66,7 @@ export default class StatusUpdatePopover extends React.Component {
                         },
                         body: JSON.stringify({
                             postID: this.props.postID,
-                            empID: UserProfile.getID(),
+                            empID: this.props.profile.employeeId,
                             previous: this.props.prevStatus,
                             type: 'Status',
                             new: this.state.status,
@@ -146,7 +146,7 @@ export default class StatusUpdatePopover extends React.Component {
         }
     }
 
-    handleMessageChange(e) { 
+    handleMessageChange(e) {
         this.setState({ message: e.target.value })
 
         // only valid for submission if status and message are both not empty
@@ -209,7 +209,7 @@ export default class StatusUpdatePopover extends React.Component {
                             </Select>
 
 
-                            
+
                         </FormControl>
                         <div className={"submit-update-" + this.state.sendable.toString()} onClick={this.handleSendUpdate}><SendIcon /></div>
                     </div>
@@ -226,3 +226,9 @@ export default class StatusUpdatePopover extends React.Component {
         );
     }
 }
+
+export default connect(
+    state => ({
+        profile: state.Auth.get('profile'),
+    }),
+)(StatusUpdatePopover);
