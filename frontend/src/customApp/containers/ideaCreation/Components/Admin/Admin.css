@@ -39,7 +39,7 @@
 
 .admin-folders-toolbar {
     /* height: 40px; */
-    background-color: rgb(45,52,70);
+    background-color: rgb(31,36,49);
     z-index: 1;
     display: flex;
     align-items: center;
@@ -67,7 +67,6 @@
 
 .admin-list-container {
     width: 360px;
-   
     height: 100vh;
     overflow-x: 'hidden';
 }
@@ -76,7 +75,7 @@
     /* position: fixed; */
     width: 360px;
     height: 40px;
-    background-color: rgb(45,52,70);
+    background-color: rgb(31,36,49);
     z-index: 1;
     display: flex;
     align-items: center;
@@ -170,7 +169,7 @@
 
 .admin-focus-toolbar {
     height: 40px;
-    background-color: rgb(45,52,70);
+    background-color: rgb(31,36,49);
     z-index: 1;
     display: flex;
     align-items: center;
@@ -220,16 +219,17 @@
 }
 
 .admin-focus-popover-row {
-    /* display: flex; */
-    /* justify-content: space-between; */
+    display: flex;
+    justify-content: space-between;
     align-items: center;
     margin: 0px 0px 16px;
 }
 
 .admin-popover-select {
-    /* display: block !important;
-    margin: auto !important; */
-    width: 120px;
+    /* display: block !important; */
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 110px;
     /* margin-bottom: 24px !important; */
 }
 
@@ -350,4 +350,28 @@
 } .admin-focus-tab-false:hover {
     cursor: pointer;
     color: rgb(136, 136, 136);
+}
+
+
+#style-2::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 10px;
+	background-color: #eeeeee;
+}
+
+#style-2::-webkit-scrollbar
+{
+	width: 6px;
+	background-color: #eeeeee;
+}
+
+#style-2::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    background-color: #2d3446;
+    
 }

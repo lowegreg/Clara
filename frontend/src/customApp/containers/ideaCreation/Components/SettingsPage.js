@@ -14,11 +14,11 @@ class SettingsPage extends Component {
 
     handleMenu = (event) => { //set currentSetting to the id of the menu option that was just clicked
         if (this.state.currentSetting !== event.target.id) {
-            this.setState({currentSetting: event.target.id});
+            this.setState({ currentSetting: event.target.id });
         }
     }
-    
-    render () {
+
+    render() {
         let setting; //change the setting component rendered when currentSetting changes
         // switch (this.state.currentSetting) {
         //     case "0":
@@ -33,20 +33,20 @@ class SettingsPage extends Component {
 
         return (
             <div className='settings-page'>
-                <div className='settings-menu'> 
+                <div className='settings-menu'>
                     <p className="setting-menu-title"> Settings </p>
 
-                    <Divider/>
-                    <div className={"settings-menu-option" + (this.state.currentSetting === "0"? " selected-setting": "")} 
-                    id="0" onClick={this.handleMenu}>
+                    <Divider />
+                    <div className={"settings-menu-option" + (this.state.currentSetting === "0" ? " selected-setting" : "")}
+                        id="0" onClick={this.handleMenu}>
                         Security & Privacy
                     </div>
-                    <Divider/>
-                    <div className={"settings-menu-option" + (this.state.currentSetting === "1"? " selected-setting": "")}
-                    id="1" onClick={this.handleMenu}>
+                    <Divider />
+                    <div className={"settings-menu-option" + (this.state.currentSetting === "1" ? " selected-setting" : "")}
+                        id="1" onClick={this.handleMenu}>
                         Notifications
                     </div>
-                    <Divider/>
+                    <Divider />
                     {/* Use template below to create new menu options */}
                     {/* <div className={"settings-menu-option" + (this.state.currentSetting === "n"? " selected-setting": "")}
                     id="n" onClick={this.handleMenu}>

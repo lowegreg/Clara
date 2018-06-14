@@ -25,6 +25,7 @@ export default class AdminList extends React.Component {
     // fetch ideas based on which folder was selected
     async getIdeas(folder) {
         let status, call, date;
+        console.log(call)
         switch (folder) {
             case 0: call = "admin/GetHotPosts"; break;
             case 1: call = "admin/GetColdPosts"; break;
@@ -36,6 +37,10 @@ export default class AdminList extends React.Component {
             case 7: status = "garaged"; break;
             case 8: status = "notPursued"; break;
             case 9: status = "duplicated"; break;
+            case 10: status = "cost"; break;
+            case 11: status = "efficiency"; break;
+            case 12: status = "insights"; break;
+            case 13: status = "ux"; break;
             default: break;
         }
 
@@ -47,7 +52,7 @@ export default class AdminList extends React.Component {
         } else if (folder === 1) {
             call = "admin/GetColdPosts";
             date.setDate(date.getDate() - 20);
-        } else if (folder >= 2 && folder <= 9) {
+        } else if (folder >= 2 && folder <= 13) {
             call = "admin/GetPosts";
         }
 
@@ -64,9 +69,9 @@ export default class AdminList extends React.Component {
                 })
             });
             let responseJson = await response.json();
-            
+
             this.setState({ ideas: responseJson.value });
-           
+
         } catch (e) {
             console.log(e);
         }
@@ -78,20 +83,20 @@ export default class AdminList extends React.Component {
                 comments={idea.comments} follows={idea.follows} flagged={idea.adminFlag} onFocus={this.props.onFocus} onFlag={this.props.onFlag} />;
         })
     }
-    filter=()=>{
-         this.props.showFilters()
+    filter = () => {
+        this.props.showFilters()
     }
     render() {
-        
+
         return (
             <div className="admin-list-container">
-                <div className="admin-list-toolbar"> 
-                {/* toolbar does NOT have functionality yet */}
-                    <p className="admin-toolbar-button" onClick={this.filter}><Menu/>&nbsp;Filters</p>
-                    <p className="admin-toolbar-button"><span style={{color:'white'}}>Sort by:&nbsp;</span>Recent&nbsp;<ExpandMore /></p>
-                    
+                <div className="admin-list-toolbar">
+                    {/* toolbar does NOT have functionality yet */}
+                    <p className="admin-toolbar-button" onClick={this.filter}><Menu />&nbsp;Filters</p>
+                    <p className="admin-toolbar-button"><span style={{ color: 'white' }}>Sort by:&nbsp;</span>Recent&nbsp;<ExpandMore /></p>
+
                 </div>
-                <div className="admin-list">
+                <div className="admin-list scrollbar" id="style-2">
                     {this.renderIdeas()}
                 </div>
             </div>

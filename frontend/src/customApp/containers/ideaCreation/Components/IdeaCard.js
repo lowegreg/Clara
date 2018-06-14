@@ -1,5 +1,5 @@
 import React from 'react';
-import { CommentList } from './CommentList.js'
+import CommentList from './CommentList.js'
 import LikeIcon from '@material-ui/icons/ThumbUp';
 import CommentIcon from '@material-ui/icons/ChatBubble';
 import NotifIcon from '@material-ui/icons/Notifications';
@@ -17,17 +17,12 @@ import MenuButtonIcon from '@material-ui/icons/MoreVert';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
-
-
 export class IdeaCard extends React.Component {
 	constructor(props) {
 		super(props);
-
 		const dateString = this.getTimeElapsed(this.props.date)
-
 		let ellipses = "";
 		let cardType = "";
-
 		if (this.props.desc.length > 300) {
 			ellipses = "...";
 			cardType = "-expandable";
@@ -39,7 +34,6 @@ export class IdeaCard extends React.Component {
 			likeColor = "#4482ff";
 			like = true;
 		}
-
 
 		let followColor = "rgb(153, 153, 153)";
 		let follow = false;
@@ -108,7 +102,6 @@ export class IdeaCard extends React.Component {
 			.catch((error) => {
 				console.error(error);
 			});
-
 
 	}
 	showSuccess = () => { //show nackbar
@@ -759,7 +752,7 @@ export class IdeaCard extends React.Component {
 					open={this.state.menuOpen}
 					////onRequestClose={this.handleRequestClose}
 					onClose={this.handleClose}
-					style={{ marginTop: 35, marginLeft: -25, padding: '0px', zIndex: 7 }}
+					style={{ marginTop: 35, marginLeft: -25, padding: '0px', zIndex: 800 }}
 				// transitionDuration={100}
 				// MenuListProps={{
 				// 	onMouseEnter: this.enterMenu,
@@ -789,7 +782,6 @@ export class IdeaCard extends React.Component {
 						{statusCircle}
 						<h2 className="Card-date">{this.state.date}</h2>
 					</div>
-
 				</div>
 				<div className="Card-row" id="clickable" onClick={this.handleDeepDive}>
 					<p className="Card-body">{this.state.desc}</p>
@@ -812,9 +804,6 @@ export class IdeaCard extends React.Component {
 					</div>
 					{/* {expandDescButton} */}
 					<h2 className="author">{this.props.targetDep}&nbsp;&nbsp;|&nbsp;&nbsp;<span style={{ color: authorColor }}>{this.props.authorFirst + " " + this.props.authorLast.substr(0, 1)}.</span>{menuButton}</h2>
-
-
-
 
 				</div>
 				{commentList}

@@ -1,12 +1,13 @@
 import React from 'react';
-import { CommentCard } from './CommentCard.js';
+import CommentCard from './CommentCard.js';
 import UserProfile from '../UserProfile';
 import './Comment.css';
 import SendIcon from '@material-ui/icons/Send';
 import Snackbar from '@material-ui/core/Snackbar';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { connect } from 'react-redux';
 
-export class CommentList extends React.Component {
+class CommentList extends React.Component {
     constructor(props) {
         super(props);
 
@@ -108,10 +109,10 @@ export class CommentList extends React.Component {
                     },
                     body: JSON.stringify({
                         postID: this.props.postID,
-                        empID: UserProfile.getID(),
+                        empID: this.props.profile.employeeId,
                         desc: this.state.comment,
                         date: localDate,
-                        firstName: UserProfile.getName()
+                        firstName: this.props.profile.firstName
                     })
                 }).then(() => { // once a comment has been posted
                     this.showSuccess(); // display snackbar alert
@@ -526,3 +527,6 @@ export class CommentList extends React.Component {
         );
     }
 }
+export default connect(state => ({
+    profile: state.Auth.get('profile'),
+}))(CommentList);

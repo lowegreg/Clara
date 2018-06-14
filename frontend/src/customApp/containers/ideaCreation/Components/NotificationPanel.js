@@ -6,7 +6,7 @@ import LikeIcon from '@material-ui/icons/ThumbUp';
 import CommentIcon from '@material-ui/icons/ChatBubble';
 import NotifIcon from '@material-ui/icons/Notifications';
 import UserProfile from '../UserProfile';
-import  CircularProgress from '@material-ui/core/CircularProgress';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import NotifArrow from '@material-ui/icons/ArrowDropUp';
 import './Notifications.css'
 
@@ -23,7 +23,6 @@ export class NotificationPanel extends React.Component {
 
         this.getNotifCounts = this.getNotifCounts.bind(this);
         this.handleOpenTab = this.handleOpenTab.bind(this);
-
         this.getNotifCounts();
     }
 
@@ -37,8 +36,8 @@ export class NotificationPanel extends React.Component {
     // get number of unopened notifications
     async getNotifCounts() {
         this.setState({
-                        unreadNotifs: [],
-                    });
+            unreadNotifs: [],
+        });
         // try {
         //     let response = await fetch(UserProfile.getDatabase() + 'notify/getNum/' + UserProfile.getID());
         //     let responseJson = await response.json();
@@ -61,16 +60,16 @@ export class NotificationPanel extends React.Component {
 
     // backend call to reset number of unopened notifs to zero
     // this does not mark any notifications as "read"
-    async markOpened () {
+    async markOpened() {
         try {
-            fetch(UserProfile.getDatabase() + 'notify/updateNum/' + UserProfile.getID()); 
+            fetch(UserProfile.getDatabase() + 'notify/updateNum/' + UserProfile.getID());
         } catch (err) {
             console.log(err);
         }
     }
 
     // fetch notifs from database
-    async getNotifs () {
+    async getNotifs() {
         try {
             let response = await fetch(UserProfile.getDatabase() + 'notify/getAll/' + UserProfile.getID());;
             let responseJson = await response.json();
@@ -108,7 +107,7 @@ export class NotificationPanel extends React.Component {
     handleOpenTab() {
         if (this.state.tabStatus === 0) {
             this.markOpened(); // reset unopened notif count to zero
-            this.setState({ unreadNotifs: 0 }); 
+            this.setState({ unreadNotifs: 0 });
             document.getElementById('notif-num').classList.remove('show');
             this.setState({ loading: true, tabStatus: 1 }); // open notifs
             this.getNotifs();
@@ -122,13 +121,13 @@ export class NotificationPanel extends React.Component {
     render() {
         return (
             <div className="notif-main">
-                <IconButton onClick={this.handleOpenTab} style={styles.iconButton}> 
-                    <NotifIcon style={styles.icon}/> 
+                <IconButton onClick={this.handleOpenTab} style={styles.iconButton}>
+                    <NotifIcon style={styles.icon} />
                     <div id="notif-num" className="notif-num">{this.state.unreadNotifs}</div>
                 </IconButton>
-                
-                <div className="notif-popup" style={(this.state.tabStatus) ? null: {opacity: 0}}> 
-                    <NotifArrow style={styles.notifArrow}/>
+
+                <div className="notif-popup" style={(this.state.tabStatus) ? null : { opacity: 0 }}>
+                    <NotifArrow style={styles.notifArrow} />
                     <div className="notif-list">
                         {this.renderNotifs()}
                     </div>

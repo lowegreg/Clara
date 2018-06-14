@@ -5,7 +5,9 @@ import MenuButtonIcon from '@material-ui/icons/MoreHoriz';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-export class CommentCard extends React.Component {
+import { connect } from 'react-redux';
+
+class CommentCard extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -17,7 +19,7 @@ export class CommentCard extends React.Component {
 			author: this.props.author,
 			menuAnchorEl: null,
 			menuOpen: false,
-			view:true
+			view: true
 		}
 
 		this.handleDelete = this.handleDelete.bind(this);
@@ -84,15 +86,15 @@ export class CommentCard extends React.Component {
 					commentID: this.props.id,
 				})
 			}).then(() => {
-				if (this.props.admin){
-					this.props.getComments( this.props.id);
-					this.setState({view:false,menuOpen:false})
-				}else{
+				if (this.props.admin) {
+					this.props.getComments(this.props.id);
+					this.setState({ view: false, menuOpen: false })
+				} else {
 					this.props.getComments(true);
 				}
-				
+
 			});
-			
+
 		} catch (err) {
 			alert(err);
 		}
@@ -100,7 +102,7 @@ export class CommentCard extends React.Component {
 
 	render() {
 		let color;
-		if (UserProfile.getID() === this.props.empID) {
+		if (this.props.profile.employeeId === this.props.empID) {
 			color = "rgb(0, 0, 216)";
 		}
 
@@ -124,7 +126,7 @@ export class CommentCard extends React.Component {
 					onClose={this.handleRequestClose}
 					style={{ marginTop: 35, marginLeft: -25, padding: '0px' }}
 				>
-			
+
 					<MenuItem style={{ fontSize: 14, paddingTop: 6, paddingBottom: 6 }} onClick={this.handleDelete}>Delete</MenuItem>
 				</Menu>
 			</div>
@@ -132,8 +134,8 @@ export class CommentCard extends React.Component {
 		// delete menu only available if one of these apply:
 		//     user made the comment and the idea's status is live or inReview
 		//     user is admin or lab
-		if (this.props.live) { 
-			if (UserProfile.getID() === this.props.empID || UserProfile.getView() === 'admin' || UserProfile.getView() === 'lab') {
+		if (this.props.live) {
+			if (this.props.profile.employeeId === this.props.empID || UserProfile.getView() === 'admin' || UserProfile.getView() === 'lab') {
 				menuButton = button;
 			}
 		} else if (UserProfile.getView() === 'admin' || UserProfile.getView() === 'lab') {
@@ -141,21 +143,25 @@ export class CommentCard extends React.Component {
 		}
 		return (
 			<div>
-			{this.state.view===true &&
-				<div className={"comment-card" + (this.props.parent ? this.props.parent : "")}>
-				
-					<div className="deep-dive-row">
-						<p className="comment-author" style={{ color: color }}>{this.state.author}</p>
-						<p className="comment-timestamp">{this.state.date}</p>
+				{this.state.view === true &&
+					<div className={"comment-card" + (this.props.parent ? this.props.parent : "")}>
+
+						<div className="deep-dive-row">
+							<p className="comment-author" style={{ color: color }}>{this.state.author}</p>
+							<p className="comment-timestamp">{this.state.date}</p>
+						</div>
+						<div className="comment-body-row">
+							<p className="comment-text" style={{ textAlign: 'left' }} >{this.state.desc}</p>
+							{menuButton}
+						</div>
+
 					</div>
-					<div className="comment-body-row">
-						<p className="comment-text" style={{ textAlign: 'left' }} >{this.state.desc}</p>
-						{menuButton}
-					</div>
-					
-				</div>
-			}	
+				}
 			</div>
 		);
 	}
 }
+
+export default connect(state => ({
+	profile: state.Auth.get('profile'),
+}))(CommentCard);

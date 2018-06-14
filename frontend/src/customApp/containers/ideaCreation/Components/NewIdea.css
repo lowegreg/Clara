@@ -11,10 +11,10 @@
 .new-idea-container {
     margin: auto;
     margin-top: 20px;
-    padding: 10px 0px;
+    /* padding: 1px 1px; */
     width: auto;
-    border-radius: 8px;
-    background-color: rgba(224, 223, 223, 0.4);
+    /* border-radius: 8px; */
+    /* background-color: rgba(224, 223, 223, 0.4); */
     outline: none;
 }
 

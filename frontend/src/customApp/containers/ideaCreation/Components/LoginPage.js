@@ -85,34 +85,34 @@ class LoginPage extends Component {
         // } else {
         //     var url = UserProfile.getDatabase() + 'auth/' + email;
         //     try {
-                
-                // let response = await fetch(url);
-                // let responseJson = await response.json();
-                // if (response.status >= 200 && response.status < 300) {
-                //     if ((responseJson.length < 1)) {
-                //         this.setState({ loginFailed: "Incorrect email or password." });
-                //         //alert("login information does not match user in database");
-                //     } else if (!(!!+responseJson[0].registered)) {
-                //         this.setState({ loginFailed: "Please verify your account before signing in." });
-                //         //alert('Please verify your account before signing in.')
-                //     }else {
-                        // let salt;
-                        // try {
-                        //     let response3 = await fetch(UserProfile.getDatabase()+'auth/GetSalt', {
-                        //         method: 'POST',
-                        //         headers: {
-                        //             'Accept': 'application/json',
-                        //             'Content-Type': 'application/json',
-                        //         },
-                        //         body: JSON.stringify({
-                        //             email: email,
-                        //         })
-                        //     })
-                        //     let responseJson3 = await response3.json();
-                        //     salt = responseJson3[0].salt;
-                        // }catch(err) {
-                        //     console.log(err);
-                        // }
+
+        // let response = await fetch(url);
+        // let responseJson = await response.json();
+        // if (response.status >= 200 && response.status < 300) {
+        //     if ((responseJson.length < 1)) {
+        //         this.setState({ loginFailed: "Incorrect email or password." });
+        //         //alert("login information does not match user in database");
+        //     } else if (!(!!+responseJson[0].registered)) {
+        //         this.setState({ loginFailed: "Please verify your account before signing in." });
+        //         //alert('Please verify your account before signing in.')
+        //     }else {
+        // let salt;
+        // try {
+        //     let response3 = await fetch(UserProfile.getDatabase()+'auth/GetSalt', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Accept': 'application/json',
+        //             'Content-Type': 'application/json',
+        //         },
+        //         body: JSON.stringify({
+        //             email: email,
+        //         })
+        //     })
+        //     let responseJson3 = await response3.json();
+        //     salt = responseJson3[0].salt;
+        // }catch(err) {
+        //     console.log(err);
+        // }
         //                 try {
         //                     let response2 = await fetch(UserProfile.getDatabase()+'auth/CheckPassword', {
         //                         method: 'POST',
@@ -135,8 +135,8 @@ class LoginPage extends Component {
         //                         let userFirstName = responseJson[0].firstName;
         //                         let userLastName = responseJson[0].lastName;
         //                         this.storeToken(userID, userDep, view, userFirstName, userLastName);
-                                this.loggedIn = true;
-                                this.props.checkLogin(this.loggedIn);
+                                    this.loggedIn = true;
+                                    this.props.checkLogin(this.loggedIn);
         //                         var localDate = new Date();
         //                         localDate.setSeconds(localDate.getSeconds() - 1);
         //                         try {
@@ -174,18 +174,18 @@ class LoginPage extends Component {
         // }
     }
 
-    onForgotPress () {
-        this.setState({ 
+    onForgotPress() {
+        this.setState({
             displaySignup: false,
-            displayLogin: false, 
-            displayForgot: true, 
+            displayLogin: false,
+            displayForgot: true,
             loginFailed: '',
             email: '',
             password: '',
         });
     }
 
-    async onSendEmailPress () {
+    async onSendEmailPress() {
         const { email } = this.state;
         if (email.trim() === '') {
             this.setState({ loginFailed: "No email address entered." });
@@ -202,8 +202,8 @@ class LoginPage extends Component {
                         this.setState({ loginFailed: "Please verify your account before resetting your password." });
                     } else {
                         var crypto = require('crypto');
-                        var genRandomString = function(length) {
-                            return crypto.randomBytes(Math.ceil(length/2)).toString('hex').slice(0,length);
+                        var genRandomString = function (length) {
+                            return crypto.randomBytes(Math.ceil(length / 2)).toString('hex').slice(0, length);
                         }
                         let token = genRandomString(16);
                         try {
@@ -230,7 +230,7 @@ class LoginPage extends Component {
                                             token: token
                                         })
                                     });
-                                    this.setState({ displayResetCode: true, loginFailed: ''});
+                                    this.setState({ displayResetCode: true, loginFailed: '' });
                                 } catch (err) {
                                     console.log(err);
                                 }
@@ -252,7 +252,7 @@ class LoginPage extends Component {
         }
     }
 
-    async onCodeSubmit () {
+    async onCodeSubmit() {
         const { email } = this.state;
         var url = UserProfile.getDatabase() + 'auth/' + email;
         try {
@@ -262,24 +262,26 @@ class LoginPage extends Component {
                 let accessToken = responseJson[0].accesstoken;
 
                 if (accessToken === this.state.resetCodeAttempt) {
-                    if(!this.state.fromSignup){
-                        this.setState({ codeSubmitted: true, displayResetCode: false, loginFailed: ''});
-                    }else {
+                    if (!this.state.fromSignup) {
+                        this.setState({ codeSubmitted: true, displayResetCode: false, loginFailed: '' });
+                    } else {
                         try {
-                            fetch(UserProfile.getDatabase()+'register/'+accessToken);
-                        }catch(err) {
+                            fetch(UserProfile.getDatabase() + 'register/' + accessToken);
+                        } catch (err) {
                             console.log(err);
                         }
-                        this.setState({ displayLogin: true, 
-                            displaySignup: false, 
-                            displayForgot: false, 
-                            displayResetCode: false, 
-                            loginFailed: '', 
+                        this.setState({
+                            displayLogin: true,
+                            displaySignup: false,
+                            displayForgot: false,
+                            displayResetCode: false,
+                            loginFailed: '',
                             codeSubmitted: false,
-                            password: '' });
+                            password: ''
+                        });
                     }
                 } else {
-                    this.setState({loginFailed: 'The code you entered is incorrect.'})
+                    this.setState({ loginFailed: 'The code you entered is incorrect.' })
                 }
             } else {
                 localStorage.clear();
@@ -291,14 +293,14 @@ class LoginPage extends Component {
             //this.removeToken();
             console.error(e);
         }
-        
+
     }
 
-    async onPasswordChange () {
+    async onPasswordChange() {
         if ((this.state.password.length < 6) || (this.state.password.length > 128)) {
-            this.setState({ loginFailed: 'Password must be 6 to 128 characters long.' });            
+            this.setState({ loginFailed: 'Password must be 6 to 128 characters long.' });
         } else if ((this.state.password.match(/\d+/g) == null) || (this.state.password.match(/[a-z]/) == null) || (this.state.password.match(/[A-Z]/) == null)) {
-            this.setState({ loginFailed: 'Password must contain at least one of each: lowercase letter, uppercase letter and number.' });            
+            this.setState({ loginFailed: 'Password must contain at least one of each: lowercase letter, uppercase letter and number.' });
         } else if (this.state.password !== this.state.confirmPass) {
             this.setState({ loginFailed: 'Passwords do not match.' });
         } else {
@@ -314,7 +316,7 @@ class LoginPage extends Component {
                         email: this.state.email
                     })
                 }).then(() => {
-                    this.setState({codeSubmitted: false, passChangeSuccess: true});
+                    this.setState({ codeSubmitted: false, passChangeSuccess: true });
                 });
             } catch (err) {
                 console.log(err);
@@ -322,13 +324,13 @@ class LoginPage extends Component {
         }
     }
 
-    backToLogin () {
-        this.setState({ 
-            displayLogin: true, 
-            displaySignup: false, 
-            displayForgot: false, 
-            displayResetCode: false, 
-            loginFailed: '', 
+    backToLogin() {
+        this.setState({
+            displayLogin: true,
+            displaySignup: false,
+            displayForgot: false,
+            displayResetCode: false,
+            loginFailed: '',
             codeSubmitted: false,
             password: ''
         });
@@ -341,29 +343,29 @@ class LoginPage extends Component {
         try {
             let response = await fetch(url);
             let responseJson = await response.json();
-            
+
             if (this.state.displaySignup) {
                 if (this.state.email === '' || this.state.password === '' || this.state.firstName === '' || this.state.lastName === '' || this.state.department === '' || this.state.confirmPass === '') {
                     this.setState({ loginFailed: 'You must fill all fields before you can sign up.' });
                     //alert('Please fill out all fields for sign up.');
                 } else if (!this.state.email.endsWith('@internal.on.ca')) {
-                    this.setState({ loginFailed: 'You must enter a internal.on.ca email adress.' });                
-                } 
+                    this.setState({ loginFailed: 'You must enter a internal.on.ca email adress.' });
+                }
                 if (responseJson.length > 0) {
                     this.setState({ loginFailed: "An account already exists with this email addresss." });
                     if (!(!!+responseJson[0].registered)) {
                         this.setState({ loginFailed: "This email address has already been registered. Please check your email for verification." });
                     }
                 } else if ((this.state.password.length < 6) || (this.state.password.length > 128)) {
-                    this.setState({ loginFailed: 'Password must be 6 to 128 characters long.' });            
+                    this.setState({ loginFailed: 'Password must be 6 to 128 characters long.' });
                 } else if ((this.state.password.match(/\d+/g) == null) || (this.state.password.match(/[a-z]/) == null) || (this.state.password.match(/[A-Z]/) == null)) {
-                    this.setState({ loginFailed: 'Password must contain at least one of each: lowercase letter, uppercase letter and number.' });            
+                    this.setState({ loginFailed: 'Password must contain at least one of each: lowercase letter, uppercase letter and number.' });
                 } else if (this.state.password !== this.state.confirmPass) {
                     this.setState({ loginFailed: 'Passwords do not match.' });
                 } else {
                     var crypto = require('crypto');
-                    var genRandomString = function(length) {
-                        return crypto.randomBytes(Math.ceil(length/2)).toString('hex').slice(0,length);
+                    var genRandomString = function (length) {
+                        return crypto.randomBytes(Math.ceil(length / 2)).toString('hex').slice(0, length);
                     }
                     let token = genRandomString(16);
                     try {
@@ -400,10 +402,10 @@ class LoginPage extends Component {
                     } catch (err) {
                         console.log(err);
                     }
-                    this.setState({ displaySingup: false, displayForgot: true, displayResetCode: true, fromSignup: true, loginFailed: ''}); 
+                    this.setState({ displaySingup: false, displayForgot: true, displayResetCode: true, fromSignup: true, loginFailed: '' });
                 }
             } else {
-                this.setState({ displaySignup: true, displayLogin: false,  loginFailed: '' });
+                this.setState({ displaySignup: true, displayLogin: false, loginFailed: '' });
             }
         } catch (e) {
             console.error(e);
@@ -464,8 +466,8 @@ class LoginPage extends Component {
                         Log In
                     </Button>
                     <Typography style={styles.or}> or </Typography>
-                    <Button 
-                        style={styles.button} 
+                    <Button
+                        style={styles.button}
                         onClick={this.onSignupPress.bind(this)}
                     >
                         Sign Up
@@ -493,38 +495,38 @@ class LoginPage extends Component {
                             Send Email
                         </Button>
 
-                        <Typography className="back-to-login" onClick={this.backToLogin}> <BackIcon/> Sign In </Typography>
+                        <Typography className="back-to-login" onClick={this.backToLogin}> <BackIcon /> Sign In </Typography>
                     </Card>
                 );
             } else if (this.state.displayResetCode) {
                 pageContent = (
                     <Card style={styles.card}>
-                    <CardContent>
-                        <Typography type="title" style={styles.title}> Enter Code </Typography>
+                        <CardContent>
+                            <Typography type="title" style={styles.title}> Enter Code </Typography>
 
-                        <Typography style={styles.resetInstruct}> Please enter the code that was sent to your email address below. </Typography>
-                        <Paper style={styles.resetEmail}>
-                            <input style={styles.input} className='loginText' type="text" name="resetCodeAttempt"
-                                value={this.state.resetCodeAttempt}
-                                onChange={this.handleInputChange}
-                                onKeyPress={null} />
-                        </Paper>
-                        <Typography style={styles.loginError}> {this.state.loginFailed} </Typography>
-                    </CardContent>
+                            <Typography style={styles.resetInstruct}> Please enter the code that was sent to your email address below. </Typography>
+                            <Paper style={styles.resetEmail}>
+                                <input style={styles.input} className='loginText' type="text" name="resetCodeAttempt"
+                                    value={this.state.resetCodeAttempt}
+                                    onChange={this.handleInputChange}
+                                    onKeyPress={null} />
+                            </Paper>
+                            <Typography style={styles.loginError}> {this.state.loginFailed} </Typography>
+                        </CardContent>
 
-                    <Button style={styles.button} onClick={this.onCodeSubmit}>
-                        Submit
+                        <Button style={styles.button} onClick={this.onCodeSubmit}>
+                            Submit
                     </Button>
 
-                    <Typography className="back-to-login" onClick={this.backToLogin}> <BackIcon/> Sign In </Typography>
-                </Card>
+                        <Typography className="back-to-login" onClick={this.backToLogin}> <BackIcon /> Sign In </Typography>
+                    </Card>
                 );
             } else if (this.state.codeSubmitted) {
                 pageContent = (
                     <Card style={styles.card}>
                         <CardContent>
                             <Typography type="title" style={styles.title}> Change Password </Typography>
-    
+
                             <Paper style={styles.login}>
                                 <input style={styles.input} className='loginText' type="password" name="password" placeholder="Password"
                                     value={this.state.password}
@@ -541,26 +543,26 @@ class LoginPage extends Component {
 
                             <Typography style={styles.loginError}> {this.state.loginFailed} </Typography>
                         </CardContent>
-    
+
                         <Button style={styles.button} onClick={this.onPasswordChange}>
                             Change Password
                         </Button>
 
-                        <Typography className="back-to-login" onClick={this.backToLogin}> <BackIcon/> Sign In </Typography>
+                        <Typography className="back-to-login" onClick={this.backToLogin}> <BackIcon /> Sign In </Typography>
                     </Card>
                 );
-            } else if (this.state.passChangeSuccess){
+            } else if (this.state.passChangeSuccess) {
                 pageContent = (
                     <Card style={styles.card}>
                         <CardContent>
                             <Typography type="title" style={styles.title}> Password Changed </Typography>
-    
+
                             <Paper style={styles.resetEmail}>
                                 <Typography type="title" style={styles.resetInstruct}> Your password has been changed. You can now sign in with your new password. </Typography>
                             </Paper>
                         </CardContent>
-    
-                        <Typography className="back-to-login" onClick={this.backToLogin}> <BackIcon/> Sign In </Typography>
+
+                        <Typography className="back-to-login" onClick={this.backToLogin}> <BackIcon /> Sign In </Typography>
                     </Card>
                 );
             }
@@ -622,14 +624,14 @@ class LoginPage extends Component {
                         <Typography style={styles.loginError}> {this.state.loginFailed} </Typography>
                     </CardContent>
 
-                    <Button 
-                        className="sign-up-button" style={styles.button} 
+                    <Button
+                        className="sign-up-button" style={styles.button}
                         onClick={this.onSignupPress.bind(this)}
                     >
                         Sign Up
                     </Button>
 
-                    <Typography className="back-to-login" onClick={this.backToLogin}> <BackIcon/> Sign In </Typography>
+                    <Typography className="back-to-login" onClick={this.backToLogin}> <BackIcon /> Sign In </Typography>
                 </Card>
             );
         } else if (!this.state.displaySignup) {
@@ -643,10 +645,10 @@ class LoginPage extends Component {
                         </Paper>
                     </CardContent>
 
-                    <Typography className="back-to-login" onClick={this.backToLogin}> <BackIcon/> Sign In </Typography>
+                    <Typography className="back-to-login" onClick={this.backToLogin}> <BackIcon /> Sign In </Typography>
                 </Card>
             );
-        }  else {
+        } else {
             pageContent = null;
         }
 
