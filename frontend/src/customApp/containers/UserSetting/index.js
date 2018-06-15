@@ -94,9 +94,6 @@ export class Settings extends Component {
       console.log(error);
     })   
   }
-  // setImage = () =>{
-   
-  // }
   render() {
     const profile = this.state.profile;
     var image;
