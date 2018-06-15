@@ -5,7 +5,7 @@ import LayoutContent from '../../../components/utility/layoutContent';
 import { Row, Col } from 'react-flexbox-grid';
 import IsoWidgetsWrapper from '../../../containers/Widgets/widgets-wrapper';
 import VCardWidget from '../../../containers/Widgets/vCard/vCard-widget';
-import userpic from '../../../image/user1.png';
+// import userpic from '../../../image/profilePicture/default.png';
 import Form from '../../../components/uielements/form';
 import { Modal, message } from 'antd';
 import Button from '../../../components/uielements/button';
@@ -94,7 +94,17 @@ export class Settings extends Component {
       console.log(error);
     })   
   }
+  // setImage = () =>{
+   
+  // }
   render() {
+    const profile = this.state.profile;
+    var image;
+    try{
+      image = require(`../../../image/profilePicture/${profile.userId}.png`);
+    } catch(e) {
+      image = require(`../../../image/profilePicture/default.png`);
+    }
     return (
       <LayoutContentWrapper style={{paddingTop:'20px'}}>
         <h3>Settings</h3>
@@ -102,10 +112,10 @@ export class Settings extends Component {
           <Col style={{justifyContent:'center'}} >
             <IsoWidgetsWrapper>
               <VCardWidget
-                style={{ height: '450px' }}
-                src={userpic}
-                name={`${this.state.profile.firstName} ${this.state.profile.lastName}`}
-                title={this.state.profile.department}
+                style={{ height: '450px', width: '380px' }}
+                src={image}
+                name={`${profile.firstName} ${profile.lastName}`}
+                title={profile.department}
                 description={
                   <div>
                     <Col>
@@ -114,7 +124,7 @@ export class Settings extends Component {
                           <b>Username</b>
                         </Col>
                         <Col style={{ textAlign:'left'}} xs={6}>
-                          <p>{this.state.profile.username}</p>
+                          <p>{profile.username}</p>
                         </Col>
                       </Row>
                       <Row> 
@@ -122,7 +132,7 @@ export class Settings extends Component {
                           <b>Email</b>
                         </Col>
                         <Col style={{ textAlign:'left'}} xs={6}>
-                          <p>{this.state.profile.email}</p>
+                          <p>{profile.email}</p>
                         </Col>
                       </Row>
                       <Row> 
@@ -130,16 +140,16 @@ export class Settings extends Component {
                           <b>Employee Id</b>
                         </Col>
                         <Col style={{ textAlign:'left'}} xs={6}>
-                          <p>{this.state.profile.employeeId}</p>
+                          <p>{profile.employeeId}</p>
                         </Col>
                       </Row>
                     </Col>
                     <Row style={{paddingTop: '10%'}}>
-                      <Col style={{ textAlign:'right'}} xs={6}>
+                      <Col xs={6}>
                         <Button size='small' type="primary" onClick={() => this.setState({passwordModal: true})}>Change Password</Button>
                       </Col>
-                      <Col style={{ textAlign:'left'}} xs={6}>
-                        <Button  size='small' type="primary" onClick={() => this.setState({pictureModal: true})}>Change Profile Picture</Button>
+                      <Col xs={6}>
+                        <Button  size='small' type="primary" onClick={() => this.setState({pictureModal: true})}>Change Picture</Button>
                       </Col>
                     </Row>
                   </div>

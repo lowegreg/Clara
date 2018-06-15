@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import Popover from '../../components/uielements/popover';
 import IntlMessages from '../../components/utility/intlMessages';
-import userpic from '../../image/user1.png';
 import authAction from '../../redux/auth/actions';
 import TopbarDropdownWrapper from './topbarDropdown.style';
 
@@ -36,6 +35,12 @@ class TopbarUser extends Component {
       var path = { pathname:`${this.props.url}/user/${this.state.redirect}`}
       return <Redirect to={path}/>;
     }
+    var image;
+    try{
+      image = require(`../../image/profilePicture/${this.props.profile.userId}.png`);
+    } catch(e) {
+      image = require(`../../image/profilePicture/default.png`);
+    }
     return (
       <Popover
         content={
@@ -66,7 +71,7 @@ class TopbarUser extends Component {
         placement="bottomLeft"
       >
         <div className="isoImgWrapper">
-          <img alt="user" src={userpic} />
+          <img alt="user" src={image} />
           <span className="userActivity online" />
         </div>
       </Popover>
