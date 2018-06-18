@@ -322,9 +322,9 @@ export class Tile extends Component {
                 <Col md={24} xs={24} >
                     <h4>Tags:</h4>
                         {this.props.table.tags.map(function(tag){
-                        return <Tag key={tag.name}>{tag.name}</Tag>
+                        return <Tag key={tag.name||tag}>{tag.name||tag}</Tag>
                     })
-                    }...
+                    }
                     
                 </Col> 
             </Row>

@@ -63,6 +63,14 @@ export default function (url) {
   routers.push(
     <Route
       exact
+      key="create"
+      path={`${url}/create`}
+      component={asyncComponent(() => import('./containers/UserStories/userCreateStories'))}
+    />
+  );
+  routers.push(
+    <Route
+      exact
       key="dataManagement"
       path={`${url}/dataManagement/:tableName?`}
       component={asyncComponent(() => import('./containers/DataManagement/index'))}
