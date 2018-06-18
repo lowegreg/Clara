@@ -19,6 +19,7 @@ class Topbar extends Component {
       width: '100%',
       height: 70
     };
+    
     return (
       <TopbarWrapper>
         <Header
@@ -50,7 +51,7 @@ class Topbar extends Component {
               onClick={() => this.setState({ selectedItem: 'user' })}
               className="isoUser"
             >
-              <TopbarUser locale={locale} url={this.props.url} pathname={this.props.pathname} />
+              <TopbarUser locale={locale} url={this.props.url} pathname={this.props.pathname} profile={this.props.profile}/>
             </li>
           </ul>
         </Header>
