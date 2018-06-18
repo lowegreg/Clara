@@ -94,7 +94,6 @@ class MyLatestIdeaCard extends React.Component {
 			this.setState({ liked: nextProps.like, likeColor: likeColor, rating: nextProps.rating });
 		}
 		if (this.props.numComments !== undefined && this.props.numComments !== nextProps.numComments) {
-			console.log('num comments next: ', nextProps.numComments);
 			this.setState({ numComments: nextProps.numComments });
 		}
 
@@ -186,11 +185,11 @@ class MyLatestIdeaCard extends React.Component {
 					if (responseJson.length > 0) {
 						let list = responseJson[0].peopleList.split(',');
 						let commaList = list;
-						console.log(list.length);
+						
 						for (let i = 0; i < list.length; i++) {
 							if (commaList[i].trim() === this.props.profil.firstName) {
 								list.splice(i, 1);
-								console.log("new list: " + list);
+								
 								let newList = list[0];
 								for (let i = 1; i < list.length; i++) {
 									newList = newList + ',' + list[i];

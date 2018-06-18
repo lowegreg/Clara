@@ -292,7 +292,7 @@ function pieGraph(xData,yData, yName){
     var option = {
         tooltip : {
             trigger: 'item',
-            formatter: "{a} <br/>{b} : {c} ({d}%)"
+            formatter: "{b} :</br>{c} ({d}%)"
         },
         legend: {
             orient: 'horizontal',
@@ -302,7 +302,7 @@ function pieGraph(xData,yData, yName){
         },
         series : [
             {
-                name: yName,
+                // name: yName,
                 type: 'pie',
                 radius : '55%',
                 center: ['50%', '60%'],

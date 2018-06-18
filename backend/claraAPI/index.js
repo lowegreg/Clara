@@ -31,8 +31,9 @@ app.post('/api/authenticate', authenticateController.authenticate);
 app.get('/tableLookUp', function (req, res) {
   // var id = req.param('id');
   var sql;
-
-  if (req.query.tableName) {
+  if (req.query.getNames==='true'){
+    sql = 'SELECT name FROM tableLookUp' 
+  }else if (req.query.tableName) {
     sql = 'SELECT * FROM tableLookUp WHERE name= \'' + req.query.tableName + '\''
   } else {
     sql = 'SELECT * FROM tableLookUp '

@@ -282,7 +282,7 @@ class Sidebar extends Component {
                   </Link>
                 </Menu.Item>
                 <Menu.Item style={submenuStyle} key="New Stories" >
-                  <Link style={submenuColor} to={`${url}/comingSoon`}>
+                  <Link style={submenuColor} to={`${url}/create`}>
                     <IntlMessages id="sidebar.createdStories" />
                   </Link>
                 </Menu.Item>

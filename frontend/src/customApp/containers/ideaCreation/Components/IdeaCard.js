@@ -564,7 +564,6 @@ export class IdeaCard extends React.Component {
 
 
 	handleStatus(status) {
-		console.log(status)
 		this.handleRequestClose();
 		this.props.onUpdate(this.props.id, this.props.title, this.props.status, status);
 	}
