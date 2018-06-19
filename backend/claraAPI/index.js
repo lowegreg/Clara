@@ -448,10 +448,31 @@ app.post('/posts/deletePostByStatus', function (req, res) {
 })
 
 
-app.post('/postOrder/me', function (req, res) {
-  var sql = 'SELECT * FROM ideas where empID=' + req.body.empID;
-
-
+app.post('/postOrder/me', function (req, res) {// recent(created), highRating, latest (update)
+  var join=' '
+  if (req.body.sort==='latest'){
+    join=' left join ideasHistory on  ideas.postID= ideasHistory.postID '
+  }
+  var sql = 'SELECT * FROM ideas'+join+' where (ideas.empID=' + req.body.empID+' and ';
+  var whereClause=''
+  for (var i = 0; i < req.body.status.length; i++) {
+    whereClause = ' ' + whereClause + ' status = \'' + req.body.status[i] + '\''
+    if (i + 1 < req.body.status.length) {
+      whereClause = whereClause + ' or '
+    } else {
+      whereClause = whereClause + ' ) '
+    }
+  }
+  
+  var sort=' sort by '
+  if (req.body.sort==='recent'){
+    sort=' order by postID DESC '
+  }else if (req.body.sort==='highRating'){
+    sort=' order by rating + comments  DESC '
+  }else if (req.body.sort==='latest'){
+    sort=' order by ideasHistory.date desc '
+  }
+  sql=sql+whereClause+sort
   conTest.query(sql, function (err, rows) {
     if (err) {
       res.json({ "Error": true, "Message": err });
@@ -594,7 +615,6 @@ app.post('/subtractComments', function (req, res) {
   var sql = 'update ideas set comments= comments-1 where postID= ' + req.body.postID
 
   conTest.query(sql, function (err, rows) {
-    console.log(err)
     if (err) {
       res.json({ "Error": true, "Message": err });
     } else {

@@ -498,6 +498,7 @@ export class IdeaCard extends React.Component {
 	};
 
 	handleDelete() {
+		console.log('here',this.props.id,this.props.empID)
 		var localDate = new Date();
 		localDate.setSeconds(localDate.getSeconds() - 1);
 		try {
