@@ -112,13 +112,15 @@ class App extends Component {
 			mainContent =
 				<div className="main-page">
 					{deepDive}
+					
+					{!this.props.profilePage &&
 					<div className="main-sidebar-left">
 						<SidebarLeft onDeepDive={this.handleDeepDive} handleFilters={this.handleFilters.bind(this)} departments={this.state.departments} filters={filters} />
 						<SidebarRight onDeepDive={this.handleDeepDive} />
-					</div>
+					</div>}
 					<div className="main-content">
 						<NewIdea tabChange={this.handleTabChange} onDeepDive={this.handleDeepDive} />
-						<ListView tab={this.state.activeTab} filters={filters} onDeepDive={this.handleDeepDive} explicitRefresh={this.state.explicitRefresh} />
+						<ListView profilePage={this.props.profilePage} tab={this.state.activeTab} filters={filters} onDeepDive={this.handleDeepDive} explicitRefresh={this.state.explicitRefresh} />
 					</div>
 
 				</div>;

@@ -93,7 +93,7 @@ class ListView extends React.Component {
         // store all postIDs in an array so that we don't fetch ideas already displayed
         // if doing a refresh, the array is empty
         let postIDs = refresh ? [] : this.state.posts.map(post => post.postID);
-        if (sort === 'me') { // fetching list for "your ideas"
+        if (this.props.profilePage) { // fetching list for "your ideas"
 
             try {
                 let response = await fetch(UserProfile.getDatabase() + 'postOrder/me', {
@@ -105,51 +105,53 @@ class ListView extends React.Component {
                     body: JSON.stringify({
                         empID: this.props.profile.employeeId,
                         ids: postIDs,
+                        status: statuses,
+                        sort: sort
                     })
                 })
                 let responseJson = await response.json();
-                if (response.status >= 200 && response.status < 300) {
-                    try {
-                        let response2 = await fetch(UserProfile.getDatabase() + 'postOrder/follow', {
-                            method: 'POST',
-                            headers: {
-                                'Accept': 'application/json',
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                                empID: this.props.profile.employeeId,
-                                ids: postIDs,
-                            })
-                        })
-                        let responseJson2 = await response2.json();
-                        if (response2.status >= 200 && response2.status < 300) {
-                            let newPostArray = responseJson.value.concat(responseJson2.value);
-                            newPostArray.sort(function (a, b) { return new Date(b.date).getTime() - new Date(a.date).getTime() });
+                // if (response.status >= 200 && response.status < 300) {
+                //     try {
+                //         let response2 = await fetch(UserProfile.getDatabase() + 'postOrder/follow', {
+                //             method: 'POST',
+                //             headers: {
+                //                 'Accept': 'application/json',
+                //                 'Content-Type': 'application/json',
+                //             },
+                //             body: JSON.stringify({
+                //                 empID: this.props.profile.employeeId,
+                //                 ids: postIDs,
+                //             })
+                //         })
+                //         let responseJson2 = await response2.json();
+                //         if (response2.status >= 200 && response2.status < 300) {
+                //             let newPostArray = responseJson.value.concat(responseJson2.value);
+                //             newPostArray.sort(function (a, b) { return new Date(b.date).getTime() - new Date(a.date).getTime() });
 
-                            if (newPostArray.length > 0) {
-                                if (newPostArray.length < 10) { // if we received fewer than 10 ideas, we know there are no more ideas to fetch
+                            if (responseJson.value.length > 0) {
+                                if (responseJson.value.length < 10) { // if we received fewer than 10 ideas, we know there are no more ideas to fetch
                                     this.setState({ noMore: true });
                                 }
                                 // add fetched ideas to the list, after a delay of 300ms
                                 // the purpose of the delay is to set a lower bound for the duration of the loading wheel
                                 // reset renderMore to false
 
-                                setTimeout(() => this.setState({ loading: false, posts: this.state.posts.concat(newPostArray.slice(0, 10)), renderMore: false }), 300);
+                                setTimeout(() => this.setState({ loading: false, posts: responseJson.value, renderMore: false }), 300);
                             } else { // no more ideas to fetch if the response is empty
                                 this.setState({ loading: false, noMore: true, renderMore: false });
                             }
-                        } else {
-                            let error = responseJson;
-                            throw error;
-                        }
-                    } catch (e) {
-                        //this.removeToken();
-                        console.error(e);
-                    }
-                } else {
-                    let error = responseJson;
-                    throw error;
-                }
+                //         } else {
+                //             let error = responseJson;
+                //             throw error;
+                //         }
+                //     } catch (e) {
+                //         //this.removeToken();
+                //         console.error(e);
+                //     }
+                // } else {
+                //     let error = responseJson;
+                //     throw error;
+                // }
             } catch (e) {
                 //this.removeToken();
                 console.error(e);
@@ -215,7 +217,7 @@ class ListView extends React.Component {
         }
     }
     checkIfDeleted(post) {
-        if (post === 'deleted') {
+        if (post === 'deleted' || post.status === 'deleted') {
             return
         }
 
