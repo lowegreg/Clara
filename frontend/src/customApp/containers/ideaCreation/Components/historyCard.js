@@ -69,9 +69,9 @@ class HistoryCard extends React.Component {
 				<div className="deep-dive-row">
 					{/* <p className="comment-author" style={{ color: color }}>{this.state.previous}</p> */}
 					<Row>
-						<Col xs={3}> <p className={"admin-status-" + this.state.previous}>{this.state.previous}</p></Col>
+						<Col style={{width:'90px'}}> <p className={"admin-status-" + this.state.previous}>{this.state.previous}</p></Col>
 						<Col xs={1}><p className="comment-author" style={{ color: 'grey' }} > to </p></Col>
-						<Col xs={3}><p className={"admin-status-" + this.state.new} style={{ color: color, textAlign: 'left' }}>{this.state.new}</p></Col>
+						<Col style={{width:'90px'}}><p className={"admin-status-" + this.state.new} style={{ color: color, textAlign: 'left' }}>{this.state.new}</p></Col>
 						<Col xs={4}><p className="comment-timestamp" style={{ textAlign: 'right' }}>{this.state.date}</p></Col>
 					</Row>
 					{/* <p className="comment-author" style={{ color: color }}>{this.state.previous}</p><p>to</p><p>{this.state.new}</p> */}

@@ -453,7 +453,7 @@ app.post('/postOrder/me', function (req, res) {// recent(created), highRating, l
   if (req.body.sort==='latest'){
     join=' left join ideasHistory on  ideas.postID= ideasHistory.postID '
   }
-  var sql = 'SELECT * FROM ideas'+join+' where (ideas.empID=' + req.body.empID+' and ';
+  var sql = 'SELECT * FROM ideas'+join+' where ideas.empID=' + req.body.empID+' and ( ';
   var whereClause=''
   for (var i = 0; i < req.body.status.length; i++) {
     whereClause = ' ' + whereClause + ' status = \'' + req.body.status[i] + '\''
