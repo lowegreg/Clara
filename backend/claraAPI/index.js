@@ -8,7 +8,7 @@ var conTest = mysql.createConnection({
   host: 'db-l5jpoe4odyyvypgiwexyddrqfu.clhelwr0pylt.ca-central-1.rds.amazonaws.com',
   user: 'Clara',
   password: 'T1meMachine',
-  database: 'ClaraTest'
+  database: 'ClaraIdeas'
 });
 var authenticateController = require('./controllers/authenticate-controller');
 var registerController = require('./controllers/register-controller');

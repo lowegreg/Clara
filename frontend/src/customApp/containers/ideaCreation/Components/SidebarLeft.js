@@ -34,9 +34,9 @@ class SidebarLeft extends React.Component {
                 })
             })
             let responseJson = await response.json();
-            if (responseJson.value.length > 0) {
-                this.setState({ myPosts: responseJson.value });
-            }
+            
+            this.setState({ myPosts: responseJson.value ||[]});
+            
         } catch (err) {
             console.log(err);
         }

@@ -33,7 +33,7 @@ class SidebarRight extends React.Component {
             });
             let responseJson = await response.json();
             if (response.status >= 200 && response.status < 300) {
-                this.setState({ news: responseJson.value });
+                this.setState({ news: responseJson.value ||[]});
             } else {
                 let error = responseJson;
                 throw error;
