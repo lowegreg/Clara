@@ -9,6 +9,7 @@ import StatusUpdatePopover from './StatusUpdatePopover';
 import ExpandIcon from '@material-ui/icons/ExpandMore';
 import Lightbulb from '@material-ui/icons/LightbulbOutline';
 import { connect } from 'react-redux';
+import { Spin } from 'antd';
 
 class ListView extends React.Component {
     constructor(props) {
@@ -110,6 +111,7 @@ class ListView extends React.Component {
                     })
                 })
                 let responseJson = await response.json();
+                this.setState({ loading: false})
                 // if (response.status >= 200 && response.status < 300) {
                 //     try {
                 //         let response2 = await fetch(UserProfile.getDatabase() + 'postOrder/follow', {
@@ -136,7 +138,7 @@ class ListView extends React.Component {
                                 // the purpose of the delay is to set a lower bound for the duration of the loading wheel
                                 // reset renderMore to false
 
-                                setTimeout(() => this.setState({ loading: false, posts: responseJson.value, renderMore: false }), 300);
+                                setTimeout(() => this.setState({ loading: false, posts: responseJson.value||[], renderMore: false }), 300);
                             } else { // no more ideas to fetch if the response is empty
                                 this.setState({ loading: false, noMore: true, renderMore: false });
                             }
@@ -180,6 +182,7 @@ class ListView extends React.Component {
                     })
                 });
                 let responseJson = await response.json();
+                this.setState({ loading: false})
                 if (response.status >= 200 && response.status < 300 && this.state.noMore === false) {
                     if (responseJson.value.length > 0) {
                         if (responseJson.value.length < 10) { // if we received fewer than 10 ideas, we know there are no more ideas to fetch
@@ -188,7 +191,7 @@ class ListView extends React.Component {
                         // add fetched ideas to the list, after a delay of 300ms
                         // the purpose of the delay is to set a lower bound for the duration of the loading wheel
                         // reset renderMore to false
-                        setTimeout(() => this.setState({ loading: false, posts: responseJson.value, renderMore: false }), 300);
+                        setTimeout(() => this.setState({ loading: false, posts: responseJson.value||[], renderMore: false }), 300);
                     } else { // no more ideas to fetch if the response is empty
                         this.setState({ loading: false, noMore: true, renderMore: false });
                     }
@@ -231,10 +234,7 @@ class ListView extends React.Component {
     // show some filler/explanation text when the idea list is empty
     renderPosts() {
         if (this.state.loading) { // loading wheel
-            return <CircularProgress
-                size={40}
-                style={{ margin: "16px" }}
-            />;
+            return <div style={{ margin: "16px" }}><Spin size="large"   />	</div>
         } else {
             if (this.state.posts.length > 0) {
                 return this.state.posts.map(post =>

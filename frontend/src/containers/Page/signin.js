@@ -36,6 +36,11 @@ class SignIn extends Component {
       this.setState({ redirectToReferrer: true });
     }
   }
+  handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      this.onClick()
+    }
+  }
   render() {
     const from = { pathname: '/dashboard' };
     if (this.state.redirectToReferrer) {
@@ -61,6 +66,7 @@ class SignIn extends Component {
                   label="identifier"
                   value={this.state.credentials.identifier}
                   onChange={this.onChange} 
+                  onKeyPress={this.handleKeyPress}
                 />
               </div>
 
@@ -70,6 +76,7 @@ class SignIn extends Component {
                   label="password"
                   value={this.state.credentials.password}
                   onChange={this.onChange} 
+                  onKeyPress={this.handleKeyPress}
                   />
               </div>
 
@@ -77,7 +84,7 @@ class SignIn extends Component {
                 <Checkbox>
                   <IntlMessages id="page.signInRememberMe" />
                 </Checkbox>
-                <Button type="primary" onClick={this.onClick}>
+                <Button type="primary" onClick={this.onClick} onKeyPress={this.handleKeyPress} >
                   <IntlMessages id="page.signInButton" />
                 </Button>
               </div>

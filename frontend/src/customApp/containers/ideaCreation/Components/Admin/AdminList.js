@@ -25,7 +25,6 @@ export default class AdminList extends React.Component {
     // fetch ideas based on which folder was selected
     async getIdeas(folder) {
         let status, call, date;
-        console.log(call)
         switch (folder) {
             case 0: call = "admin/GetHotPosts"; break;
             case 1: call = "admin/GetColdPosts"; break;
@@ -70,7 +69,7 @@ export default class AdminList extends React.Component {
             });
             let responseJson = await response.json();
 
-            this.setState({ ideas: responseJson.value });
+            this.setState({ ideas: responseJson.value ||[]});
 
         } catch (e) {
             console.log(e);
@@ -78,6 +77,9 @@ export default class AdminList extends React.Component {
     }
 
     renderIdeas() {
+        if (this.state.ideas.length===0){
+            return
+        }
         return this.state.ideas.map((idea) => {
             return <AdminListItem key={idea.postID} postID={idea.postID} focusID={this.props.focusID} title={idea.title} desc={idea.descrip} date={idea.date} rating={idea.rating} score={idea.trendingScore}
                 comments={idea.comments} follows={idea.follows} flagged={idea.adminFlag} onFocus={this.props.onFocus} onFlag={this.props.onFlag} />;
