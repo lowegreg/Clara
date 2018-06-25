@@ -53,7 +53,13 @@ class SignIn extends Component {
           <div className="isoLoginContent">
             <div className="isoLogoWrapper">
               <Link to="/dashboard">
-                <IntlMessages id="page.signInTitle" />
+                {/* <IntlMessages id="page.signInTitle" /> */}
+                <img
+                src={require('../../image/claraLogin.png') } 
+                alt='claraCat'
+                width={200}
+                // height={50}
+              />
               </Link>
             </div>
             <div style={{color: 'red'}}>
