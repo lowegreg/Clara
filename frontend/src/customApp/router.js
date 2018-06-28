@@ -40,7 +40,7 @@ export default function (url) {
     <Route
       exact
       key="open_data"
-      path={`${url}/open_data`}
+      path={`${url}/open_data/:pageType?`}
       component={asyncComponent(() => import('./containers/OpenData/index'))}
     />
   );

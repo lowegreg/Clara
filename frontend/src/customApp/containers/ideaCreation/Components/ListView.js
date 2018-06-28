@@ -165,7 +165,6 @@ class ListView extends React.Component {
             } else if (departments.length < 2) {
                 dept[0] = departments[0]
             }
-
             try {
                 let response = await fetch(UserProfile.getDatabase() + 'postOrder/' + sort, {
                     method: 'POST',

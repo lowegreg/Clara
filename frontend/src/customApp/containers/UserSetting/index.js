@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import LayoutContentWrapper from '../../../components/utility/layoutWrapper';
-import LayoutContent from '../../../components/utility/layoutContent';
 import { Row, Col } from 'react-flexbox-grid';
-import IsoWidgetsWrapper from '../../../containers/Widgets/widgets-wrapper';
 import VCardWidget from '../../../containers/Widgets/vCard/vCard-widget';
 // import userpic from '../../../image/profilePicture/default.png';
 import Form from '../../../components/uielements/form';

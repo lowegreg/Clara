@@ -17,12 +17,18 @@ export default class OpenDataTable extends React.Component {
       filterTables: [{ key: 0, name: '', description: '', id: 0 }],
       search: '',
       filter: null,
+      pageType: '',
+
     }
   }
 
-
+  componentWillMount() {
+    if (this.state.pageType.length === 0) {
+      this.setState({ pageType: this.props.match.params.pageType })
+    }
+  }
   componentDidMount() {
-    fetch('http://35.182.224.114:3000/tableLookUp', { method: 'GET', mode: 'cors' })
+    fetch('http://35.182.224.114:3000/tableLookUp?sourceType=' + this.state.pageType, { method: 'GET', mode: 'cors' })
       .then((response) => response.json())
       .then(responseJson => {
         responseJson.tableId.forEach(function (obj) { obj.key = responseJson.tableId });
@@ -92,25 +98,25 @@ export default class OpenDataTable extends React.Component {
       {
         title: 'Total',
         number: this.state.tables.length,
-        description: 'Number of total open data sets',
+        description: 'Number of total ' + this.state.pageType + ' data sets',
         colour: '#151596'
       },
       {
         title: 'Accepted',
         number: this.state.tables.filter(value => value.statusId === 'accepted').length,
-        description: 'Number of accepted open data sets ready to be used by clara.',
+        description: 'Number of accepted ' + this.state.pageType + ' data sets ready to be used by clara.',
         colour: 'green'
       },
       {
         title: 'Not Mapped',
         number: this.state.tables.filter(value => value.statusId === null).length,
-        description: 'Number of unmapped open data sets',
+        description: 'Number of unmapped ' + this.state.pageType + ' data sets',
         colour: '#bf0505'
       },
       {
         title: 'Under Review',
-        number:  this.state.tables.filter(value => value.statusId === 'sumbitted').length,
-        description: 'Number of open data sets currently under review by clara',
+        number: this.state.tables.filter(value => value.statusId === 'submitted').length,
+        description: 'Number of ' + this.state.pageType + ' data sets currently under review by clara',
         colour: 'orange'
       },
     ]
@@ -158,7 +164,8 @@ export default class OpenDataTable extends React.Component {
 
                 </SuperSelectField>
               </MuiThemeProvider>
-            </Col></Row>
+            </Col>
+          </Row>
           {this.state.filterTables.map((table, key) => (
             <div key={key} className='isoSimpleTable'>
               <DataCard data={table} />

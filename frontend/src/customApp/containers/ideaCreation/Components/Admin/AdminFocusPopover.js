@@ -9,8 +9,6 @@ import TextField from '@material-ui/core/TextField';
 import SendIcon from '@material-ui/icons/Send';
 import CloseIcon from '@material-ui/icons/Close';
 import Divider from '@material-ui/core/Divider';
-import SuperSelectField from 'material-ui-superselectfield'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
 export default class AdminFocusPopover extends React.Component {
     // same implementation as StatusUpdatePopover

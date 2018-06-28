@@ -1,16 +1,17 @@
 CREATE TABLE `tableLookUp` (
-    `tableId` int(11) NOT NULL AUTO_INCREMENT,
-    `name` varchar(150) DEFAULT NULL,
-    `description` varchar(500) DEFAULT NULL,
-    `lastUpDated` date DEFAULT NULL,
-    `defaultTag` varchar(100) DEFAULT NULL,
-    `statusId` varchar(50) DEFAULT NULL,
-    `submittedBy` varchar(100) DEFAULT NULL,
-    `feedback` varchar(500) DEFAULT NULL,
-    `submittedOn` date DEFAULT NULL,
-    PRIMARY KEY (`tableId`),
-    UNIQUE KEY `tableId_UNIQUE` (`tableId`)
-  ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;
+  `tableId` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(150) DEFAULT NULL,
+  `description` varchar(500) DEFAULT NULL,
+  `lastUpDated` date DEFAULT NULL,
+  `defaultTag` varchar(100) DEFAULT NULL,
+  `statusId` varchar(50) DEFAULT NULL,
+  `submittedBy` varchar(100) DEFAULT NULL,
+  `feedback` varchar(500) DEFAULT NULL,
+  `submittedOn` date DEFAULT NULL,
+  `sourceType` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`tableId`),
+  UNIQUE KEY `tableId_UNIQUE` (`tableId`)
+) ENGINE=InnoDB AUTO_INCREMENT=319 DEFAULT CHARSET=latin1;
   
   
   CREATE TABLE `propValues` (
