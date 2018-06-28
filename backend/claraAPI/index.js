@@ -31,10 +31,12 @@ app.post('/api/authenticate', authenticateController.authenticate);
 app.get('/tableLookUp', function (req, res) {
   // var id = req.param('id');
   var sql;
-  if (req.query.getNames==='true'){
-    sql = 'SELECT name FROM tableLookUp' 
-  }else if (req.query.tableName) {
-    sql = 'SELECT * FROM tableLookUp WHERE name= \'' + req.query.tableName + '\''
+  if (req.query.getNames === 'true') {
+    sql = 'SELECT name FROM tableLookUp where sourceType= \'' + req.query.sourceType + '\''
+  } else if (req.query.tableName) {
+    sql = 'SELECT * FROM tableLookUp WHERE sourceType= \'' + req.query.sourceType + '\' and name= \'' + req.query.tableName + '\''
+  } else if (req.query.sourceType) {
+    sql = 'SELECT * FROM tableLookUp where sourceType = \'' + req.query.sourceType + '\''
   } else {
     sql = 'SELECT * FROM tableLookUp '
   }
@@ -234,6 +236,8 @@ app.get('/selectGraphData', function (req, res) {
 
   if (req.query.xType === 'date' && req.query.yType === 'type') {
     sql = 'Select count(`' + req.query.y + '`) as z,  MONTHNAME(' + req.query.x + ') as y, `' + req.query.y + '` as x from `' + req.query.tableName + '` as main inner join (select `' + req.query.y + '` as name from `' + req.query.tableName + '`  as t1 group by `' + req.query.y + '` order by count(`' + req.query.y + '`) desc limit 5) as compare  on main.`' + req.query.y + '` = compare.name where ( select count(*) from (select count(`' + req.query.y + '`) as length from `' + req.query.tableName + '` as t1 group by `' + req.query.y + '`)  as t2)>1 and ( select count(*) from (select count(MONTHNAME(' + req.query.x + ')) as length from `' + req.query.tableName + '` as t3 group by MONTHNAME(' + req.query.x + '))  as t4)>1 group by MONTHNAME(' + req.query.x + '), `' + req.query.y + '`  order by MONTH(' + req.query.x + '), COUNT(`' + req.query.y + '`) desc'
+  } else if (req.query.xType === 'hours' && req.query.yType === 'type') {
+    sql = 'Select count(`' + req.query.y + '`) as z,  DATE_FORMAT( DATE(' + req.query.x + '), "%b %d")  as y, `' + req.query.y + '` as x from `' + req.query.tableName + '` as main inner join (select `' + req.query.y + '` as name from `' + req.query.tableName + '`  as t1 group by `' + req.query.y + '` order by count(`' + req.query.y + '`) desc limit 5) as compare  on main.`' + req.query.y + '` = compare.name where ( select count(*) from (select count(`' + req.query.y + '`) as length from `' + req.query.tableName + '` as t1 group by `' + req.query.y + '`)  as t2)>1 and ( select count(*) from (select count(DATE(' + req.query.x + ')) as length from `' + req.query.tableName + '` as t3 group by DATE(' + req.query.x + '))  as t4)>1 group by DATE(' + req.query.x + '), `' + req.query.y + '`  order by DATE(' + req.query.x + '), COUNT(`' + req.query.y + '`) desc'
   } else if (req.query.xType === 'type' && req.query.yType === 'loc' || (req.query.xType === 'fin' && req.query.yType === 'loc')) {
     sql = 'Select count(`' + req.query.y + '`) as z, `' + req.query.y + '` as y, `' + req.query.x + '` as x from `' + req.query.tableName + '`  where ( select count(*) from (select count(`' + req.query.y + '`) as length from `' + req.query.tableName + '` as t1 group by `' + req.query.y + '`)  as t2)>1 and ( select count(*) from (select count(`' + req.query.x + '`) as length from `' + req.query.tableName + '` as t3 group by `' + req.query.x + '`)  as t4)>1 group by `' + req.query.y + '`, `' + req.query.x + '`  order by COUNT(`' + req.query.x + '`) desc limit 10'
   } else if (req.query.xType === 'date' && req.query.yType === 'value') {
@@ -243,6 +247,10 @@ app.get('/selectGraphData', function (req, res) {
   }
   else if (req.query.xType === 'date' || (req.query.xType === 'fin' && req.query.yType === 'date')) {
     sql = 'Select COUNT(`' + req.query.y + '`) as y, MONTHNAME(' + req.query.x + ') as x from `' + req.query.tableName + '` where ( select count(*) from (select count(`' + req.query.y + '`) as length from `' + req.query.tableName + '` as t1 group by `' + req.query.y + '`)  as t2)>1 and ( select count(*) from (select count(`' + req.query.x + '`) as length from `' + req.query.tableName + '` as t3 group by `' + req.query.x + '`)  as t4)>1 group by MONTH(' + req.query.x + ')  '
+  } else if (req.query.xType === 'hours' && req.query.yType === 'rank') {
+    sql = 'Select avg(`' + req.query.y + '`) as y,  DATE_FORMAT( DATE(`' + req.query.x + '`), "%b %d") as x from `' + req.query.tableName + '` group by DATE_FORMAT( DATE(`' + req.query.x + '`), "%b %d")  order by DATE_FORMAT( DATE(`' + req.query.x + '`), "%b %d")'
+  } else if (req.query.xType === 'type' && req.query.yType === 'rank') {
+    sql = 'Select avg(`' + req.query.y + '`) as y, `' + req.query.x + '` as x from `' + req.query.tableName + '` group by `' + req.query.x + '`  order by avg(`' + req.query.y + '`) desc limit 10'
   }
 
   con.query(sql, function (err, rows) {
@@ -293,7 +301,7 @@ app.post('/postOrder/recent', function (req, res) {
       whereClause = whereClause + ' ) '
     }
   }
-  if (req.body.status.length > 0 && req.body.deps.length > 1) {
+  if (req.body.status.length > 0 && req.body.deps.length > 0) {
     whereClause = whereClause + ' and ( '
   }
 
@@ -449,12 +457,12 @@ app.post('/posts/deletePostByStatus', function (req, res) {
 
 
 app.post('/postOrder/me', function (req, res) {// recent(created), highRating, latest (update)
-  var join=' '
-  if (req.body.sort==='latest'){
-    join=' left join ideasHistory on  ideas.postID= ideasHistory.postID '
+  var join = ' '
+  if (req.body.sort === 'latest') {
+    join = ' left join ideasHistory on  ideas.postID= ideasHistory.postID '
   }
-  var sql = 'SELECT * FROM ideas'+join+' where ideas.empID=' + req.body.empID+' and ( ';
-  var whereClause=''
+  var sql = 'SELECT * FROM ideas' + join + ' where ideas.empID=' + req.body.empID + ' and ( ';
+  var whereClause = ''
   for (var i = 0; i < req.body.status.length; i++) {
     whereClause = ' ' + whereClause + ' status = \'' + req.body.status[i] + '\''
     if (i + 1 < req.body.status.length) {
@@ -463,16 +471,16 @@ app.post('/postOrder/me', function (req, res) {// recent(created), highRating, l
       whereClause = whereClause + ' ) '
     }
   }
-  
-  var sort=' sort by '
-  if (req.body.sort==='recent'){
-    sort=' order by postID DESC '
-  }else if (req.body.sort==='highRating'){
-    sort=' order by rating + comments  DESC '
-  }else if (req.body.sort==='latest'){
-    sort=' order by ideasHistory.date desc '
+
+  var sort = ' sort by '
+  if (req.body.sort === 'recent') {
+    sort = ' order by postID DESC '
+  } else if (req.body.sort === 'highRating') {
+    sort = ' order by rating + comments  DESC '
+  } else if (req.body.sort === 'latest') {
+    sort = ' order by ideasHistory.date desc '
   }
-  sql=sql+whereClause+sort
+  sql = sql + whereClause + sort
   conTest.query(sql, function (err, rows) {
     if (err) {
       res.json({ "Error": true, "Message": err });

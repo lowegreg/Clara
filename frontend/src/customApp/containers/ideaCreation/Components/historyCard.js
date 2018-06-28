@@ -1,10 +1,6 @@
 import React from 'react';
 import './Comment.css';
 import './Admin/Admin.css'
-import MenuButtonIcon from '@material-ui/icons/MoreHoriz';
-import IconButton from '@material-ui/core/IconButton';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 import { Row, Col } from 'react-flexbox-grid';
 import { connect } from 'react-redux';
 
@@ -69,9 +65,9 @@ class HistoryCard extends React.Component {
 				<div className="deep-dive-row">
 					{/* <p className="comment-author" style={{ color: color }}>{this.state.previous}</p> */}
 					<Row>
-						<Col style={{width:'90px'}}> <p className={"admin-status-" + this.state.previous}>{this.state.previous}</p></Col>
+						<Col style={{ width: '90px' }}> <p className={"admin-status-" + this.state.previous}>{this.state.previous}</p></Col>
 						<Col xs={1}><p className="comment-author" style={{ color: 'grey' }} > to </p></Col>
-						<Col style={{width:'90px'}}><p className={"admin-status-" + this.state.new} style={{ color: color, textAlign: 'left' }}>{this.state.new}</p></Col>
+						<Col style={{ width: '90px' }}><p className={"admin-status-" + this.state.new} style={{ color: color, textAlign: 'left' }}>{this.state.new}</p></Col>
 						<Col xs={4}><p className="comment-timestamp" style={{ textAlign: 'right' }}>{this.state.date}</p></Col>
 					</Row>
 					{/* <p className="comment-author" style={{ color: color }}>{this.state.previous}</p><p>to</p><p>{this.state.new}</p> */}

@@ -7,44 +7,52 @@ How it works:
 Parameters: props: the data sets propIds
 returns: array that was retruned from createcompare functions
 */
-function catPropsFunction(props){ 
+function catPropsFunction(props) {
     var type = [];
     var value = [];
     var finacial = [];
     var date = [];
+    var hours = [];
     var location = [];
     var otherDate = [];
-    var dimensions = []
+    var dimensions = [];
+    var rank = [];
     props.forEach((prop, index) => {
-      if(prop.dataTypes==='Text-Type' || prop.dataTypes==='Number-Type'){
-          type.push(prop.propId);
-      }else if(prop.dataTypes==='Number-Value'){
-          value.push(prop.propId)
-      }else if(prop.dataTypes==='Number-Financial'){
-          finacial.push(prop.propId)
-      }else if(prop.dataTypes==='Date-MM:DD:YYYY'||prop.dataTypes==='Date-YYYY-MM-DD'){
-          if (prop.propId==='INSTALLATION_DATE' && date.length<2){
-            date.push(prop.propId)
-          }
-          if (prop.propId==='UPDATE_DATE'&& date.length<2){
-            date.push(prop.propId)
-          }else if (prop.propId==='CREATE_DATE'&& date.length<2){
-            date.push(prop.propId)
-          }else if(date.length<1){
-            otherDate.push(prop.propId)
-          }
-          
-      }else if(prop.dataTypes==='Location-Street'){
+        if (prop.dataTypes === 'Text-Type' || prop.dataTypes === 'Number-Type') {
+            type.push(prop.propId);
+        } else if (prop.dataTypes === 'Number-Value') {
+            value.push(prop.propId)
+        } else if (prop.dataTypes === 'Number-Financial') {
+            finacial.push(prop.propId)
+        } else if (prop.dataTypes === 'Date-MM:DD:YYYY' || prop.dataTypes === 'Date-YYYY-MM-DD') {
+            if (prop.propId === 'INSTALLATION_DATE' && date.length < 2) {
+                date.push(prop.propId)
+            }
+            if (prop.propId === 'UPDATE_DATE' && date.length < 2) {
+                date.push(prop.propId)
+            } else if (prop.propId === 'CREATE_DATE' && date.length < 2) {
+                date.push(prop.propId)
+            } else if (date.length < 1) {
+                otherDate.push(prop.propId)
+            }
+        } else if (prop.dataTypes === 'Date-HH:MM:SS') {
+            if (hours.length === 0) {
+                hours.push(prop.propId)
+            }
+        } else if (prop.dataTypes === 'Location-Street') {
             location.push(prop.propId)
-       }else if(prop.dataTypes==='Number-Dimensions'){
+        } else if (prop.dataTypes === 'Number-Dimensions') {
             dimensions.push(prop.propId)
-      }
+        }
+        else if (prop.dataTypes === 'Number-Rank') {
+            rank.push(prop.propId)
+        }
     });
 
-    if (date.length===0 && otherDate.length>0 ){
+    if (date.length === 0 && otherDate.length > 0) {
         date.push(otherDate[0]);
     }
-    return createCompare(type,value,finacial, date,location, dimensions);
+    return createCompare(type, value, finacial, date, location, dimensions, hours, rank);
 }
 /* OBJECTMAKER
 Purpose: create an object for each potential graph 
@@ -55,24 +63,24 @@ How it works:
 Parameters: x (Array), loopVar (y array), graph (string, graph type), compare (array of all objects),xType(x data type), yType (y data type), swap (boolean (to swap x and y or not))
 Returns: return compare Array
 */
-function objectMaker(x,loopVar,graph, compare, xType,yType,swap){
-    var object={}
-    loopVar.forEach((yVar, index)=>{  
-        if (swap){
-            object={
-                x:yVar,
-                y:x,
-                xType:yType,
-                yType:xType,
-                graph:graph
+function objectMaker(x, loopVar, graph, compare, xType, yType, swap) {
+    var object = {}
+    loopVar.forEach((yVar, index) => {
+        if (swap) {
+            object = {
+                x: yVar,
+                y: x,
+                xType: yType,
+                yType: xType,
+                graph: graph
             }
-        }else{
-            object={
-                x:x,
-                y:yVar,
-                xType:xType,
-                yType:yType,
-                graph:graph
+        } else {
+            object = {
+                x: x,
+                y: yVar,
+                xType: xType,
+                yType: yType,
+                graph: graph
             }
         }
         compare.push(object)
@@ -89,66 +97,99 @@ How it works:
 Parameters: type, value , fin ,data, loc, dim (all string arrays, contain propIds)
 Returns: compare (Array)
  */
-function createCompare(type, value, fin, date, loc,dim){
+function createCompare(type, value, fin, date, loc, dim, hours, rank) {
     var compare = [];
     //type vs fin --> pie
     //type vs date  --> multip bar
+    //type vs hours --> multip bar
     //type vs loc  -> heat map or circlebar
     //type vs value -->pie
-    if (type.length!==0){
-        type.forEach((input, index)=>{
-            if (fin.length!==0){
-                compare=objectMaker(input, fin, 'pie', compare,'type','fin');
+    //type vs rabk --> circleBar
+    if (type.length !== 0) {
+        type.forEach((input, index) => {
+            if (fin.length !== 0) {
+                compare = objectMaker(input, fin, 'pie', compare, 'type', 'fin');
             }
-            if(date.length!==0){
-                compare=objectMaker(input,date,'multiBar', compare,'type','date',true);//group bar graph 
+            if (date.length !== 0) {
+                compare = objectMaker(input, date, 'multiBar', compare, 'type', 'date', true);//group bar graph 
             }
-            if(loc.length!==0){
-                compare=objectMaker(input, loc, 'circleBar', compare,'type','loc');
+            if (hours.length !== 0) {
+                compare = objectMaker(input, hours, 'multiBar', compare, 'type', 'hours', true);//group bar graph 
             }
-            if(value!==0){
-              compare=objectMaker(input, value, 'pie', compare,'type','value'); //need to find a good graph 
+            if (loc.length !== 0) {
+                compare = objectMaker(input, loc, 'circleBar', compare, 'type', 'loc');
             }
-            if(dim!==0){// will add too at a later date
-               // compare= objectMaker(input, dim, 'multiBar', compare,'type','dim');
+            if (value.length !== 0) {
+                compare = objectMaker(input, value, 'pie', compare, 'type', 'value'); //need to find a good graph 
+            }
+            if (rank.length !== 0) {
+                compare = objectMaker(input, rank, 'fillLine', compare, 'type', 'rank');
+            }
+            if (dim !== 0) {// will add too at a later date
+                // compare= objectMaker(input, dim, 'multiBar', compare,'type','dim');
+            }
+        })
+    }
+
+    //fin vs date --> line
+    //fin vs loc  -->heat map or bar
+    //fin vs hours -> line
+    //fin vs value --> pie or bar
+    //fin vs rank --> pie
+
+    if (fin.length !== 0) {
+        fin.forEach((input, index) => {
+            if (date.length !== 0) {
+                compare = objectMaker(input, date, 'line', compare, 'fin', 'date', true);
+            } if (hours.length !== 0) {
+                compare = objectMaker(input, hours, 'line', compare, 'fin', 'hours', true);
+            } if (loc.length !== 0) {
+                compare = objectMaker(input, loc, 'multiBar', compare, 'fin', 'loc');
+            } if (value.length !== 0) {
+                compare = objectMaker(input, value, 'pie', compare, 'fin', 'value');
+            } if (rank.length !== 0) {
+                compare = objectMaker(input, rank, 'pie', compare, 'fin', 'rank');
+            }
+        })
+    }
+    //loc vs value --> heat map or bar
+    //loc vs date --> heat map or line
+    if (loc.length !== 0) {
+        loc.forEach((input, index) => {
+            if (value.length !== 0) {
+                compare = objectMaker(input, value, 'heatMap', compare, 'loc', 'value');
+            }
+
+            if (date.length !== 0) {
+                // compare=objectMaker(input, date, 'line', compare);// not graph worthy
+            }
+        })
+    }
+    //date vs value -> line
+    //date vs rank -> line
+    if (date.length !== 0) {
+        date.forEach((input, index) => {
+            if (value.length !== 0) {// compare with a type
+                compare = objectMaker(input, value, 'line', compare, 'date', 'value');
+            }
+            if (rank.length !== 0) {
+                compare = objectMaker(input, rank, 'line', compare, 'date', 'rank');
+            }
+        })
+    }
+    //hours vs value -> line
+    //hours vs rank -> line
+    if (hours.length !== 0) {
+        hours.forEach((input, index) => {
+            if (value.length !== 0) {// compare with a type
+                compare = objectMaker(input, value, 'line', compare, 'hours', 'value');
+            }
+            if (rank.length !== 0) {// compare with a type
+                compare = objectMaker(input, rank, 'line', compare, 'hours', 'rank');
             }
         })
     }
     
-    //fin vs date --> line
-    //fin vs loc  -->heat map or bar
-    //fin vs value --> pie or bar
-    if(fin.length!==0){ 
-        fin.forEach((input, index)=>{
-            if(date.length!==0){
-                compare=objectMaker(input, date, 'line', compare,'fin','date',true);
-            }if (loc.length!==0){
-                compare=objectMaker(input, loc, 'multiBar', compare,'fin','loc');
-            }if(value.length!==0){
-                compare=objectMaker(input, value, 'pie', compare,'fin','value');
-            }
-        }) 
-    }
-    //loc vs value --> heat map or bar
-    //loc vs date --> heat map or line
-    if (loc.length!==0){
-        loc.forEach((input,index)=>{
-            if(value.length!==0){
-                compare=objectMaker(input, value, 'heatMap', compare,'loc','value');
-            }
-            if(date.length!==0){
-               // compare=objectMaker(input, date, 'line', compare);// not graph worthy
-            }
-        })
-    } 
-    //date vs value -> line
-    if (date.length!==0){
-        date.forEach((input,index)=>{
-            if(value!==0){// compare with a type
-                compare=objectMaker(input, value, 'line', compare,'date','value');
-            }
-        })
-    }
     return compare;
 }
 /*GET-GRAPH-OPTIONS
@@ -158,22 +199,22 @@ How it works:
 Parameters: graphType (string , name of graph), xdata (array ), ydata (array), zdata(array not always used), yname (string , propId of y)
 Returns: options array from the function it was dispatched to (array)
 */
-function getGraphOptions(graphType, xData,yData, zData, yName){
-
-    switch(graphType){
+function getGraphOptions(graphType, xData, yData, zData, yName) {
+   
+    switch (graphType) {
         case 'line':
             return lineGraph(xData, yData)
+        case 'fillLine':
+            return fillLineGraph(xData, yData)
         case 'pie':
-            return pieGraph(xData, yData,yName)
+            return pieGraph(xData, yData, yName)
         case 'circleBar':
             return circleBarGraph(xData, yData, zData)
         case 'multiBar':
-            return multiBarGraph(xData,yData,zData)
+            return multiBarGraph(xData, yData, zData)
         default:
             return lineGraph(xData, yData)
-
     }
-
 }
 /* REMOVENULL
 Purpose: to eliminate any fields that are labeled null or unknown to create a better representation of data
@@ -184,15 +225,15 @@ How it works: '
 Parameters: data (array, results from api call)
 Returns: tempData or data (array)
 */
-function removeNull(data){
-    var tempData=[]
-    if (data.length>2){
-        for (var i=0; i< data.length; i++){
-            if (data[i].x!=='None'&&data[i].y!=='None'&&data[i].y!=='UNKNOWN'&&data[i].y!=='unknown'&&data[i].x!=='UNKNOWN'&&data[i].x!=='unknown'){
+function removeNull(data) {
+    var tempData = []
+    if (data.length > 2) {
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].x !== 'None' && data[i].y !== 'None' && data[i].y !== 'UNKNOWN' && data[i].y !== 'unknown' && data[i].x !== 'UNKNOWN' && data[i].x !== 'unknown') {
                 tempData.push(data[i])
             }
         }
-    }else {
+    } else {
         return data
     }
     return tempData
@@ -203,23 +244,26 @@ How it works: just a swich statment
 Parameters: x (string, propId of x data), y (string , propid of y data), graph (string) 
 Returns:  descrition(string)
 */
-function getDescripton(x,y,graph){
-    var description=''
-    switch(graph){
+function getDescripton(x, y, graph) {
+    var description = ''
+    switch (graph) {
         case 'multiBar':
-            description= 'Comparing '+x+' to top 5 of '+y+' (or less then top 5)'
+            description = 'Comparing ' + x + ' to top 5 of ' + y + ' (or less then top 5)'
             break;
         case 'pie':
-            description='Comparing the top 10, sum of '+y+' per '+x+'  type (or less then top 10)' 
+            description = 'Comparing the top 10, sum of ' + y + ' per ' + x + '  type (or less then top 10)'
             break;
         case 'line':
-            description='Compareing '+x+' to '+y+'by month'
-            break; 
+            description = 'Compareing ' + x + ' to ' + y + 'by month'
+            break;
+        case 'fillLine':
+            description = 'Compareing ' + x + ' to ' + y + 'by month'
+            break;
         case 'circleBar':
-            description='Comparing the top 10, number of  '+y+' per '+x+'  type (or less then top 10)'
-            break;  
-        default :
-            description=''             
+            description = 'Comparing the top 10, number of  ' + y + ' per ' + x + '  type (or less then top 10)'
+            break;
+        default:
+            description = ''
     }
     return description
 }
@@ -235,27 +279,27 @@ How it works:
 Paramerter:  graphObjects (object,both x and y data ), xdata (array, just x data), ydata (array, just ydata), zdata (array, just zdata not always used)
 Returns:  dataout (array)
  */
-function formatData(graphObject, xData, yData,zData){
-    var dataOut={}
-        //if unique y then do a bar
-    var xu=  xData.filter((v, i, a) => a.indexOf(v) === i).length  
-    var graphType=graphObject.graph
-    if (xu===1 ){
-        graphType='multiBar'
+function formatData(graphObject, xData, yData, zData) {
+    var dataOut = {}
+    //if unique y then do a bar
+    var xu = xData.filter((v, i, a) => a.indexOf(v) === i).length
+    var graphType = graphObject.graph
+    if (xu === 1) {
+        graphType = 'multiBar'
     }
-        
-    dataOut={
-        title: graphObject.x+' Vs. '+ graphObject.y,
-        description:getDescripton(graphObject.x,graphObject.y,graphType ),
+
+    dataOut = {
+        title: graphObject.x + ' Vs. ' + graphObject.y,
+        description: getDescripton(graphObject.x, graphObject.y, graphType),
         graph: graphType,
         widthOfCard: '100%',
-        tags:[
-            {name:graphObject.x, route:''},
-            {name:graphObject.y, route:''},
-            {name:graphType, route:''},],
-        xName:graphObject.x,
-        yName:graphObject.y,
-        options: getGraphOptions(graphType,xData, yData, zData,graphObject.y )
+        tags: [
+            { name: graphObject.x, route: '' },
+            { name: graphObject.y, route: '' },
+            { name: graphType, route: '' },],
+        xName: graphObject.x,
+        yName: graphObject.y,
+        options: getGraphOptions(graphType, xData, yData, zData, graphObject.y)
     }
     return dataOut
 }
@@ -268,16 +312,16 @@ How it works:
 Parameters: xdata(array), ydata(array)
 Returns: data (array)
  */
-function dataConfig(xData,yData){
-    var data=[]
-    for (var i =0; i<xData.length; i++){
-        var object={
-            value:yData[i],
-            name:xData[i]
+function dataConfig(xData, yData) {
+    var data = []
+    for (var i = 0; i < xData.length; i++) {
+        var object = {
+            value: yData[i],
+            name: xData[i]
         }
         data.push(object)
     }
-    return(data)
+    return (data)
 }
 /* PIEGRAPH
 Purpose: generates the options object specificaily for a pie graph 
@@ -287,10 +331,10 @@ How it works:
 Paramerters: xData (array), ydata (array) yName (title/ PropId for ydata)
 Returns: option (object)
  */
-function pieGraph(xData,yData, yName){
-    
+function pieGraph(xData, yData, yName) {
+
     var option = {
-        tooltip : {
+        tooltip: {
             trigger: 'item',
             formatter: "{b} :</br>{c} ({d}%)"
         },
@@ -299,14 +343,15 @@ function pieGraph(xData,yData, yName){
             left: 'left',
             data: xData,
             type: 'scroll',
+            backgroundColor: '#ffffff'
         },
-        series : [
+        series: [
             {
                 // name: yName,
                 type: 'pie',
-                radius : '55%',
+                radius: '55%',
                 center: ['50%', '60%'],
-                data:dataConfig(xData,yData),
+                data: dataConfig(xData, yData),
                 itemStyle: {
                     emphasis: {
                         shadowBlur: 10,
@@ -319,12 +364,12 @@ function pieGraph(xData,yData, yName){
     };
     return option
 }
-function circleBarConfig(xData,zData,ylength){
-    var xUnique = xData.filter((v, i, a) => a.indexOf(v) === i); 
-    var xlength= xUnique.length
-    var graphData=[];
-    for (var i =0; i<xlength; i++){
-        var z= zData.slice(i, i+ylength);
+function circleBarConfig(xData, zData, ylength) {
+    var xUnique = xData.filter((v, i, a) => a.indexOf(v) === i);
+    var xlength = xUnique.length
+    var graphData = [];
+    for (var i = 0; i < xlength; i++) {
+        var z = zData.slice(i, i + ylength);
         var object = {
             type: 'bar',
             data: z,
@@ -336,13 +381,13 @@ function circleBarConfig(xData,zData,ylength){
     }
     return (graphData)
 }
-function circleBarGraph(xData,yData,zData){
-    var yUnique = yData.filter((v, i, a) => a.indexOf(v) === i); 
-    var xUnique = xData.filter((v, i, a) => a.indexOf(v) === i); 
+function circleBarGraph(xData, yData, zData) {
+    var yUnique = yData.filter((v, i, a) => a.indexOf(v) === i);
+    var xUnique = xData.filter((v, i, a) => a.indexOf(v) === i);
     var lengthY = yUnique.length
-    
+
     var option = {
-        tooltip : {
+        tooltip: {
             trigger: 'item',
             formatter: "{a} <br/>{b} : {c} "
         },
@@ -356,24 +401,26 @@ function circleBarGraph(xData,yData,zData){
         },
         polar: {
         },
-        series: circleBarConfig(xData,zData, lengthY),
+        series: circleBarConfig(xData, zData, lengthY),
         legend: {
             show: true,
             data: xUnique,
             type: 'scroll',
+            backgroundColor: '#ffffff'
         }
     };
     return option
 }
-function lineGraph(xData,yData){
+function lineGraph(xData, yData) {
     var option = {
-        tooltip : {
+        tooltip: {
             trigger: 'item',
             formatter: "{b} : {c}"
         },
         xAxis: {
             type: 'category',
-            data: xData
+            data: xData,
+            boundaryGap: false
         },
         yAxis: {
             type: 'value'
@@ -385,77 +432,149 @@ function lineGraph(xData,yData){
     };
     return option
 }
-function separateData(ux, oa, uyAll){
-    var temp=false
-    var array=[]
+
+function getColor() {
+    var picked
+    var one = '#7B9257'
+    var two = '#21325F'
+    var three = '#2D3446'
+    var four = '#324D92'
+    var five = '#8FA6DF'
+    var six = '#3A3153'
+    var seven = '#879CD2'
+    var eight = '#314C53'
+    var random = Math.floor(Math.random() * 8) + 1
+    switch (random) {
+        case 1:
+            picked = one
+            break;
+        case 2:
+            picked = two
+            break;
+        case 3:
+            picked = three
+            break;
+        case 4:
+            picked = four
+            break;
+        case 5:
+            picked = five
+            break;
+        case 6:
+            picked = six
+            break;
+        case 7:
+            picked = seven
+            break;
+        case 8:
+            picked = eight
+            break;
+        default:
+            picked = eight    
+    }
+    return picked
+    //return '#'+(Math.random()*0xFFFFFF<<0).toString(16);
+
+}
+
+function fillLineGraph(xData, yData) {
+    var color = getColor()
+    var option = {
+        tooltip: {
+            trigger: 'item',
+            formatter: "{b} : {c}"
+        },
+        xAxis: {
+            type: 'category',
+            data: xData,
+            boundaryGap: false
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [{
+            data: yData,
+            type: 'line',
+            areaStyle: { color: color },
+            color: color
+        }]
+    };
+    return option
+}
+function separateData(ux, oa, uyAll) {
+    var temp = false
+    var array = []
     //goal -> group all infractions in order of date null if infractions dne for that month null
-        //get all objects with.x =ux
-    var uxArray=[]
-    for(var i=0;i< oa.length;i++){
-        if (oa[i].x===ux){
+    //get all objects with.x =ux
+    var uxArray = []
+    for (var i = 0; i < oa.length; i++) {
+        if (oa[i].x === ux) {
             uxArray.push(oa[i])
         }
     }
 
-    temp=null    
-    for (i=0; i<uyAll.length;i++){
-        for(var j=0; j<uxArray.length;j++ ){ 
-            if (uyAll[i]===uxArray[j].y){
-                temp=uxArray[j].z
+    temp = null
+    for (i = 0; i < uyAll.length; i++) {
+        for (var j = 0; j < uxArray.length; j++) {
+            if (uyAll[i] === uxArray[j].y) {
+                temp = uxArray[j].z
             }
         }
         array.push(temp)
-        temp=null
-    }        
+        temp = null
+    }
 
     return array;
 }
-function createMultiObject(x,y,z){
-    var array=[]
-    for(var i=0; i< z.length; i++){
-        var object={
-            x:x[i],
-            y:y[i],
-            z:z[i]
+function createMultiObject(x, y, z) {
+    var array = []
+    for (var i = 0; i < z.length; i++) {
+        var object = {
+            x: x[i],
+            y: y[i],
+            z: z[i]
         }
         array.push(object)
     }
-  
+
     return array
 }
-function multiBarConfig(xData,zData,ylength,yData){
+function multiBarConfig(xData, zData, ylength, yData) {
     var xUnique = xData.filter((v, i, a) => a.indexOf(v) === i);
-    var yUnique = yData.filter((v, i, a) => a.indexOf(v) === i);  
-    var xlength= xUnique.length
-    var graphData=[];
-    var objectArray= createMultiObject(xData,yData,zData)
-    for (var i =0; i<xlength; i++){
-        var z= separateData(xUnique[i], objectArray,yUnique )//zData.slice(i, i+ylength);
-        var object =  {
-            name:xUnique[i],
-            type:'bar',
-            stack:'top',
-            data:z,
+    var yUnique = yData.filter((v, i, a) => a.indexOf(v) === i);
+    var xlength = xUnique.length
+    var graphData = [];
+    var objectArray = createMultiObject(xData, yData, zData)
+    for (var i = 0; i < xlength; i++) {
+        var z = separateData(xUnique[i], objectArray, yUnique)//zData.slice(i, i+ylength);
+        var object = {
+            name: xUnique[i],
+            type: 'bar',
+            stack: 'top',
+            data: z,
         }
         graphData.push(object)
     }
     return (graphData)
 }
-function multiBarGraph(xData,yData,zData){
-    var yUnique = yData.filter((v, i, a) => a.indexOf(v) === i); 
-    var xUnique = xData.filter((v, i, a) => a.indexOf(v) === i); 
+function multiBarGraph(xData, yData, zData) {
+    var yUnique = yData.filter((v, i, a) => a.indexOf(v) === i);
+    var xUnique = xData.filter((v, i, a) => a.indexOf(v) === i);
     var lengthY = yUnique.length
+    var interval = 0
+    if (lengthY > 9) interval = 1
     var option = {
-        tooltip : {
+        tooltip: {
             trigger: 'axis',
-            axisPointer : {        
-                type : 'shadow'       
+            axisPointer: {
+                type: 'shadow'
             }
         },
         legend: {
-            data:xUnique.map(String),
+            data: xUnique.map(String),
             position: 'bottom',
             type: 'scroll',
+            backgroundColor: '#ffffff'
         },
         grid: {
             left: '3%',
@@ -463,24 +582,23 @@ function multiBarGraph(xData,yData,zData){
             bottom: '3%',
             containLabel: true
         },
-        xAxis : [
-           
+        xAxis: [
             {
-                type : 'category',
+                type: 'category',
                 //axisTick : {show: false},
-                data : yUnique,
+                data: yUnique,
                 axisLabel: {
-                    interval: 0,
+                    interval: interval,
                     rotate: -25
                 },
             }
         ],
-        yAxis : [
+        yAxis: [
             {
-                type : 'value'
+                type: 'value'
             }
         ],
-        series : multiBarConfig(xData,zData, lengthY,yData)
+        series: multiBarConfig(xData, zData, lengthY, yData)
     };
     return option
 }

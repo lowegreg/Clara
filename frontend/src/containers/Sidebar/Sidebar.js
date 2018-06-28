@@ -239,22 +239,22 @@ class Sidebar extends Component {
                 }
               >
                 <Menu.Item style={submenuStyle} key="Live" >
-                  <Link style={submenuColor} to={`${url}/comingSoon`}>
+                  <Link style={submenuColor} to={`${url}/open_data/live`}>
                     <IntlMessages id="sidebar.live" />
                   </Link>
                 </Menu.Item>
                 <Menu.Item style={submenuStyle} key="Open Data" >
-                  <Link style={submenuColor} to={`${url}/open_data`}>
+                  <Link style={submenuColor} to={`${url}/open_data/open`}>
                     <IntlMessages id="sidebar.open" />
                   </Link>
                 </Menu.Item>
                 <Menu.Item style={submenuStyle} key="Third Party" >
-                  <Link style={submenuColor} to={`${url}/comingSoon`}>
+                  <Link style={submenuColor} to={`${url}/open_data/third party`}>
                     <IntlMessages id="sidebar.thirdParty" />
                   </Link>
                 </Menu.Item>
                 <Menu.Item style={submenuStyle} key="Imported" >
-                  <Link style={submenuColor} to={`${url}/comingSoon`}>
+                  <Link style={submenuColor} to={`${url}/open_data/imported`}>
                     <IntlMessages id="sidebar.imported" />
                   </Link>
                 </Menu.Item>
