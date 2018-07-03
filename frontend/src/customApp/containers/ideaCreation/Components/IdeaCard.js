@@ -16,8 +16,9 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuButtonIcon from '@material-ui/icons/MoreVert';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import { connect } from 'react-redux';
 
-export class IdeaCard extends React.Component {
+class IdeaCard extends React.Component {
 	constructor(props) {
 		super(props);
 		const dateString = this.getTimeElapsed(this.props.date)
@@ -695,7 +696,7 @@ export class IdeaCard extends React.Component {
 		// admins can delete/update/flag any post
 		// regular users can only delete their own posts, if and only if the idea's status is "live"
 		let adminItem;
-		if (UserProfile.getView() === 'admin' || UserProfile.getView() === 'lab') {
+		if (this.props.profile.role==='Administrator') {//  UserProfile.getView() === 'admin' || UserProfile.getView() === 'lab'
 			adminItem = (
 				<div>
 					{/* only "live" ideas can be sent to review */}
@@ -766,10 +767,10 @@ export class IdeaCard extends React.Component {
 			</div>
 		);
 		if (this.props.status !== 'inReview' && this.props.status !== 'inProgress' && this.props.status !== "internal" && this.props.status !== "lab" && this.props.status !== 'Completed') {
-			if (UserProfile.getID() === this.props.empID || UserProfile.getView() === 'admin' || UserProfile.getView() === 'lab') {
+			if (this.props.profile.employeeId === this.props.empID || this.props.profile.role==='Administrator') {
 				menuButton = button;
 			}
-		} else if (UserProfile.getView() === 'admin' || UserProfile.getView() === 'lab') {
+		} else if (this.props.profile.role==='Administrator') {
 			menuButton = button;
 		}
 
@@ -812,3 +813,8 @@ export class IdeaCard extends React.Component {
 		);
 	}
 };
+
+
+export default connect(state => ({
+    profile: state.Auth.get('profile'),
+}))(IdeaCard);

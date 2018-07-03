@@ -1,6 +1,6 @@
 import React from 'react';
 import './ListView.css';
-import { IdeaCard } from './IdeaCard';
+import IdeaCard from './IdeaCard';
 import UserProfile from '../UserProfile';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
