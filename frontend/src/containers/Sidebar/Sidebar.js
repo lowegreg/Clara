@@ -289,7 +289,7 @@ class Sidebar extends Component {
               </SubMenu>
 
               <Menu.Item key="Reports" >
-                <Link to={`${url}/comingSoon`}>
+                <Link to={`${url}/reports`}>
                   <span className="isoMenuHolder" style={submenuColor}>
                     <i className="ion-ios-list-outline" />
                     <span className="nav-text">
