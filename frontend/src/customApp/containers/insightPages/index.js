@@ -128,43 +128,36 @@ export default class extends Component {
 		}
 
 		return (
-			<div style={{ alignContent: 'center', alignItems: 'ceter', marginLeft: '16px', marginTop: '16px', marginRight: '16px' }}>
-				{(this.state.loading === 0 && !this.state.update) &&
-					<div >
-						{(this.state.tableName !== 'dash') && <h1>{this.state.tableName}</h1>}
-						
-						<Row >
-							<Col md={6} xs={6} >
-								{left.map((table, key) => (
-									<div key={key} className='isoSimpleTable' style={{ alignContent: 'center', alignItems: 'center', marginBottom: '16px', marginTop: '16px' }} >
-										<Tile table={table} type={this.state.tableName} dashboard={this.props.dashboard} tileIndex={key} updateDash={this.updateDash} />
-									</div>
-								))
-								}
-							</Col>
-							<Col md={6} xs={6} >
-								{right.map((table, key) => (
-									<div key={key} className='isoSimpleTable' style={{ alignContent: 'center', alignItems: 'center', marginBottom: '16px', marginTop: '16px' }}>
-										<Tile table={table} type={this.state.tableName} dashboard={this.props.dashboard} tileIndex={(2 * key) + 1} updateDash={this.updateDash} />
-									</div>
-								))
-								}
-							</Col>
-						</Row>
-						{left.length===0 &&
-							
-							<p style={{textAlign:'center', fontSize: "18px",fontStyle: "italic",fontWeight: "300",marginTop:'60px'}}>The data set has no comparisons</p>
-							
-						}
-					</div>
-				}
-			
-				{this.state.loading !== 0 &&
-					<div style={{ display: 'flex', felx: 1, justifyContent: 'center', alignItems: 'space-around', marginTop: '50px' }}>
-						<Spin size="large" />
-					</div>
-				}
-			</div>
+		<div style={{alignContent:'center', alignItems:'ceter', marginLeft: '16px',marginTop: '16px',marginRight:'16px'}}>
+			{(this.state.loading===0 && !this.state.update) &&
+				<div>
+					{(this.state.tableName!=='dash' )&&<h1>{this.state.tableName}</h1>}
+					<Row >
+						<Col md={6} xs={6} >
+							{left.map((table, key) => ( 
+								<div key={key} className='isoSimpleTable' style={{alignContent:'center', marginBottom: '16px', marginTop: '16px'}} >
+									<Tile  table={table} type={this.state.tableName} dashboard={this.props.dashboard} tileIndex={key} updateDash={this.updateDash}/>
+								</div>
+							))
+							}
+						</Col>
+						<Col md={6} xs={6} >
+							{right.map((table, key) => ( 
+								<div key={key} className='isoSimpleTable' style={{alignContent:'center',marginBottom: '16px', marginTop: '16px'}}>
+									<Tile  table={table} type={this.state.tableName} dashboard={this.props.dashboard} tileIndex={(2*key)+1} updateDash={this.updateDash}/>	
+								</div>
+							))
+							}
+						</Col>
+					</Row>
+				</div>	
+			}
+			{this.state.loading!==0 &&
+				<div  style={{display:'flex',felx:1, justifyContent:'center', alignItems:'space-around', marginTop:'50px'}}>
+					<Spin size="large"   />	
+				</div>
+			}
+		</div>   
 		);
 	}
 }

@@ -120,6 +120,7 @@ export default class OpenDataTable extends React.Component {
         colour: 'orange'
       },
     ]
+    console.log(this.state.filter)
     return (
       <div>
         <Row style={{ marginTop: '18px', width: '100%' }}>
