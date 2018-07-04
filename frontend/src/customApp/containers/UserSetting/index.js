@@ -9,6 +9,7 @@ import { Modal, message } from 'antd';
 import Button from '../../../components/uielements/button';
 import Input from '../../../components/uielements/input';
 import App from '../../containers/ideaCreation/App.js'
+import './styles.css';
 
 const error = [
   { colour: '', help: '' },
@@ -30,7 +31,80 @@ export class Settings extends Component {
       currentPassword: '',
       newPassword: '',
       confirmPassword: '',
+      notifications: []
     };
+  }
+  setNote(notifications) {
+    if (notifications === []) {
+      this.setState({ notification: [] })
+      return;
+    }
+    var noteArray = [];
+    for (var i = 0; i < notifications.length; i++) {
+      var properties = notifications[i].subTitle.split('-');
+      var newNote = {
+        id: notifications[i].id,
+        name: 'Data Mapping',
+        notification: notifications[i].title,
+        title: properties[1],
+        status: properties[0],
+        reason: properties[2],
+        receipt: notifications[i].receipt,
+        date: notifications[i].noteDate
+      }
+      noteArray.push(newNote)
+    }
+    this.setState({ notifications: noteArray })
+  }
+  getNotifications() {
+    var query = 'http://35.182.224.114:3000/getNotifications?email=' + this.props.profile.email
+    fetch(query, { method: 'GET', mode: 'cors' })
+      .then((response) => response.json())
+      .then(responseJson => this.setNote(responseJson.id))
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+  componentDidMount() {
+    this.getNotifications();
+  }
+  getTimeElapsed(date) {
+    const postDate = new Date(date);
+    const now = new Date();
+    const timeElapsed = Math.abs(now.getTime() - postDate.getTime());
+
+    let elapsed = timeElapsed / 1000;
+    if (elapsed / 60 >= 1) {
+      elapsed /= 60;
+      if (elapsed / 60 >= 1) {
+        elapsed /= 60;
+        if (elapsed / 24 >= 1) {
+          elapsed /= 24;
+          if (elapsed / 7 >= 1) {
+            elapsed /= 7;
+            return Math.floor(elapsed) + "w";
+          } else {
+            return Math.floor(elapsed) + "d";
+          }
+        } else {
+          return Math.floor(elapsed) + "h";
+        }
+      } else {
+        return Math.floor(elapsed) + "m";
+      }
+    } else {
+      return Math.floor(elapsed) + "s";
+    }
+  }
+  colourPicker(status) {
+    switch (status) {
+      case 'read':
+        return 'whitesmoke'
+      case 'delivered':
+        return '#aec8f2'
+      default:
+        return '#aec8f2'
+    }
   }
   onChange = (event) => {
     this.setState({ [event.target.id]: event.target.value });
@@ -93,6 +167,42 @@ export class Settings extends Component {
         console.log(error);
       })
   }
+  markAsRead(dataSet, status, reason, id) {
+    // this.setState({ visible: false })
+    var title = dataSet + ' has been ' + status;
+    var content;
+    if (status === 'rejected') {
+      content = 'Reason: ' + reason
+      Modal.error({
+        title: title,
+        content: content,
+      });
+    } else if (status === 'accepted') {
+      content = dataSet + ' is now viewable under the stories tab.'
+      Modal.success({
+        title: title,
+        content: content,
+      });
+    } else if (status === 'read') {
+      content = dataSet
+      Modal.info({
+        title: title,
+        content: content,
+      });
+    }
+    var headersValue = {
+      'Accept': 'application/x-www-form-urlencoded',
+      'Content-Type': 'application/x-www-form-urlencoded',
+    }
+    var formBody = 'id=' + id
+    fetch('http://35.182.224.114:3000/updateNotifications', { method: 'POST', headers: headersValue, mode: 'cors', body: formBody })
+      .then((response) => response.json())
+      .then(responseJson => { })//this.setState({ submited: true })
+      .catch((error) => {
+        console.error(error);
+      });
+    this.getNotifications()
+  }
   render() {
     const profile = this.state.profile;
     var image;
@@ -152,6 +262,22 @@ export class Settings extends Component {
               }
             >
             </VCardWidget>
+            <div style={{ backgroundColor: 'white', marginTop: '16px', padding: '3px' }}>
+              <h3 style={{ marginLeft: '7px', marginTop: '14px' }}>Notifications</h3>
+              <div style={{ height: '200px', overflow: 'auto', overflowX: 'hidden' }} className="scrollbar" id="style-1">
+                {this.state.notifications.map(notification => (// whitesmoke
+                  <div style={{ backgroundColor: this.colourPicker(notification.receipt), margin: '10px', padding: '5px', borderRadius: '3px' }} onClick={() => { this.markAsRead(notification.title, notification.status, notification.reason, notification.id) }} key={notification.id} >
+                    <Row style={{ marginLeft: '7px' }}>
+                      <Col xs={9} ><h5 >{notification.name}</h5></Col>
+                      <Col xs={3}><p text-align='right'>{this.getTimeElapsed(notification.date)}</p></Col>
+                    </Row>
+                    <Row style={{ marginLeft: '7px' }}>
+                      <Col xs={9}><p>{notification.notification}</p></Col>
+                    </Row>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
           <Modal
             wrapClassName="vertical-center-modal"

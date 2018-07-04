@@ -15,7 +15,7 @@ export default class extends Component {
 			status: false,
 			loading: -1,
 			update: false,
-			graphFull:0
+			graphFull:0,
 		}
 	}
 	createGraphType(props) {
@@ -116,10 +116,12 @@ export default class extends Component {
 			this.setState({ update: false })
 		}
 	}
+
+	
+	
+
 	render() {
-		// if (this.state.allData.length === 0) {
-		// 	this.setGraphs();
-		// }
+
 
 		if (this.state.allData && this.state.loading === 0) {
 			var temp = this.orderTiles();
@@ -136,20 +138,23 @@ export default class extends Component {
 						<Col md={6} xs={6} >
 							{left.map((table, key) => ( 
 								<div key={key} className='isoSimpleTable' style={{alignContent:'center', marginBottom: '16px', marginTop: '16px'}} >
-									<Tile  table={table} type={this.state.tableName} dashboard={this.props.dashboard} tileIndex={key} updateDash={this.updateDash}/>
+									<Tile  table={table} type={this.state.tableName} dashboard={this.props.dashboard} tileIndex={key} updateDash={this.updateDash}  />
 								</div>
 							))
 							}
 						</Col>
 						<Col md={6} xs={6} >
 							{right.map((table, key) => ( 
-								<div key={key} className='isoSimpleTable' style={{alignContent:'center',marginBottom: '16px', marginTop: '16px'}}>
-									<Tile  table={table} type={this.state.tableName} dashboard={this.props.dashboard} tileIndex={(2*key)+1} updateDash={this.updateDash}/>	
+								<div key={key} className='isoSimpleTable' style={{alignContent:'center',marginBottom: '16px', marginTop: '16px'}} >
+									<Tile  table={table} type={this.state.tableName} dashboard={this.props.dashboard} tileIndex={(2*key)+1} updateDash={this.updateDash}  />	
 								</div>
 							))
 							}
 						</Col>
 					</Row>
+					{left.length===0 &&
+						<p style={{textAlign:'center', fontSize: "18px",fontStyle: "italic",fontWeight: "300",marginTop:'60px'}}>The data set has no comparisons</p>
+					}
 				</div>	
 			}
 			{this.state.loading!==0 &&

@@ -140,10 +140,10 @@ class AdminDataManagement extends React.Component {
                     .catch((error) => {
                         console.error(error);
                     });
-                var formBody3 = 'email=' + this.state.selected.submittedBy + '&subTitle=accepted-' + this.state.selected.name + '&title=' + this.state.selected.name + ' has been approved.'
-                this.setNotifcaiton(formBody3)
             }
         }
+        var formBody3 = 'email=' + this.state.selected.submittedBy + '&subTitle=accepted-' + this.state.selected.name + '&title=' + this.state.selected.name + ' has been approved.'
+        this.setNotifcaiton(formBody3)
     }
     handleReject = (e) => {
         if (this.state.text === '') {
