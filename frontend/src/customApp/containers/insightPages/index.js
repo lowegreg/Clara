@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Row, Col } from 'react-flexbox-grid';
 import * as func from '../../pageFunctions';
 import Tile from '../../components/insightTile/index2';
-import { Spin } from 'antd';
+import { Spin, Modal } from 'antd';
+import Button from '../../../components/uielements/button';
 
 export default class extends Component {
 	constructor(props) {
@@ -15,8 +16,12 @@ export default class extends Component {
 			status: false,
 			loading: -1,
 			update: false,
-			graphFull:0
+			graphFull:0,
+			visible:false,	
+			selected:{}
 		}
+		this.handleCancel = this.handleCancel.bind(this);
+		this.handleOk = this.handleOk.bind(this);
 	}
 	createGraphType(props) {
 		var compare = func.catPropsFunction(props);
@@ -116,6 +121,34 @@ export default class extends Component {
 			this.setState({ update: false })
 		}
 	}
+	popUP(){
+		return(
+
+			<Modal
+			title="Deep dive"
+			visible={this.state.visible}
+			onOk={this.handleOk}
+			okText="Accept"
+			cancelText="Reject"
+			onCancel={this.handleCancel}
+			maskClosable={true}
+			width={'90%'}
+			closable={true}
+			bodyStyle={{ height: '100%'}}
+			footer={[	]}
+		>
+		
+			<Tile table={this.state.selected} type={this.state.tableName} dashboard={this.props.dashboard} updateDash={this.updateDash} />
+		
+		</Modal>
+		)
+	}
+	handleCancel(){
+		this.setState({visible:false})
+	}
+	handleOk(){
+		this.setState({visible:false})
+	}
 	render() {
 		// if (this.state.allData.length === 0) {
 		// 	this.setGraphs();
@@ -136,7 +169,7 @@ export default class extends Component {
 						<Col md={6} xs={6} >
 							{left.map((table, key) => ( 
 								<div key={key} className='isoSimpleTable' style={{alignContent:'center', marginBottom: '16px', marginTop: '16px'}} >
-									<Tile  table={table} type={this.state.tableName} dashboard={this.props.dashboard} tileIndex={key} updateDash={this.updateDash}/>
+									<Tile  table={table} type={this.state.tableName} dashboard={this.props.dashboard} tileIndex={key} updateDash={this.updateDash} onClick={() => {this.setState({visible:true, selected: table})}}/>
 								</div>
 							))
 							}
