@@ -196,7 +196,9 @@ app.post('/dataManagement/postNewDatatype', function (req, res) {
 
 // add a notificaiton
 app.post('/postNotifications', function (req, res) {
-  var today = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
+  var d = new Date();
+  var month = d.getMonth() + 1
+  var today = d.getFullYear() + '-' + month + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
   var sql = 'insert into notifications (email, receipt,subTitle, noteDate, title) values (\'' + req.body.email + '\',\'delivered\', \'' + req.body.subTitle + '\',\'' + today + '\', \'' + req.body.title + '\')';
   con.query(sql, function (err, rows) {
     if (err) {
@@ -209,7 +211,12 @@ app.post('/postNotifications', function (req, res) {
 
 //get notifciaiton for a particular user
 app.get('/getNotifications', function (req, res) {
-  var sql = 'select * from notifications where email=\'' + req.query.email + '\' and receipt=\'' + req.query.receipt + '\''
+  var sql = ''
+  if (req.query.receipt) {
+    sql = 'select * from notifications where email=\'' + req.query.email + '\' and receipt=\'' + req.query.receipt + '\' order by noteDate desc'
+  } else {
+    sql = 'select * from notifications where email=\'' + req.query.email + '\' order by noteDate desc'
+  }
   con.query(sql, function (err, rows) {
     if (err) {
       res.json({ "Error": true, "Message": err });
