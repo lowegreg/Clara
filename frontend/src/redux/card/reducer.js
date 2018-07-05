@@ -1,11 +1,9 @@
 import { Map } from 'immutable';
-import { fakedata } from '../../containers/Ecommerce/card/config';
 import cardActions from './actions';
 
-const cards = fakedata;
 
 const initState = new Map({
-  cards
+
 });
 
 export default function cardReducer(state = initState, action) {

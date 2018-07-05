@@ -1,4 +1,4 @@
-import { fakedata } from '../../containers/Ecommerce/card/config';
+
 const cardActions = {
   CHANGE_CARDS: 'CHANGE_CARDS',
   addCard: card => {
@@ -45,7 +45,7 @@ const cardActions = {
   restoreCards: () => {
     return {
       type: cardActions.CHANGE_CARDS,
-      cards: fakedata
+      
     };
   }
 };

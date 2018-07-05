@@ -3,7 +3,7 @@ import { Popover, Modal } from 'antd';
 import { connect } from 'react-redux';
 import IntlMessages from '../../components/utility/intlMessages';
 import TopbarDropdownWrapper from './topbarDropdown.style';
-//import { notification } from '../../components/index';
+
 
 class TopbarNotification extends Component {
 	constructor(props) {
@@ -66,7 +66,7 @@ class TopbarNotification extends Component {
 		this.setState({ notifications: noteArray })
 	}
 	getNotifications() {
-		var query = 'http://localhost:3001/getNotifications?email=' + this.props.profile.email + '&receipt=delivered'
+		var query = 'http://35.182.224.114:3000/getNotifications?email=' + this.props.profile.email + '&receipt=delivered'
 		fetch(query, { method: 'GET', mode: 'cors' })
 			.then((response) => response.json())
 			.then(responseJson => this.setNote(responseJson.id))
@@ -87,7 +87,6 @@ class TopbarNotification extends Component {
 		window.location.href = '/dashboard/user/settings'
 	}
 	render() {
-		const { customizedTheme } = this.props;
 		const content = (
 			<TopbarDropdownWrapper className="topbarNotification">
 				<div className="isoDropdownHeader">
@@ -119,7 +118,6 @@ class TopbarNotification extends Component {
 				<div className="isoIconWrapper">
 					<i
 						className="ion-android-notifications"
-						style={{ color: customizedTheme.textColor }}
 					/>
 					<span>{this.state.notifications.length}</span>
 				</div>
@@ -131,5 +129,4 @@ class TopbarNotification extends Component {
 export default connect(state => ({
 	...state.App.toJS(),
 	profile: state.Auth.get('profile'),
-	customizedTheme: state.ThemeSwitcher.toJS().topbarTheme
 }))(TopbarNotification);

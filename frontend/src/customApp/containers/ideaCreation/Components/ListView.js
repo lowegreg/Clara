@@ -159,7 +159,7 @@ class ListView extends React.Component {
                 console.error(e);
             }
         } else { // regular fetching of ideas
-            var dept = new Array();
+            var dept = [];
             if (departments.length === 0) {
                 dept[0] = 'none'
             } else if (departments.length < 2) {

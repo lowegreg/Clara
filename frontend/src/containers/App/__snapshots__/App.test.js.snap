@@ -115,26 +115,6 @@ exports[`<AppRouter /> renders with default props 1`] = `
   <Route
     component={[Function]}
     exact={true}
-    path="undefined/gridLayout"
-  />
-  <Route
-    component={[Function]}
-    exact={true}
-    path="undefined/notes"
-  />
-  <Route
-    component={[Function]}
-    exact={true}
-    path="undefined/todo"
-  />
-  <Route
-    component={[Function]}
-    exact={true}
-    path="undefined/contacts"
-  />
-  <Route
-    component={[Function]}
-    exact={true}
     path="undefined/alert"
   />
   <Route
@@ -150,11 +130,6 @@ exports[`<AppRouter /> renders with default props 1`] = `
   <Route
     component={[Function]}
     exact={true}
-    path="undefined/notification"
-  />
-  <Route
-    component={[Function]}
-    exact={true}
     path="undefined/progress"
   />
   <Route
@@ -166,11 +141,6 @@ exports[`<AppRouter /> renders with default props 1`] = `
     component={[Function]}
     exact={true}
     path="undefined/spin"
-  />
-  <Route
-    component={[Function]}
-    exact={true}
-    path="undefined/shuffle"
   />
   <Route
     component={[Function]}
@@ -245,17 +215,7 @@ exports[`<AppRouter /> renders with default props 1`] = `
   <Route
     component={[Function]}
     exact={true}
-    path="undefined/googleChart"
-  />
-  <Route
-    component={[Function]}
-    exact={true}
     path="undefined/reecharts"
-  />
-  <Route
-    component={[Function]}
-    exact={true}
-    path="undefined/reactVis"
   />
   <Route
     component={[Function]}
@@ -265,32 +225,12 @@ exports[`<AppRouter /> renders with default props 1`] = `
   <Route
     component={[Function]}
     exact={true}
-    path="undefined/ReactChart2"
-  />
-  <Route
-    component={[Function]}
-    exact={true}
     path="undefined/pagination"
   />
   <Route
     component={[Function]}
     exact={true}
-    path="undefined/reactTrend"
-  />
-  <Route
-    component={[Function]}
-    exact={true}
-    path="undefined/invoice"
-  />
-  <Route
-    component={[Function]}
-    exact={true}
     path="undefined/card"
-  />
-  <Route
-    component={[Function]}
-    exact={true}
-    path="undefined/cart"
   />
   <Route
     component={[Function]}
@@ -321,22 +261,6 @@ exports[`<AppRouter /> renders with default props 1`] = `
     component={[Function]}
     exact={true}
     path="undefined/dropzone"
-  />
-  <Route
-    component={[Function]}
-    exact={true}
-    path="undefined/youtubeSearch"
-  />
-  <Route
-    component={[Function]}
-    exact={true}
-    path="undefined/frappeChart"
-  />
-  <Route
-    component={[Function]}
-    exact={true}
-    key="gitSearch"
-    path="undefined/githubSearch"
   />
   <Route
     component={[Function]}
