@@ -4,36 +4,13 @@ import asyncComponent from '../helpers/AsyncFunc';
 
 export default function (url) {
   const routers = [];
-  routers.push(
-    <Route
-      exact
-      key="gitSearch"
-      path={`${url}/githubSearch`}
-      component={asyncComponent(() => import('./containers/GithubSearch'))}
-    />
-  );
-  routers.push(
-    <Route
-      exact
-      key="blank_page"
-      path={`${url}/blank_page`}
-      component={asyncComponent(() => import('./containers/blankPage'))}
-    />
-  );
+
   routers.push(
     <Route
       exact
       key="coming soon"
       path={`${url}/comingSoon`}
       component={asyncComponent(() => import('../containers/Page/comingSoon'))}
-    />
-  );
-  routers.push(
-    <Route
-      exact
-      key="parking Infractions"
-      path={`${url}/parking Infractions`}
-      component={asyncComponent(() => import('./containers/Parking/index'))}
     />
   );
   routers.push(

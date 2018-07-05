@@ -50,7 +50,7 @@ class TopbarUser extends Component {
               <a className="isoDropdownLink" onClick={() => {
                this.setState({redirect: 'settings'})
               }}>
-                <IntlMessages id="themeSwitcher.settings" />
+              Settings
               </a>
             )}
             <a className="isoDropdownLink">

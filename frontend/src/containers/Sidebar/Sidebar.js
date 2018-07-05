@@ -131,7 +131,7 @@ class Sidebar extends Component {
   };
   render() {
     // const { url, app, toggleOpenDrawer, bgcolor } = this.props;
-    const { app, toggleOpenDrawer, customizedTheme } = this.props;
+    const { app, toggleOpenDrawer } = this.props;
     const url = stripTrailingSlash(this.props.url);
     const collapsed = clone(app.collapsed) && !clone(app.openDrawer);
     const { openDrawer } = app;
@@ -150,19 +150,19 @@ class Sidebar extends Component {
     };
     const scrollheight = app.height;
     const styling = {
-      backgroundColor: customizedTheme.backgroundColor,
+      // backgroundColor: customizedTheme.backgroundColor,
       height: scrollheight, overflow: 'auto', overflowX: 'hidden'
     };
     const styling2 = {
-      backgroundColor: customizedTheme.backgroundColor,
+      // backgroundColor: customizedTheme.backgroundColor,
       height: scrollheight, overflow: 'hidden'
     };
     const submenuStyle = {
       backgroundColor: 'rgba(0,0,0,0.3)',
-      color: customizedTheme.textColor
+      // color: customizedTheme.textColor
     };
     const submenuColor = {
-      color: customizedTheme.textColor
+      // color: customizedTheme.textColor
     };
     return (
       <SidebarWrapper>
@@ -352,7 +352,6 @@ export default connect(
   state => ({
     app: state.App.toJS(),
     profile: state.Auth.get('profile'),
-    customizedTheme: state.ThemeSwitcher.toJS().sidebarTheme
   }),
   { toggleOpenDrawer, changeOpenKeys, changeCurrent, toggleCollapsed }
 )(Sidebar);

@@ -10,7 +10,6 @@ import authAction from '../../redux/auth/actions';
 import appActions from '../../redux/app/actions';
 import Sidebar from '../Sidebar/Sidebar';
 import Topbar from '../Topbar/Topbar';
-// import ThemeSwitcher from '../../containers/ThemeSwitcher';
 import AppRouter from './AppRouter';
 import { siteConfig } from '../../config.js';
 import { AppLocale } from '../../dashApp';
@@ -26,7 +25,7 @@ export class App extends Component {
  
   render() {
     const { url } = this.props.match;
-    const { locale, selectedTheme } = this.props;
+    const { locale } = this.props;
     const currentAppLocale = AppLocale[locale];
     const to = { pathname: '/signin' };
     if(!this.props.isLoggedIn){
@@ -37,7 +36,7 @@ export class App extends Component {
         <IntlProvider
           locale={currentAppLocale.locale}
           messages={currentAppLocale.messages}>
-          <ThemeProvider theme={themes[selectedTheme]}>
+          <ThemeProvider theme={themes['themedefault']}>
             <AppHolder>
               <Layout style={{ height: '100vh' }}>
                 <Debounce time="1000" handler="onResize">
@@ -89,7 +88,6 @@ export default connect(
   state => ({
     auth: state.Auth,
     locale: state.LanguageSwitcher.toJS().language.locale,
-    selectedTheme: state.ThemeSwitcher.toJS().changeThemes.themeName,
     profile: state.Auth.get('profile'),
     isLoggedIn: state.Auth.get('profile')!==null && state.Auth.get('idToken') !== null ? true : false,
   }),

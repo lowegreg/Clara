@@ -11,10 +11,9 @@ const { toggleCollapsed } = appActions;
 
 class Topbar extends Component {
   render() {
-    const { toggleCollapsed, customizedTheme, locale } = this.props;
+    const { toggleCollapsed, locale } = this.props;
     const collapsed = this.props.collapsed && !this.props.openDrawer;
     const styling = {
-      background: customizedTheme.backgroundColor,
       position: 'fixed',
       width: '100%',
       height: 70
@@ -33,7 +32,6 @@ class Topbar extends Component {
               className={
                 collapsed ? 'triggerBtn menuCollapsed' : 'triggerBtn menuOpen'
               }
-              style={{ color: customizedTheme.textColor }}
               onClick={toggleCollapsed}
             />
           </div>
@@ -64,7 +62,6 @@ export default connect(
   state => ({
     ...state.App.toJS(),
     locale: state.LanguageSwitcher.toJS().language.locale,
-    customizedTheme: state.ThemeSwitcher.toJS().topbarTheme,
   }),
   { toggleCollapsed }
 )(Topbar);
