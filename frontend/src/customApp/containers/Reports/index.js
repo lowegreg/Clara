@@ -7,8 +7,8 @@ import Buttons from '../../../components/uielements/button';
 import { Button } from 'antd';
 import SuperSelectField from 'material-ui-superselectfield';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import Chart from '../../components/insightTile/chart';
 import ExportPDF from './export';
+import Display from './display';
 
 const ButtonGroup = Button.Group;
 const categories = [
@@ -43,6 +43,8 @@ export class Reports extends Component {
       tile: null,
       table: null,
       filter: null,
+      update: false,
+      time: Date.now(),
     };
   }
   selectCategory = (event) => {
@@ -55,7 +57,7 @@ export class Reports extends Component {
     event === 1 ? this.setState({ filter: this.props.profile.dashboards }) : this.setState({ filter: categories[event].type })
   }
   selectType = (event) => {
-    if (event) {
+    if (event && typeof event.value === 'number') {
       this.setState({
         type: { value: this.state.filter, label: this.state.filter[event.value - 1].label },
         table: null,
@@ -64,7 +66,7 @@ export class Reports extends Component {
     }
   }
   selectTable = (event) => {
-    if (event) {
+    if (event && !event.label) {
       if (this.state.activeCategory === 1) {
         const dash = this.state.filter.filter(data => data._id === event.value);
         if (dash && typeof dash[0].tiles === 'string') {
@@ -77,14 +79,15 @@ export class Reports extends Component {
     }
   }
   selectTile = (event) => {
-    if (event) {
+    if (event && typeof event.value === 'number') {
       if (this.state.activeCategory === 1) {
         const tile = this.state.table.value.tiles[event.value - 1]
-        this.setState({ tile: { value: tile, label: tile.title } })
+        this.setState({ tile: { value: tile, label: tile.title }, update: true })
       }
       else {
-        this.setState({ tile: { value: tempTile, label: tempTile.title } })
+        this.setState({ tile: { value: tempTile, label: tempTile.title }, update: true })
       }
+      return
     }
   }
   hintText = () => {
@@ -124,7 +127,17 @@ export class Reports extends Component {
         }))
     }
   }
-
+  setUpdate = (update) => {
+    this.setState({ update: update })
+    if (update === false) {
+      this.interval = setTimeout(() => this.setState({ update: true }), 10);
+    } else {
+      clearInterval();
+    }
+  }
+  componentWillUnmount() {
+    clearInterval();
+  }
   render() {
     const { activeCategory } = this.state;
     return (
@@ -192,18 +205,10 @@ export class Reports extends Component {
               </SuperSelectField>
             </MuiThemeProvider>
           </Row>
-          {this.state.tile &&
-            <Row style={{ justifyContent: 'center', alignContent: 'center' }} >
-              <p style={{ paddingLeft: '20px', paddingTop: '10px', paddingBottom: '10px' }}><font size="5">{this.state.tile.value.title}</font></p>
-              <div style={{ marginLeft: 'auto', marginRight: '20px', marginTop: '5px' }}>
-                <Buttons size='small'>Edit</Buttons>
-              </div>
-              <div style={{ borderStyle: 'solid', padding: '15px', alignContent: 'center', justifyContent: 'center' }}>
-                <Chart table={this.state.tile.value} eChartStyle={{ width: window.innerWidth - 600, height: (window.innerHeight / 2) + 100 }} />
-              </div>
-            </Row>
+          {this.state.update === true &&
+            <Display tile={this.state.tile} setUpdate={this.setUpdate} />
           }
-          <div style={{ marginLeft: 'auto', marginRight: '20px', marginTop: '10px' }}>
+          <div style={{ marginLeft: '20px', marginRight: '20px', marginTop: '15px' }}>
             {this.state.tile ?
               <ExportPDF tile={this.state.tile.value} />
               : <Buttons size='small' icon='download' disabled >Download</Buttons>}

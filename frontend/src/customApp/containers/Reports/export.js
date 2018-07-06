@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
 import Chart from '../../components/insightTile/chart';
-import { Row, Col } from 'react-flexbox-grid';
+import { Row } from 'react-flexbox-grid';
 import { Modal } from 'antd';
+import { CSVLink } from 'react-csv';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 import Dropdown from '../../../components/uielements/dropdown';
 import Menu from '../../../components/uielements/menu';
 import Buttons from '../../../components/uielements/button';
@@ -15,80 +17,155 @@ export default class ExportPDF extends Component {
     this.state = {
       pdf: false,
       excel: false,
-      pdfTable: null
+      table: this.setTable(),
     };
   }
 
   printDocument = () => {
+    const { table } = this.state;
     const input = document.getElementById('divToPrint');
-    // const table = this.state.pdfTable;
-    console.log(this.state)
+
     html2canvas(input)
       .then((canvas) => {
         const imgData = canvas.toDataURL('image/png');
-        const pdf = new jsPDF();
+        const pdf = new jsPDF('p', 'pt');
         pdf.addImage(imgData, 'JPEG', 0, 0);
-        // pdf.autoTable(table.columns, table.data);
-        pdf.save("download.pdf");
+        pdf.autoTable(table.columns, table.data, 
+          {
+          margin: {top: 460},
+      }
+    );
+        pdf.save(`${this.props.tile.title}.pdf`);
       })
       ;
   }
 
   onClick = (event) => {
-    if(event.key === 'pdf'){
-     this.setState({pdf: true})
+    if (event.key === 'pdf') {
+      this.setState({ pdf: true })
+    } else if (event.key === 'excel') {
+      this.setState({ excel: true })
     }
   }
 
+  // parses tile and reformats the information to be compatible with the csv and pdf components
   setTable = () => {
     const { tile } = this.props
-    var columns = [{
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name'
-    }];
+    var columns = [];
     var dataSource = [];
+    var header = [];
+    var content = [];
+    var count = 0;
+    var data;
 
-    this.props.tile.options.series.map(x => {
+// Sets the title for the columns
+    if (tile.graph.indexOf('Bar') > 0) {
       columns.push({
-        title: x.name,
-        dataIndex: x.name.toLowerCase(),
-        key: x.name.toLowerCase(),
-      })
-    });
-
-    // columns.map(x => {
-    //   data[x.dataIndex] = null
-    // })
-
-    if (this.props.tile.graph === 'circleBar') {
-      tile.options.radiusAxis.data.map((x, key) => {
-        const data = new Object()
-        data.name = x;
-        data.key = key;
-        dataSource.push(data)
-        
+        title: 'Name',
+        dataIndex: 'name',
+        key: 'name'
       });
-      tile.options.series.map(x => {
-        for (let i = 0; i < dataSource.length; i++) {
-          x.data[i] ?
-          dataSource[i][`${x.name.toLowerCase()}`] = x.data[i] : dataSource[i][`${x.name.toLowerCase()}`] = null;
-        }
+      for (let i = 0; i < tile.options.series.length; i++) {
+        const x = tile.options.series[i];
+        columns.push({
+          title: x.name,
+          dataIndex: x.name.toLowerCase(),
+          key: x.name.toLowerCase(),
+        });        
+      }
+    } else {
+      columns.push({
+        title: tile.xName,
+        dataIndex: tile.xName,
+        key: tile.xName,
+      }, {
+        title: tile.yName,
+        dataIndex: tile.yName,
+        key: tile.yName,
       })
     }
-    this.setState({pdfTable: {columns: columns, data: dataSource}})
+
+    for (let i = 0; i < columns.length; i++) {
+      header.push(
+        columns[i].title,
+      )
+    }
+    content.push(header);
+
+// parses data into the right category based on the type of graph
+    if (tile.graph === 'circleBar') {
+      for (let i = 0; i < tile.options.radiusAxis.data.length; i++) {
+        const x = tile.options.radiusAxis.data[i];
+        dataSource.push({
+          name: x,
+          key: i
+        });
+      }
+      for (let i = 0; i <  tile.options.series.length; i++) {
+        const x =  tile.options.series[i];
+        for (let i = 0; i < dataSource.length; i++) {
+          x.data[i] ?
+            dataSource[i][`${x.name.toLowerCase()}`] = x.data[i] : dataSource[i][`${x.name.toLowerCase()}`] = null;
+        }
+      }
+    } else if (tile.graph === 'multiBar') {
+      for (let i = 0; i < tile.options.xAxis[0].data.length; i++) {
+        data = {
+          name: tile.options.xAxis[0].data[i],
+          key: i + 1,
+        }
+        for (let i = 0; i < tile.options.series.length; i++) {
+          const x = tile.options.series[i];
+          data[x.name.toLowerCase()] = x.data[i]
+        }
+        dataSource.push(data)
+      }
+    } else if (tile.graph.toLowerCase().indexOf('line') > -1) {
+      for (let i = 0; i < tile.options.xAxis.data.length; i++) {
+        dataSource.push({
+          [columns[0].title]: tile.options.xAxis.data[i],
+          [columns[1].title]: tile.options.series[0].data[i],
+          key: i + 1}
+        )
+      }
+    } else if (tile.graph === 'pie') {
+      for (let i = 0; i < tile.options.series[0].data.length; i++) {
+        dataSource.push({
+          [columns[0].title]: tile.options.series[0].data[i].name,
+          [columns[1].title]: tile.options.series[0].data[i].value,
+          key: i + 1,
+        });
+      }
+    }
+
+// converts the data into csv format
+    if (dataSource) {
+      for (let i = 0; i < dataSource.length; i++) {
+        const x = dataSource[i];
+        data = []
+        const key = Object.keys(x)
+        for (let i = 0; i < key.length; i++) {
+          if (key[i] !== 'key') {
+            data[count] = x[key[i]]
+            count++;
+          }
+        }
+        count = 0;
+        content.push(data);
+      }
+    }
+    return { columns: columns, data: dataSource, csv: content }
   }
 
-  componentDidMount(){
-    if (this.props.tile.graph && !this.state.pdfTable) {
-      this.setTable()
-      console.log(this.props.tile)
+  componentDidMount() {
+    const { table } = this.state;
+    if (table === null) {
+      this.setTable();
     }
   }
   
   render() {
-    console.log(this.state.pdfTable)
-    const { pdfTable } = this.state;
+    const { table } = this.state;
     return (
       <div>
         <Dropdown overlay={
@@ -107,28 +184,44 @@ export default class ExportPDF extends Component {
           onCancel={() => this.setState({ pdf: false })}
           width={900}
         >
-          <div id="divToPrint" style={{
-             borderStyle: 'solid',
-             borderColor: '#f5f5f5',
+          <div style={{
+            borderStyle: 'solid',
+            borderColor: '#f5f5f5',
             width: '210mm',
-            minHeight: '297mm',
+            height: '297mm',
             marginLeft: 'auto',
-            marginRight: 'auto'
+            marginRight: 'auto',
+            overflow: 'hidden'
           }}>
             {this.props.tile &&
-              <Row style={{ padding: '30px' }}>
+              <Row id="divToPrint" style={{ padding: '30px' }}>
                 <p style={{ paddingLeft: '20px', paddingBottom: '10px' }}><font size="3"><b>{this.props.tile.title}</b></font></p>
                 <div style={{ borderStyle: 'solid', padding: '15px', alignContent: 'left', justifyContent: 'left' }}>
-                  <Chart table={this.props.tile} eChartStyle={{ width: 700, height: 380 }} />
+                  <Chart table={this.props.tile} eChartStyle={{ width: 700, height: 400 }} />
                 </div>
               </Row>
             }
-            {this.state.pdfTable &&
-            <Row style={{ padding: '30px' }}>
-            <Table columns={pdfTable.columns} dataSource={pdfTable.data} pagination={false} style={{width: '100%'}} />
-            </Row>
-          }
+            {this.state.table &&
+              <Row style={{ padding: '30px', height: '130' }}>
+                <Table columns={table.columns} dataSource={table.data} pagination={false} style={{ width: '100%' }} />
+              </Row>
+            }
           </div>
+        </Modal>
+        <Modal
+          title="Sample of data"
+          visible={this.state.excel}
+          onCancel={() => this.setState({ excel: false })}
+          width={900}
+          footer={[
+            <Buttons key="back" onClick={() => this.setState({ excel: false })}>Cancel</Buttons>,
+            <Buttons key="print" type='primary'>
+              <CSVLink data={table.csv} filename={`${this.props.tile.title}.csv`}>Print</CSVLink>
+            </Buttons>
+          ]}
+        >
+          <Table columns={table.columns} dataSource={table.data} />
+
         </Modal>
       </div>);
   }
