@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import authAction from '../../../redux/auth/actions';
 import PinButton from './pinButton';
 import Chart from './chart';
+import { Clickable } from 'react-clickable';
 import { Modal } from 'antd';
 const { updateUser } = authAction;
 
