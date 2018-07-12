@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { Layout, Carousel } from 'antd';
 import Menu from '../../components/uielements/menu';
 import IntlMessages from '../../components/utility/intlMessages';
-import getDevSidebar from '../../customApp/sidebar';
+// import getDevSidebar from '../../customApp/sidebar';
 import SidebarWrapper from './sidebar.style';
 import appActions from '../../redux/app/actions';
 import Logo from '../../components/utility/logo';
@@ -339,7 +339,7 @@ class Sidebar extends Component {
                 </SubMenu>
               }
 
-              {getDevSidebar(url, submenuColor)}
+              {/* {getDevSidebar(url, submenuColor)} */}
             </Menu>
           </div>
         </Sider>

@@ -7,7 +7,6 @@ import Buttons from '../../../components/uielements/button';
 import { Button } from 'antd';
 import SuperSelectField from 'material-ui-superselectfield';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import ExportPDF from './export';
 import Display from './display';
 
 const ButtonGroup = Button.Group;
@@ -208,11 +207,7 @@ export class Reports extends Component {
           {this.state.update === true &&
             <Display tile={this.state.tile} setUpdate={this.setUpdate} />
           }
-          <div style={{ marginLeft: '20px', marginRight: '20px', marginTop: '15px' }}>
-            {this.state.tile ?
-              <ExportPDF tile={this.state.tile.value} />
-              : <Buttons size='small' icon='download' disabled >Download</Buttons>}
-          </div>
+          
         </LayoutContent>
       </LayoutContentWrapper>
     );
