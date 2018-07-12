@@ -248,19 +248,19 @@ function getDescripton(x, y, graph) {
     var description = ''
     switch (graph) {
         case 'multiBar':
-            description = 'Comparing ' + x + ' to top 5 of ' + y + ' (or less then top 5)'
+            description = 'Comparing ' + x + ' to top 8 of ' + y + ' (or less then top 8)'
             break;
         case 'pie':
             description = 'Comparing the top 10, sum of ' + y + ' per ' + x + '  type (or less then top 10)'
             break;
         case 'line':
-            description = 'Compareing ' + x + ' to ' + y + 'by month'
+            description = 'Compareing ' + x + ' to ' + y + ' avg by month over years'
             break;
         case 'fillLine':
-            description = 'Compareing ' + x + ' to ' + y + 'by month'
+            description = 'Compareing ' + x + ' to ' + y + ' by month'
             break;
         case 'circleBar':
-            description = 'Comparing the top 10, number of  ' + y + ' per ' + x + '  type (or less then top 10)'
+            description = 'Comparing the top 7, number of  ' + y + ' per ' + x + '  type (or less then top 7)'
             break;
         default:
             description = ''
@@ -364,12 +364,73 @@ function pieGraph(xData, yData, yName) {
     };
     return option
 }
+/* ADDEMPTYNESS
+Purpose: add zero values to categories that have nothing , to create a correct graph
+How it works:
+    -loops zData and puts zeros inplace of categoires that have zero value in respect to a unique xData
+Paramerters:  yData (array) ,  zData (array) ,xData (array),xUnique (array of xData unique values), yUNum (value of unique yData )
+Returns: newZData (array)
+ */
+function addEmptyNess(yData, zData, xData, xUnique,yUNum){
+    var newZData= new Array(xUnique.length * yUNum)
+    newZData.fill(0, 0, xUnique.length * yUNum)
+    var index=0;
+    var newZIndex=0
+    while (index<zData.length){// loop zData (values per category (xData))
+        var skipAmount=0
+        var numTheSame=1
+        var allTheSame=true
+        var i
+        
+        for (i=index ; i< xUnique.length+index-1; i++){// checks if all category appear for a unique yData 
+            if(yData[i]!==yData[i+1]){
+                allTheSame=false
+                break;// not all the same
+            }else{
+                numTheSame++ // tallies the number of categories that appear for a unique yData
+            }
+        }
+        if (allTheSame){// id all catefories appear
+            for( i=index; i< xUnique.length+index; i++){
+                newZData.splice(newZIndex, 1, zData[i]);
+                newZIndex++
+            }
+            skipAmount=xUnique.length
+        }else{// if no all the categoires appear
+            for(i=index; i< numTheSame+index; i++){// loops the number of categories  (unique xData) that do appear
+                var placement=xUnique.indexOf(xData[i])// gets the location in  unique xData that categorie is in
+                newZData.splice(placement+newZIndex, 1, zData[i])// places the value of zData in the correct position to represent the category (unique xData)
+            }
+            skipAmount=numTheSame
+            newZIndex=newZIndex+xUnique.length
+        }
+      
+        index=index+skipAmount// goes to the next place in the zData array and yDataArray to be formatted
+    }  
+    return(newZData)
+}
+/* SEPARATEZDATA
+Purpose: to separate zData values in unique xData categories for graphing purposes 
+How it works:
+    -loops zData istarting at i incrementing by x length
+    -adds to a temp array and returns it
+Paramerters: zdata (array), xlength (integer ),i (integer))
+Returns: newZData (array)
+ */
+function separateZData(zdata, xlength,i){
+    var z=[]
+    for (var j=i;j< zdata.length;j=j+xlength){
+        z.push(zdata[j])
+    }
+    return z
+}
+
 function circleBarConfig(xData, zData, ylength) {
     var xUnique = xData.filter((v, i, a) => a.indexOf(v) === i);
     var xlength = xUnique.length
     var graphData = [];
     for (var i = 0; i < xlength; i++) {
-        var z = zData.slice(i, i + ylength);
+        var z = separateZData(zData, xlength,i)
         var object = {
             type: 'bar',
             data: z,
@@ -382,10 +443,21 @@ function circleBarConfig(xData, zData, ylength) {
     return (graphData)
 }
 function circleBarGraph(xData, yData, zData) {
+    var trimData=[]
+    var j
+    for (j=0;j<yData.length;j++){
+        trimData.push(yData[j].trim())
+    }
+    yData=trimData;trimData=[]
+    for (j=0;j<xData.length;j++){
+        trimData.push(xData[j].trim())
+    }
+    xData=trimData
+    
     var yUnique = yData.filter((v, i, a) => a.indexOf(v) === i);
     var xUnique = xData.filter((v, i, a) => a.indexOf(v) === i);
     var lengthY = yUnique.length
-
+    zData=addEmptyNess(yData, zData, xData, xUnique,lengthY)
     var option = {
         tooltip: {
             trigger: 'item',
