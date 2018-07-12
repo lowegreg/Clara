@@ -37,6 +37,7 @@
     "nprogress": "^0.2.0",
     "prop-types": "^15.6.1",
     "randomcolor": "^0.5.3",
+    "rc-slider": "^8.6.1",
     "react": "^16.3.0",
     "react-addons-shallow-compare": "^15.5.2",
     "react-big-calendar": "^0.17.0",

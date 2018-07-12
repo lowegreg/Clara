@@ -1,41 +1,179 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Row } from 'react-flexbox-grid';
+import { Row, Col } from 'react-flexbox-grid';
 import Buttons from '../../../components/uielements/button';
 import Chart from '../../components/insightTile/chart';
+import { Modal, Slider } from 'antd';
+import Export from './export';
 
 export class Display extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tile: this.props.tile
+      tile: JSON.parse(JSON.stringify(this.props.tile)),
+      edit: false,
+      slider: [],
+      originalTile: JSON.parse(JSON.stringify(this.props.tile.value)),
+      update: false
     };
+  }
+  setEditValues = () => {
+    const { tile, originalTile } = this.state;
+    var name;
+    var slider = []
+    if (tile.value.graph === 'circleBar' || tile.value.graph === 'multiBar' || tile.value.graph === 'line') {
+      for (let i = 0; i < tile.value.options.series.length; i++) {
+        const x = tile.value.options.series[i];
+        var data = x.data.filter(function (object) {
+          return object !== null && object !== undefined;
+        })
+        if (tile.value.graph === 'line') {
+          name = tile.value.yName
+        } else {
+          name = x.name
+        }
+
+        slider.push({
+          name: name,
+          data: x.data,
+          max: Math.round(Math.max(...originalTile.options.series[i].data)),
+          min: Math.round(Math.min(...originalTile.options.series[i].data)),
+          value: [
+            Math.min(...data),
+            Math.max(...data)
+          ],
+          marks: {
+            [Math.round(Math.max(...originalTile.options.series[i].data))] : `${Math.round(Math.max(...originalTile.options.series[i].data))}`,
+            [Math.round(Math.min(...originalTile.options.series[i].data))] : `${Math.round(Math.min(...originalTile.options.series[i].data))}`,
+          }
+        })
+      }
+    } else if (tile.value.graph === 'pie') {
+      data = [];
+      var originalData = [];
+      for (const i in tile.value.options.series[0].data) {
+        data[i] = tile.value.options.series[0].data[i].value
+        originalData[i] = originalTile.options.series[0].data[i].value
+      }
+      slider.push({
+        name: originalTile.yName,
+        max: Math.round(Math.max(...originalData)),
+        min: Math.round(Math.min(...originalData)),
+        value: [
+          Math.min(...data),
+          Math.max(...data)
+        ],
+        marks: {
+          [Math.round(Math.max(...originalData))] : `${Math.round(Math.max(...originalData))}`,
+          [Math.round(Math.min(...originalData))] : `${Math.round(Math.min(...originalData))}`,
+        }
+      })
+    } else if ( tile.value.graph === 'fillLine') {
+      slider.push({
+        name: originalTile.yName,
+        max: Math.round(Math.max(...originalTile.options.series[0].data)),
+        min: Math.round(Math.min(...originalTile.options.series[0].data)),
+        value: [
+          Math.min(...tile.value.options.series[0].data),
+          Math.max(...tile.value.options.series[0].data)
+        ],
+        marks: {
+          [Math.round(Math.max(...originalTile.options.series[0].data))] : `${Math.round(Math.max(...originalTile.options.series[0].data))}`,
+          [Math.round(Math.min(...originalTile.options.series[0].data))] : `${ Math.round(Math.min(...originalTile.options.series[0].data))}`,
+        },
+      })
+    }
+    this.setState({ edit: true, slider: slider, update: false })
+  }
+  onChange = (event, key) => {
+    var slider = this.state.slider;
+    slider[key].value = event;
+    this.setState({ slider: slider })
+  }
+  handleOk = () => {
+    const { originalTile, slider } = this.state
+    var tile = this.state.tile;
+    var options = tile.value.options;
+    if (tile.value.graph === 'circleBar') {
+      for (const j in  tile.value.options.radiusAxis.data) {
+        for (const i in slider) {
+          options.series[i].data[j] = this.inRange(originalTile.options.series[i].data[j], slider[i])
+        }
+      }
+      
+    } else if (tile.value.graph === 'multiBar') {
+      for (const j in originalTile.options.xAxis[0].data) {
+        for (const i in slider) {
+          options.series[i].data[j] = this.inRange(originalTile.options.series[i].data[j], slider[i])
+        }
+      }
+    } else if (tile.value.graph === 'line' || tile.value.graph === 'fillLine') {
+      for (const j in options.xAxis.data) {
+        options.series[0].data[j] = this.inRange(originalTile.options.series[0].data[j], slider[0])
+      }
+      for (let i = options.xAxis.data.length; i >= 0; i--) {
+        if (options.series[0].data[i] === null) {
+          options.series[0].data.splice(i, 1)
+          options.xAxis.data.splice(i, 1)
+        }
+      }
+    } else if (tile.value.graph === 'pie'){
+      for (const j in originalTile.options.series[0].data) {
+        options.series[0].data[j].value = this.inRange(originalTile.options.series[0].data[j].value, slider[0])
+      }
+      for (let i = options.series[0].data; i >= 0; i--) {
+        if (options.series[0].data[i].value === null) {
+          options.series[0].data.splice(i, 1)
+        }
+      }
+    } 
+    this.setState({ tile: tile, edit: false, update:true })
+  }
+  inRange = (value, slider) => {
+    if (value < slider.value[0] || value > slider.value[1]) {
+      return null;
+    } else {
+      return value;
+    }
   }
   componentWillUpdate(prevProp) {
     if (prevProp.tile !== this.props.tile) {
       this.props.setUpdate(false)
-    } else {
-      this.props.setUpdate(true)
     }
   }
-
   render() {
-    const { tile } = this.state   
+    const { tile, slider } = this.state
     return (
       <div>
-        { tile &&
+        {tile &&
           <Row style={{ justifyContent: 'center', alignContent: 'center' }}>
-          <p style={{ paddingLeft: '20px', paddingTop: '10px', paddingBottom: '10px' }}><font size="5">{tile.value.title}</font></p>
-          <div style={{ marginLeft: 'auto', marginRight: '20px', marginTop: '5px' }}>
-            <Buttons size='small'>Edit</Buttons>
-          </div>
-
-          <div style={{ borderStyle: 'solid', padding: '15px', alignContent: 'center', justifyContent: 'center' }}>
-            <Chart table={tile.value} eChartStyle={{ width: window.innerWidth - 600, height: (window.innerHeight / 2) + 100 }} />
-          </div>
+            <p style={{ paddingLeft: '20px', paddingTop: '10px', paddingBottom: '10px' }}><font size="5">{tile.value.title}</font></p>
+            <div style={{ marginLeft: 'auto', marginRight: '20px', marginTop: '5px' }}>
+              <Buttons size='small' onClick={this.setEditValues}>Edit</Buttons>
+            </div>
+            <div style={{ borderStyle: 'solid', padding: '15px', alignContent: 'center', justifyContent: 'center' }}>
+              <Chart table={tile.value} eChartStyle={{ width: window.innerWidth - 600, height: (window.innerHeight / 2) + 100 }} />
+            </div>
+            <Modal
+              title="Edit Data"
+              visible={this.state.edit}
+              onOk={this.handleOk}
+              onCancel={() => this.setState({ edit: false })}
+            >
+              {
+                slider.map((x, key) => (
+                  <Col key={key}>
+                    <p>{x.name}</p>
+                    <Slider marks={x.marks} key={key} min={x.min} max={x.max} range defaultValue={[x.value[0], x.value[1]]} onChange={(e) => this.onChange(e, key)} />
+                  </Col>
+                ))
+              }
+            </Modal>
           </Row>
         }
-        
+        <div style={{ marginLeft: '20px', marginRight: '20px', marginTop: '15px' }}>
+              <Export tile={this.state.tile.value} update={this.state.update} />
+          </div>
       </div>
     );
   }

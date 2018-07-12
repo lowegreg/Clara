@@ -11,30 +11,38 @@ import Menu from '../../../components/uielements/menu';
 import Buttons from '../../../components/uielements/button';
 import Table from '../../../components/uielements/table';
 
-export default class ExportPDF extends Component {
+export default class Export extends Component {
   constructor(props) {
     super(props);
     this.state = {
       pdf: false,
       excel: false,
       table: this.setTable(),
+      update: this.props.update
     };
   }
 
   printDocument = () => {
-    const { table } = this.state;
+    const { table } = this.state
+    var firstPage = table.data.splice(0, 14);
     const input = document.getElementById('divToPrint');
+    if (table.data.length > 14) {
+      table.data.unshift(firstPage[13])
+    }
 
     html2canvas(input)
       .then((canvas) => {
         const imgData = canvas.toDataURL('image/png');
         const pdf = new jsPDF('p', 'pt');
         pdf.addImage(imgData, 'JPEG', 0, 0);
-        pdf.autoTable(table.columns, table.data, 
+        pdf.autoTable(table.columns, firstPage,
           {
-          margin: {top: 460},
-      }
-    );
+            margin: { top: 480 },
+          }
+        );
+        if (table.data.length > 14) {
+          pdf.autoTable(table.columns, table.data);
+        }
         pdf.save(`${this.props.tile.title}.pdf`);
       })
       ;
@@ -57,8 +65,7 @@ export default class ExportPDF extends Component {
     var content = [];
     var count = 0;
     var data;
-
-// Sets the title for the columns
+    // Sets the title for the columns
     if (tile.graph.indexOf('Bar') > 0) {
       columns.push({
         title: 'Name',
@@ -71,7 +78,7 @@ export default class ExportPDF extends Component {
           title: x.name,
           dataIndex: x.name.toLowerCase(),
           key: x.name.toLowerCase(),
-        });        
+        });
       }
     } else {
       columns.push({
@@ -79,10 +86,10 @@ export default class ExportPDF extends Component {
         dataIndex: tile.xName,
         key: tile.xName,
       }, {
-        title: tile.yName,
-        dataIndex: tile.yName,
-        key: tile.yName,
-      })
+          title: tile.yName,
+          dataIndex: tile.yName,
+          key: tile.yName,
+        })
     }
 
     for (let i = 0; i < columns.length; i++) {
@@ -92,7 +99,7 @@ export default class ExportPDF extends Component {
     }
     content.push(header);
 
-// parses data into the right category based on the type of graph
+    // parses data into the right category based on the type of graph
     if (tile.graph === 'circleBar') {
       for (let i = 0; i < tile.options.radiusAxis.data.length; i++) {
         const x = tile.options.radiusAxis.data[i];
@@ -101,8 +108,8 @@ export default class ExportPDF extends Component {
           key: i
         });
       }
-      for (let i = 0; i <  tile.options.series.length; i++) {
-        const x =  tile.options.series[i];
+      for (let i = 0; i < tile.options.series.length; i++) {
+        const x = tile.options.series[i];
         for (let i = 0; i < dataSource.length; i++) {
           x.data[i] ?
             dataSource[i][`${x.name.toLowerCase()}`] = x.data[i] : dataSource[i][`${x.name.toLowerCase()}`] = null;
@@ -114,8 +121,8 @@ export default class ExportPDF extends Component {
           name: tile.options.xAxis[0].data[i],
           key: i + 1,
         }
-        for (let i = 0; i < tile.options.series.length; i++) {
-          const x = tile.options.series[i];
+        for (let j = 0; j < tile.options.series.length; j++) {
+          const x = tile.options.series[j];
           data[x.name.toLowerCase()] = x.data[i]
         }
         dataSource.push(data)
@@ -125,7 +132,8 @@ export default class ExportPDF extends Component {
         dataSource.push({
           [columns[0].title]: tile.options.xAxis.data[i],
           [columns[1].title]: tile.options.series[0].data[i],
-          key: i + 1}
+          key: i + 1
+        }
         )
       }
     } else if (tile.graph === 'pie') {
@@ -138,7 +146,7 @@ export default class ExportPDF extends Component {
       }
     }
 
-// converts the data into csv format
+    // converts the data into csv format
     if (dataSource) {
       for (let i = 0; i < dataSource.length; i++) {
         const x = dataSource[i];
@@ -157,13 +165,11 @@ export default class ExportPDF extends Component {
     return { columns: columns, data: dataSource, csv: content }
   }
 
-  componentDidMount() {
-    const { table } = this.state;
-    if (table === null) {
-      this.setTable();
+  componentWillUpdate(prevProp) {
+    if (prevProp.update && !this.props.update) {
+      this.setState({ table: this.setTable() })
     }
   }
-  
   render() {
     const { table } = this.state;
     return (
@@ -176,7 +182,6 @@ export default class ExportPDF extends Component {
         } >
           <Buttons size='small' icon='download' type='primary' >Download</Buttons>
         </Dropdown>
-
         <Modal
           title="Sample of a PDF"
           visible={this.state.pdf}
@@ -221,7 +226,6 @@ export default class ExportPDF extends Component {
           ]}
         >
           <Table columns={table.columns} dataSource={table.data} />
-
         </Modal>
       </div>);
   }
