@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import { Layout, Carousel } from 'antd';
 import Menu from '../../components/uielements/menu';
 import IntlMessages from '../../components/utility/intlMessages';
-// import getDevSidebar from '../../customApp/sidebar';
 import SidebarWrapper from './sidebar.style';
 import appActions from '../../redux/app/actions';
 import Logo from '../../components/utility/logo';
@@ -15,9 +14,7 @@ import { Row } from 'react-flexbox-grid';
 import './styles.css';
 
 const SubMenu = Menu.SubMenu;
-//const MenuItemGroup = Menu.ItemGroup;
 const { Sider } = Layout;
-
 const {
   toggleOpenDrawer,
   changeOpenKeys,
@@ -30,6 +27,7 @@ const stripTrailingSlash = str => {
   }
   return str;
 };
+
 class Sidebar extends Component {
   constructor(props) {
     super(props);
@@ -335,11 +333,8 @@ class Sidebar extends Component {
                       <IntlMessages id="sidebar.userSettings" />
                     </a>
                   </Menu.Item>
-
                 </SubMenu>
               }
-
-              {/* {getDevSidebar(url, submenuColor)} */}
             </Menu>
           </div>
         </Sider>

@@ -23,13 +23,13 @@ export default class Export extends Component {
   }
 
   printDocument = () => {
-    const {table} = this.state
-    var firstPage = table.data.splice(0,14);
+    const { table } = this.state
+    var firstPage = table.data.splice(0, 14);
     const input = document.getElementById('divToPrint');
     if (table.data.length > 14) {
       table.data.unshift(firstPage[13])
     }
-    
+
     html2canvas(input)
       .then((canvas) => {
         const imgData = canvas.toDataURL('image/png');
@@ -40,7 +40,7 @@ export default class Export extends Component {
             margin: { top: 480 },
           }
         );
-        if (table.data.length > 14) {       
+        if (table.data.length > 14) {
           pdf.autoTable(table.columns, table.data);
         }
         pdf.save(`${this.props.tile.title}.pdf`);
@@ -116,7 +116,6 @@ export default class Export extends Component {
         }
       }
     } else if (tile.graph === 'multiBar') {
-      console.log(tile)
       for (let i = 0; i < tile.options.xAxis[0].data.length; i++) {
         data = {
           name: tile.options.xAxis[0].data[i],
@@ -168,7 +167,7 @@ export default class Export extends Component {
 
   componentWillUpdate(prevProp) {
     if (prevProp.update && !this.props.update) {
-      this.setState({table: this.setTable()})
+      this.setState({ table: this.setTable() })
     }
   }
   render() {
@@ -183,7 +182,6 @@ export default class Export extends Component {
         } >
           <Buttons size='small' icon='download' type='primary' >Download</Buttons>
         </Dropdown>
-
         <Modal
           title="Sample of a PDF"
           visible={this.state.pdf}
@@ -228,7 +226,6 @@ export default class Export extends Component {
           ]}
         >
           <Table columns={table.columns} dataSource={table.data} />
-
         </Modal>
       </div>);
   }
