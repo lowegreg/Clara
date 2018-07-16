@@ -119,7 +119,6 @@ export class Reports extends Component {
   }
   generateTitles(graphObject) {
     var titles = []
-    var i = 0
     // titles.push({name:`${graphObject[i].x} Vs.  ${graphObject[i].y}`, value:i})
     for (var i = 0; i < graphObject.length; i++) {
       titles.splice(i, 1, { name: `${graphObject[i].x} Vs.  ${graphObject[i].y}`, value: i })
