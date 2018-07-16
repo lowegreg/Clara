@@ -63,11 +63,24 @@ export class Reports extends Component {
             tableArray: responseJson.tableId,
             table: null,
             tile: null,
+            tileArray: [],
+            tileDataArray: [],
+            showTiles: false,
+            loading: 0
           })
         })
         .catch((error) => {
           console.error(error);
         });
+    }else{
+      this.setState({
+        tileArray: [],
+        tileDataArray: [],
+        tableArray:[],
+        table:null,
+        showTiles: false,
+        loading: 0,
+      })
     }
   }
 

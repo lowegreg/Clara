@@ -446,11 +446,20 @@ function circleBarGraph(xData, yData, zData) {
     var trimData=[]
     var j
     for (j=0;j<yData.length;j++){
-        trimData.push(yData[j].trim())
+        if (typeof yData[j]==='string'){
+            trimData.push(yData[j].trim())
+        }else{
+            trimData.push(yData[j])
+        }
+        
     }
     yData=trimData;trimData=[]
     for (j=0;j<xData.length;j++){
-        trimData.push(xData[j].trim())
+        if (typeof xData[j]==='string'){
+            trimData.push(xData[j].trim())
+        }else{
+            trimData.push(xData[j])
+        }
     }
     xData=trimData
     

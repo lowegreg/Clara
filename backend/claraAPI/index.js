@@ -258,7 +258,7 @@ app.get('/selectGraphData', function (req, res) {
   }else if (req.query.xType === 'date' ) {
     sql = 'Select COUNT(`' + req.query.y + '`) as y, MONTHNAME(' + req.query.x + ') as x from `' + req.query.tableName + '` where ( select count(*) from (select count(`' + req.query.y + '`) as length from `' + req.query.tableName + '` as t1 group by `' + req.query.y + '`)  as t2)>1 and ( select count(*) from (select count(`' + req.query.x + '`) as length from `' + req.query.tableName + '` as t3 group by `' + req.query.x + '`)  as t4)>1 group by MONTH(' + req.query.x + ')  '
   } else if (req.query.xType === 'hours' && req.query.yType === 'rank') {
-    sql = 'Select avg(`' + req.query.y + '`) as y,  DATE_FORMAT( DATE(`' + req.query.x + '`), "%b %d") as x from `' + req.query.tableName + '` group by DATE_FORMAT( DATE(`' + req.query.x + '`), "%b %d")  order by DATE_FORMAT( DATE(`' + req.query.x + '`), "%b %d")'
+    sql = 'Select avg(`' + req.query.y + '`) as y,  DATE_FORMAT( DATE(`' + req.query.x + '`), "%b %d") as x from `' + req.query.tableName + '` group by DATE_FORMAT( DATE(`' + req.query.x + '`), "%b %d")  order by `' + req.query.x + '` '
   } else if (req.query.xType === 'type' && req.query.yType === 'rank') {
     sql = 'Select avg(`' + req.query.y + '`) as y, `' + req.query.x + '` as x from `' + req.query.tableName + '` group by `' + req.query.x + '`  order by avg(`' + req.query.y + '`) desc limit 10'
   }
