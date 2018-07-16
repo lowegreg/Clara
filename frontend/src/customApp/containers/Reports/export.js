@@ -76,8 +76,8 @@ export default class Export extends Component {
         const x = tile.options.series[i];
         columns.push({
           title: x.name,
-          dataIndex: x.name.toLowerCase(),
-          key: x.name.toLowerCase(),
+          dataIndex: x.name,
+          key: x.name,
         });
       }
     } else {
@@ -112,7 +112,7 @@ export default class Export extends Component {
         const x = tile.options.series[i];
         for (let i = 0; i < dataSource.length; i++) {
           x.data[i] ?
-            dataSource[i][`${x.name.toLowerCase()}`] = x.data[i] : dataSource[i][`${x.name.toLowerCase()}`] = null;
+            dataSource[i][`${x.name}`] = x.data[i] : dataSource[i][`${x.name}`] = null;
         }
       }
     } else if (tile.graph === 'multiBar') {
@@ -123,11 +123,11 @@ export default class Export extends Component {
         }
         for (let j = 0; j < tile.options.series.length; j++) {
           const x = tile.options.series[j];
-          data[x.name.toLowerCase()] = x.data[i]
+          data[x.name] = x.data[i]
         }
         dataSource.push(data)
       }
-    } else if (tile.graph.toLowerCase().indexOf('line') > -1) {
+    } else if (tile.graph.indexOf('line') > -1) {
       for (let i = 0; i < tile.options.xAxis.data.length; i++) {
         dataSource.push({
           [columns[0].title]: tile.options.xAxis.data[i],

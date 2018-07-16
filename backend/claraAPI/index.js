@@ -31,9 +31,11 @@ app.post('/api/authenticate', authenticateController.authenticate);
 app.get('/tableLookUp', function (req, res) {
   // var id = req.param('id');
   var sql;
-  if (req.query.getNames === 'true') {
+  if(req.query.getNames === 'true' && req.query.statusId==='accepted'){
+    sql = 'SELECT name FROM tableLookUp where sourceType= \'' + req.query.sourceType + '\' and statusId= \''+req.query.statusId+'\''
+  }else if (req.query.getNames === 'true') {
     sql = 'SELECT name FROM tableLookUp where sourceType= \'' + req.query.sourceType + '\''
-  } else if (req.query.tableName) {
+  }else if (req.query.tableName) {
     sql = 'SELECT * FROM tableLookUp WHERE sourceType= \'' + req.query.sourceType + '\' and name= \'' + req.query.tableName + '\''
   } else if (req.query.sourceType) {
     sql = 'SELECT * FROM tableLookUp where sourceType = \'' + req.query.sourceType + '\''
