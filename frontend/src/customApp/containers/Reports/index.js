@@ -44,7 +44,7 @@ export class Reports extends Component {
       tile: null,
       table: null,
       graph: null,
-      showTiles: false,
+      showTiles: false, 
       typeArray: [],
       tableArray: [],
       tileArray: [],
