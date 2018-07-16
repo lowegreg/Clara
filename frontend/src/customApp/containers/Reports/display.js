@@ -43,8 +43,8 @@ export class Display extends Component {
             Math.max(...data)
           ],
           marks: {
-            [Math.round(Math.max(...originalTile.options.series[i].data))] : `${Math.round(Math.max(...originalTile.options.series[i].data))}`,
-            [Math.round(Math.min(...originalTile.options.series[i].data))] : `${Math.round(Math.min(...originalTile.options.series[i].data))}`,
+            [Math.round(Math.max(...originalTile.options.series[i].data))]: `${Math.round(Math.max(...originalTile.options.series[i].data))}`,
+            [Math.round(Math.min(...originalTile.options.series[i].data))]: `${Math.round(Math.min(...originalTile.options.series[i].data))}`,
           }
         })
       }
@@ -64,11 +64,11 @@ export class Display extends Component {
           Math.max(...data)
         ],
         marks: {
-          [Math.round(Math.max(...originalData))] : `${Math.round(Math.max(...originalData))}`,
-          [Math.round(Math.min(...originalData))] : `${Math.round(Math.min(...originalData))}`,
+          [Math.round(Math.max(...originalData))]: `${Math.round(Math.max(...originalData))}`,
+          [Math.round(Math.min(...originalData))]: `${Math.round(Math.min(...originalData))}`,
         }
       })
-    } else if ( tile.graph === 'fillLine') {
+    } else if (tile.graph === 'fillLine') {
       slider.push({
         name: originalTile.yName,
         max: Math.round(Math.max(...originalTile.options.series[0].data)),
@@ -78,8 +78,8 @@ export class Display extends Component {
           Math.max(...tile.options.series[0].data)
         ],
         marks: {
-          [Math.round(Math.max(...originalTile.options.series[0].data))] : `${Math.round(Math.max(...originalTile.options.series[0].data))}`,
-          [Math.round(Math.min(...originalTile.options.series[0].data))] : `${ Math.round(Math.min(...originalTile.options.series[0].data))}`,
+          [Math.round(Math.max(...originalTile.options.series[0].data))]: `${Math.round(Math.max(...originalTile.options.series[0].data))}`,
+          [Math.round(Math.min(...originalTile.options.series[0].data))]: `${Math.round(Math.min(...originalTile.options.series[0].data))}`,
         },
       })
     }
@@ -95,12 +95,12 @@ export class Display extends Component {
     var tile = this.state.tile;
     var options = tile.options;
     if (tile.graph === 'circleBar') {
-      for (const j in  tile.options.radiusAxis.data) {
+      for (const j in tile.options.radiusAxis.data) {
         for (const i in slider) {
           options.series[i].data[j] = this.inRange(originalTile.options.series[i].data[j], slider[i])
         }
       }
-      
+
     } else if (tile.graph === 'multiBar') {
       for (const j in originalTile.options.xAxis[0].data) {
         for (const i in slider) {
@@ -117,7 +117,7 @@ export class Display extends Component {
           options.xAxis.data.splice(i, 1)
         }
       }
-    } else if (tile.graph === 'pie'){
+    } else if (tile.graph === 'pie') {
       for (const j in originalTile.options.series[0].data) {
         options.series[0].data[j].value = this.inRange(originalTile.options.series[0].data[j].value, slider[0])
       }
@@ -126,8 +126,8 @@ export class Display extends Component {
           options.series[0].data.splice(i, 1)
         }
       }
-    } 
-    this.setState({ tile: tile, edit: false, update:true })
+    }
+    this.setState({ tile: tile, edit: false, update: true })
   }
   inRange = (value, slider) => {
     if (value < slider.value[0] || value > slider.value[1]) {
@@ -142,7 +142,7 @@ export class Display extends Component {
     }
   }
   render() {
-    
+
     const { tile, slider } = this.state
     return (
       <div>
@@ -172,9 +172,9 @@ export class Display extends Component {
             </Modal>
           </Row>
         }
-        {this.state.tile!==null&&
+        {this.state.tile !== null &&
           <div style={{ marginLeft: '20px', marginRight: '20px', marginTop: '15px' }}>
-                <Export tile={this.state.tile} update={this.state.update} />
+            <Export tile={this.state.tile} update={this.state.update} />
           </div>
         }
       </div>
