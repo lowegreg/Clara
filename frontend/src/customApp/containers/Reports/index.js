@@ -8,31 +8,15 @@ import { Button } from 'antd';
 import SuperSelectField from 'material-ui-superselectfield';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Display from './display';
+import * as func from '../../pageFunctions';
 
 const ButtonGroup = Button.Group;
 const categories = [
-  { from: 'Stories', filter: 'Type', type: [{ label: 'Live', value: 1 }, { label: 'Open', value: 2 }, { label: 'Third Party', value: 3 }, { label: 'Imported', value: 4 }] },
-  { from: 'Dashboards', filter: 'Title' },
-  { from: 'Created Stories', filter: 'Type', type: [{ label: 'Clara Stories', value: 1 }, { label: 'User Stories', value: 2 }] },
+  { from: 'Stories', type: [{ label: 'Live', value: 1 }, { label: 'Open', value: 2 }, { label: 'Third Party', value: 3 }, { label: 'Imported', value: 4 }] },
+  { from: 'Dashboards' },
+  { from: 'Created Stories', type: [{ label: 'Clara Stories', value: 1 }, { label: 'User Stories', value: 2 }] },
 ];
-const tempTile = {
-  description: "Comparing STATUS to top 5 of STREET (or less then top 5)",
-  graph: "multiBar",
-  options: {
-    grid: { left: "3%", right: "4%", bottom: "3%", containLabel: true },
-    legend: { data: ["ACTIVE"], position: "bottom", type: "scroll" },
-    series: [{ name: "ACTIVE", type: "bar", stack: "top", data: [1255, 1097, 1060, 1051, 1012, 978, 948, 871, 813, 755] }],
-    tooltip: { trigger: "axis", axisPointer: { type: "shadow" } },
-    xAxis: [{ type: "category", data: ["KING ST E", "BELMONT AVE W", "GREEN VALLEY DR", "KING ST W", "MARGARET AVE", "VICTORIA ST S", "QUEEN ST S", "FALLOWFIELD DR", "WILSON AVE", "COUNTRY HILL DR"], axisLabel: { interval: 0, rotate: -25 } }],
-    yAxis: [{ type: "value" }]
-  },
-  tableName: "Addresses",
-  tags: [{ name: "STATUS", route: "" }, { name: "STREET", route: "" }, { name: "multiBar", route: "" }],
-  title: "STATUS Vs. STREET",
-  widthOfCard: "100%",
-  xName: "STATUS",
-  yName: "STREET",
-}
+
 export class Reports extends Component {
   constructor(props) {
     super(props);
@@ -41,50 +25,162 @@ export class Reports extends Component {
       type: null,
       tile: null,
       table: null,
-      filter: null,
       update: false,
+      showTiles: false,
+      message: '',
+      typeArray: [],
+      tableArray: [],
+      tileArray: [],
+      tileDataArray: [],
+      loading: 0,
       time: Date.now(),
     };
   }
   selectCategory = (event) => {
     this.setState({
       activeCategory: event,
+      props: null,
       type: null,
       tile: null,
-      table: null
+      table: null,
+      graph: null,
+      showTiles: false, 
+      typeArray: [],
+      tableArray: [],
+      tileArray: [],
+      tileDataArray: [],
+      message: '',
     })
-    event === 1 ? this.setState({ filter: this.props.profile.dashboards }) : this.setState({ filter: categories[event].type })
+    event === 1 ? this.setState({ tableArray: this.props.profile.dashboards }) : this.setState({ typeArray: categories[event].type })
   }
   selectType = (event) => {
     if (event && typeof event.value === 'number') {
-      this.setState({
-        type: { value: this.state.filter, label: this.state.filter[event.value - 1].label },
-        table: null,
-        tile: null,
-      })
+      fetch('http://35.182.224.114:3000/tableLookUp?statusId=accepted&getNames=true&sourceType=' + this.state.typeArray[event.value - 1].label, { method: 'GET', mode: 'cors' })
+        .then((response) => response.json())
+        .then(responseJson => {
+          this.setState({
+            type: { value: responseJson.tableId.map(a => a.name), label: this.state.typeArray[event.value - 1].label },
+            tableArray: responseJson.tableId,
+            table: null,
+            tile: null,
+          })
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     }
   }
+
+  fetchData(url, i, title, props) {
+    fetch(url, { method: 'GET', mode: 'cors' })
+      .then((response) => response.json())
+      .then(responseJson => {
+        var results = responseJson.id
+        results = func.removeNull(results)
+        this.setState({ loading: this.state.loading + 1 })
+        if (results.length > 1) {
+          // this.setState({graphFull:this.state.graphFull+1})
+          var x = results.map(data => data.x);
+          var y = results.map(data => data.y);
+          var z = results.map(data => data.z) || null;
+          if (y.filter((v, i, a) => a.indexOf(v) === i).length > 1) {
+            var dataOut = func.formatData(props[i], x, y, z)
+            var tempTileArray = this.state.tileArray
+            tempTileArray.push(title)
+            var tempTileDataArray = this.state.tileDataArray
+            tempTileDataArray.push(dataOut)
+            var show = false
+            var message = 'loading...'
+            if (this.state.loading === props.length) {
+              show = true
+              message = ''
+            }
+
+            this.setState({
+              tileArray: tempTileArray,
+              showTiles: show,
+              message: message,
+              tileDataArray: tempTileDataArray
+            })
+          } else if (this.state.loading === props.length && this.state.tileArray.length === 0) {
+            this.setState({ message: 'No tiles for this data set.' })
+          } else if (this.state.loading === props.length) {
+            this.setState({ showTiles: true })
+          }
+        } else if (this.state.loading === props.length && this.state.tileArray.length === 0) {
+          this.setState({ message: 'No tiles for this data set.' })
+        } else if (this.state.loading === props.length) {
+          this.setState({ showTiles: true })
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+  generateTitles(graphObject) {
+    var titles = []
+    // titles.push({name:`${graphObject[i].x} Vs.  ${graphObject[i].y}`, value:i})
+    for (var i = 0; i < graphObject.length; i++) {
+      titles.splice(i, 1, { name: `${graphObject[i].x} Vs.  ${graphObject[i].y}`, value: i })
+    }
+    return titles
+
+  }
   selectTable = (event) => {
-    if (event && !event.label) {
+    if (event) {
       if (this.state.activeCategory === 1) {
-        const dash = this.state.filter.filter(data => data._id === event.value);
+        const dash = this.state.tableArray.filter(data => data._id === event.value);
         if (dash && typeof dash[0].tiles === 'string') {
           dash[0].tiles = JSON.parse(dash[0].tiles)
         }
-        this.setState({ table: { value: dash[0], label: dash[0].title }, activeTile: -1, tile: null })
+        this.setState({ table: { value: dash[0].title, label: dash[0].title }, tileArray: dash[0].tiles, activeTile: -1, tile: null, showTiles: true })
       } else {
-        this.setState({ table: { label: this.state.filter[event.value - 1].label, value: this.state.filter }, tile: null })
+        this.setState({
+          tileArray: [],
+          tileDataArray: [],
+          showTiles: false,
+          loading: 0
+        })
+        var url = 'http://35.182.224.114:3000/dataManagement/getProps?tableName=' + event.value
+        fetch(url, { method: 'GET', mode: 'cors' })
+          .then((response) => response.json())
+          .then(responseJson => {
+            var props = func.catPropsFunction(responseJson.id)
+            var possibleTiles = this.generateTitles(props)
+           
+            for (var i = 0; i < props.length; i++) {
+              var url = 'http://35.182.224.114:3000/selectGraphData?tableName=' + event.value + '&x=' + props[i].x + '&y=' + props[i].y + '&xType=' + props[i].xType + '&yType=' + props[i].yType
+              this.fetchData(url, i, possibleTiles[i], props)
+            }
+            this.setState({
+              table: { value: event.value, label: event.label },
+              tile: null
+            })
+          })
+          .catch((error) => {
+            console.error(error);
+          })
+
       }
+    }else{
+      this.setState({
+        tileArray: [],
+        tileDataArray: [],
+        showTiles: false,
+        loading: 0,
+        tile:null
+      })
     }
   }
+
   selectTile = (event) => {
-    if (event && typeof event.value === 'number') {
+    if (event) {
       if (this.state.activeCategory === 1) {
-        const tile = this.state.table.value.tiles[event.value - 1]
-        this.setState({ tile: { value: tile, label: tile.title }, update: true })
+        const tile = this.state.tileArray[event.value]
+        this.setState({ tile: { value: tile.value, label: tile.title }, graph: tile, update: true })
       }
       else {
-        this.setState({ tile: { value: tempTile, label: tempTile.title }, update: true })
+        this.setState({ tile: { value: event.value, label: event.label }, graph: this.state.tileDataArray[event.value], update: true })
       }
       return
     }
@@ -100,31 +196,32 @@ export class Reports extends Component {
     }
   }
   renderTableSelectField = () => {
+    if (this.state.tableArray.length === 0) { return this.state.tableArray }
+    var value = 'name'
+    var label = 'name'
     if (this.state.activeCategory === 1) {
-      return (
-        this.state.filter.map((data, index) => {
-          return <div key={index} value={data._id}>{data.title}</div>
-        }))
-    } else if (this.state.type) {
-      return (
-        this.state.type.value.map((data, index) => {
-          return <div key={index} value={data.value}>{data.label}</div>
-        }))
+      value = '_id'
+      label = 'title'
     }
+    return (
+      this.state.tableArray.map((data, index) => {
+        return <div key={index} value={data[value]} label={data[label]}>{data[label]}</div>
+      }))
+
   }
-  //this function may be removed in the future
   renderTileSelectField = () => {
-    if (this.state.activeCategory === 1) {
-      return (
-        this.state.table.value.tiles.map((data, index) => {
-          return <div key={index} value={index + 1}>{data.title}</div>
-        }))
-    } else if (this.state.type) {
-      return (
-        this.state.table.value.map((data, index) => {
-          return <div key={index} value={data.value}>{data.label}</div>
-        }))
+    if (this.state.tileArray.length === 0) {
+      return this.state.tileArray
     }
+    var label = 'name'
+    if (this.state.activeCategory === 1) {
+      label = 'title'
+    }
+    return (
+      this.state.tileArray.map((data, index) => {
+        return <div key={index} value={index} label={data[label]}>{data[label]}</div>
+      }))
+
   }
   setUpdate = (update) => {
     this.setState({ update: update })
@@ -159,14 +256,14 @@ export class Reports extends Component {
               <p style={{ paddingRight: '20px', paddingTop: '12px' }} >Type:</p>
               <MuiThemeProvider>
                 <SuperSelectField
-                  name={'filter'}
+                  name={'Type'}
                   hintText={activeCategory > -1 ? `Select Type` : ``}
                   value={this.state.type}
                   onChange={this.selectType}
-                  style={{ minWidth: 150, margin: 10 }}
+                  style={{ minWidth: 250, margin: 10 }}
                 >
-                  {this.state.filter.map((data, index) => {
-                    return <div key={index} value={data.value}>{data.label}</div>
+                  {this.state.typeArray.map((data, index) => {
+                    return <div key={index} value={data.value} label={data.label}>{data.label}</div>
                   })}
                 </SuperSelectField>
               </MuiThemeProvider>
@@ -177,11 +274,11 @@ export class Reports extends Component {
             <p style={{ paddingRight: '20px', paddingTop: '12px' }} >Table:</p>
             <MuiThemeProvider>
               <SuperSelectField
-                name={'filter'}
+                name={'Table'}
                 hintText={this.hintText()}
                 value={this.state.table}
                 onChange={this.selectTable}
-                style={{ minWidth: 150, margin: 10 }}
+                style={{ minWidth: 250, margin: 10 }}
               >
                 {this.renderTableSelectField()}
               </SuperSelectField>
@@ -192,22 +289,26 @@ export class Reports extends Component {
             <p style={{ paddingRight: '23px', paddingTop: '12px' }} >Tile:</p>
             <MuiThemeProvider>
               <SuperSelectField
-                name={'filter'}
+                name={'Tile'}
                 hintText={this.state.table !== null ? `Select Tile` : ''}
                 value={this.state.tile}
                 onChange={this.selectTile}
-                style={{ minWidth: 150, margin: 10 }}
+                style={{ minWidth: 250, margin: 10 }}
               >
-                {this.state.table !== null &&
+
+                {this.state.showTiles === true &&
                   this.renderTileSelectField()
                 }
               </SuperSelectField>
             </MuiThemeProvider>
+            <p style={{ paddingRight: '20px', paddingTop: '12px' }} >{this.state.message}</p>
+
           </Row>
           {this.state.update === true &&
-            <Display tile={this.state.tile} setUpdate={this.setUpdate} />
+            <Display
+              tile={this.state.graph} setUpdate={this.setUpdate} />
           }
-          
+
         </LayoutContent>
       </LayoutContentWrapper>
     );

@@ -13,7 +13,7 @@ export class Display extends Component {
       tile: JSON.parse(JSON.stringify(this.props.tile)),
       edit: false,
       slider: [],
-      originalTile: JSON.parse(JSON.stringify(this.props.tile.value)),
+      originalTile: JSON.parse(JSON.stringify(this.props.tile)),
       update: false
     };
   }
@@ -21,14 +21,14 @@ export class Display extends Component {
     const { tile, originalTile } = this.state;
     var name;
     var slider = []
-    if (tile.value.graph === 'circleBar' || tile.value.graph === 'multiBar' || tile.value.graph === 'line') {
-      for (let i = 0; i < tile.value.options.series.length; i++) {
-        const x = tile.value.options.series[i];
+    if (tile.graph === 'circleBar' || tile.graph === 'multiBar' || tile.graph === 'line') {
+      for (let i = 0; i < tile.options.series.length; i++) {
+        const x = tile.options.series[i];
         var data = x.data.filter(function (object) {
           return object !== null && object !== undefined;
         })
-        if (tile.value.graph === 'line') {
-          name = tile.value.yName
+        if (tile.graph === 'line') {
+          name = tile.yName
         } else {
           name = x.name
         }
@@ -43,16 +43,16 @@ export class Display extends Component {
             Math.max(...data)
           ],
           marks: {
-            [Math.round(Math.max(...originalTile.options.series[i].data))] : `${Math.round(Math.max(...originalTile.options.series[i].data))}`,
-            [Math.round(Math.min(...originalTile.options.series[i].data))] : `${Math.round(Math.min(...originalTile.options.series[i].data))}`,
+            [Math.round(Math.max(...originalTile.options.series[i].data))]: `${Math.round(Math.max(...originalTile.options.series[i].data))}`,
+            [Math.round(Math.min(...originalTile.options.series[i].data))]: `${Math.round(Math.min(...originalTile.options.series[i].data))}`,
           }
         })
       }
-    } else if (tile.value.graph === 'pie') {
+    } else if (tile.graph === 'pie') {
       data = [];
       var originalData = [];
-      for (const i in tile.value.options.series[0].data) {
-        data[i] = tile.value.options.series[0].data[i].value
+      for (const i in tile.options.series[0].data) {
+        data[i] = tile.options.series[0].data[i].value
         originalData[i] = originalTile.options.series[0].data[i].value
       }
       slider.push({
@@ -64,22 +64,22 @@ export class Display extends Component {
           Math.max(...data)
         ],
         marks: {
-          [Math.round(Math.max(...originalData))] : `${Math.round(Math.max(...originalData))}`,
-          [Math.round(Math.min(...originalData))] : `${Math.round(Math.min(...originalData))}`,
+          [Math.round(Math.max(...originalData))]: `${Math.round(Math.max(...originalData))}`,
+          [Math.round(Math.min(...originalData))]: `${Math.round(Math.min(...originalData))}`,
         }
       })
-    } else if ( tile.value.graph === 'fillLine') {
+    } else if (tile.graph === 'fillLine') {
       slider.push({
         name: originalTile.yName,
         max: Math.round(Math.max(...originalTile.options.series[0].data)),
         min: Math.round(Math.min(...originalTile.options.series[0].data)),
         value: [
-          Math.min(...tile.value.options.series[0].data),
-          Math.max(...tile.value.options.series[0].data)
+          Math.min(...tile.options.series[0].data),
+          Math.max(...tile.options.series[0].data)
         ],
         marks: {
-          [Math.round(Math.max(...originalTile.options.series[0].data))] : `${Math.round(Math.max(...originalTile.options.series[0].data))}`,
-          [Math.round(Math.min(...originalTile.options.series[0].data))] : `${ Math.round(Math.min(...originalTile.options.series[0].data))}`,
+          [Math.round(Math.max(...originalTile.options.series[0].data))]: `${Math.round(Math.max(...originalTile.options.series[0].data))}`,
+          [Math.round(Math.min(...originalTile.options.series[0].data))]: `${Math.round(Math.min(...originalTile.options.series[0].data))}`,
         },
       })
     }
@@ -93,21 +93,21 @@ export class Display extends Component {
   handleOk = () => {
     const { originalTile, slider } = this.state
     var tile = this.state.tile;
-    var options = tile.value.options;
-    if (tile.value.graph === 'circleBar') {
-      for (const j in  tile.value.options.radiusAxis.data) {
+    var options = tile.options;
+    if (tile.graph === 'circleBar') {
+      for (const j in tile.options.radiusAxis.data) {
         for (const i in slider) {
           options.series[i].data[j] = this.inRange(originalTile.options.series[i].data[j], slider[i])
         }
       }
-      
-    } else if (tile.value.graph === 'multiBar') {
+
+    } else if (tile.graph === 'multiBar') {
       for (const j in originalTile.options.xAxis[0].data) {
         for (const i in slider) {
           options.series[i].data[j] = this.inRange(originalTile.options.series[i].data[j], slider[i])
         }
       }
-    } else if (tile.value.graph === 'line' || tile.value.graph === 'fillLine') {
+    } else if (tile.graph === 'line' || tile.graph === 'fillLine') {
       for (const j in options.xAxis.data) {
         options.series[0].data[j] = this.inRange(originalTile.options.series[0].data[j], slider[0])
       }
@@ -117,7 +117,7 @@ export class Display extends Component {
           options.xAxis.data.splice(i, 1)
         }
       }
-    } else if (tile.value.graph === 'pie'){
+    } else if (tile.graph === 'pie') {
       for (const j in originalTile.options.series[0].data) {
         options.series[0].data[j].value = this.inRange(originalTile.options.series[0].data[j].value, slider[0])
       }
@@ -126,8 +126,8 @@ export class Display extends Component {
           options.series[0].data.splice(i, 1)
         }
       }
-    } 
-    this.setState({ tile: tile, edit: false, update:true })
+    }
+    this.setState({ tile: tile, edit: false, update: true })
   }
   inRange = (value, slider) => {
     if (value < slider.value[0] || value > slider.value[1]) {
@@ -142,17 +142,18 @@ export class Display extends Component {
     }
   }
   render() {
+
     const { tile, slider } = this.state
     return (
       <div>
         {tile &&
           <Row style={{ justifyContent: 'center', alignContent: 'center' }}>
-            <p style={{ paddingLeft: '20px', paddingTop: '10px', paddingBottom: '10px' }}><font size="5">{tile.value.title}</font></p>
+            <p style={{ paddingLeft: '20px', paddingTop: '10px', paddingBottom: '10px' }}><font size="5">{tile.title}</font></p>
             <div style={{ marginLeft: 'auto', marginRight: '20px', marginTop: '5px' }}>
               <Buttons size='small' onClick={this.setEditValues}>Edit</Buttons>
             </div>
             <div style={{ borderStyle: 'solid', padding: '15px', alignContent: 'center', justifyContent: 'center' }}>
-              <Chart table={tile.value} eChartStyle={{ width: window.innerWidth - 600, height: (window.innerHeight / 2) + 100 }} />
+              <Chart table={tile} eChartStyle={{ width: window.innerWidth - 600, height: (window.innerHeight / 2) + 100 }} />
             </div>
             <Modal
               title="Edit Data"
@@ -171,9 +172,11 @@ export class Display extends Component {
             </Modal>
           </Row>
         }
-        <div style={{ marginLeft: '20px', marginRight: '20px', marginTop: '15px' }}>
-              <Export tile={this.state.tile.value} update={this.state.update} />
+        {this.state.tile !== null &&
+          <div style={{ marginLeft: '20px', marginRight: '20px', marginTop: '15px' }}>
+            <Export tile={this.state.tile} update={this.state.update} />
           </div>
+        }
       </div>
     );
   }
