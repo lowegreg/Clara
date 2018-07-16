@@ -68,7 +68,6 @@ export class Reports extends Component {
         .catch((error) => {
           console.error(error);
         });
-
     }
   }
 
@@ -137,19 +136,19 @@ export class Reports extends Component {
         }
         this.setState({ table: { value: dash[0].title, label: dash[0].title }, tileArray: dash[0].tiles, activeTile: -1, tile: null, showTiles: true })
       } else {
-
+        this.setState({
+          tileArray: [],
+          tileDataArray: [],
+          showTiles: false,
+          loading: 0
+        })
         var url = 'http://35.182.224.114:3000/dataManagement/getProps?tableName=' + event.value
         fetch(url, { method: 'GET', mode: 'cors' })
           .then((response) => response.json())
           .then(responseJson => {
             var props = func.catPropsFunction(responseJson.id)
             var possibleTiles = this.generateTitles(props)
-            this.setState({
-              tileArray: [],
-              tileDataArray: [],
-              showTiles: false,
-              loading: 0
-            })
+           
             for (var i = 0; i < props.length; i++) {
               var url = 'http://35.182.224.114:3000/selectGraphData?tableName=' + event.value + '&x=' + props[i].x + '&y=' + props[i].y + '&xType=' + props[i].xType + '&yType=' + props[i].yType
               this.fetchData(url, i, possibleTiles[i], props)
@@ -164,6 +163,14 @@ export class Reports extends Component {
           })
 
       }
+    }else{
+      this.setState({
+        tileArray: [],
+        tileDataArray: [],
+        showTiles: false,
+        loading: 0,
+        tile:null
+      })
     }
   }
 
