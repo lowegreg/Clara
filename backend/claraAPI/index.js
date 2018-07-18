@@ -240,6 +240,19 @@ app.post('/updateNotifications', function (req, res) {
   });
 })
 // universal select all
+
+//get all offical datatypes
+app.get('/getPreview', function (req, res) {
+  var sql = 'select * from \`'+req.query.tableName+'\` limit 4'
+  con.query(sql, function (err, rows) {
+    if (err) {
+      res.json({ "Error": true, "Message": sql });
+    } else {
+      res.json({ "Error": false, "Message": "Success", "rows": rows });
+    }
+  });
+})
+
 app.get('/selectGraphData', function (req, res) {
   var sql = 'Select COUNT(`' + req.query.y + '`) as y, `' + req.query.x + '` as x from `' + req.query.tableName + '` group by `' + req.query.x + '`  order by COUNT(`' + req.query.y + '`) desc limit 5'
 

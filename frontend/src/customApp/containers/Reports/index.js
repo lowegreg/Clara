@@ -303,7 +303,7 @@ export class Reports extends Component {
             <MuiThemeProvider>
               <SuperSelectField
                 name={'Tile'}
-                hintText={this.state.table !== null ? `Select Tile` : ''}
+                hintText={this.state.showTiles !== false ? `Select Tile` : ''}
                 value={this.state.tile}
                 onChange={this.selectTile}
                 style={{ minWidth: 250, margin: 10 }}
