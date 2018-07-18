@@ -63,11 +63,24 @@ export class Reports extends Component {
             tableArray: responseJson.tableId,
             table: null,
             tile: null,
+            tileArray: [],
+            tileDataArray: [],
+            showTiles: false,
+            loading: 0
           })
         })
         .catch((error) => {
           console.error(error);
         });
+    }else{
+      this.setState({
+        tileArray: [],
+        tileDataArray: [],
+        tableArray:[],
+        table:null,
+        showTiles: false,
+        loading: 0,
+      })
     }
   }
 
@@ -290,7 +303,7 @@ export class Reports extends Component {
             <MuiThemeProvider>
               <SuperSelectField
                 name={'Tile'}
-                hintText={this.state.table !== null ? `Select Tile` : ''}
+                hintText={this.state.showTiles !== false ? `Select Tile` : ''}
                 value={this.state.tile}
                 onChange={this.selectTile}
                 style={{ minWidth: 250, margin: 10 }}

@@ -149,7 +149,7 @@ class Sidebar extends Component {
     const scrollheight = app.height;
     const styling = {
       // backgroundColor: customizedTheme.backgroundColor,
-      height: scrollheight, overflow: 'auto', overflowX: 'hidden'
+      height: scrollheight-100, overflow: 'auto', overflowX: 'hidden'
     };
     const styling2 = {
       // backgroundColor: customizedTheme.backgroundColor,

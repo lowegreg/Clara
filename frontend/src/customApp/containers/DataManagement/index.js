@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Button from '../../../components/uielements/button';
-import { Row, Col } from 'react-flexbox-grid';
+import { Grid, Row, Col } from 'react-flexbox-grid';
 import Box from '../../../components/utility/box';
 import SuperSelectField from 'material-ui-superselectfield'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import Input from '../../../components/uielements/input';
 import Form from '../../../components/uielements/form';
 import { Modal } from 'antd';
+import './styles.css';
 
 const FormItem = Form.Item;
 
@@ -45,12 +46,26 @@ class DataManagement extends Component {
             newTypeCat: null, // the value of category drop down from module popup
             dataTypeInput: '', // the value of datatype text box from module popup
             feedback: '', // the reason the data maping was rejected by an admin  
+            preview: false, // the status if the preview module is open or not
+            previewData: [] // object full of 4 rows of the dataset
         }
     };
     showModal = () => {
         this.setState({
             visible: true,
         });
+    }
+    showPreview = () => {
+        var query = 'http://35.182.224.114:3000/getPreview?tableName=' + this.state.tableName
+        fetch(query, { method: 'GET', mode: 'cors' })
+            .then((response) => response.json())
+            .then(responseJson => {
+                this.setState({ preview: true, previewData: responseJson.rows })
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+
     }
     handleOk = (e) => {
         var temp = []
@@ -176,12 +191,12 @@ class DataManagement extends Component {
         this.setState({ pointError: '' });
         var formBody;
         for (var i = 0; i < this.state.table.length; i++) {
-            if (this.state.table[i].type.value === null) {
+            if (this.state.table[i].type.value.value === null||this.state.table[i].type.value.value === undefined) {
                 this.setState({ pointError: 'Please map all fields' });
                 return;
             }
         }
-
+        
         if (this.state.tag === '') { this.setState({ pointError: 'Please enter a default tag for this data set' }); return }
         this.state.table.map((input, index) => {
             formBody = 'propId=' + input.property + '&dataType=' + input.category.value.value + '-' + input.type.value.value + '&tableName=' + this.state.tableName;
@@ -295,7 +310,52 @@ class DataManagement extends Component {
             </Row>
         )
     }
+    previewRow(i) {
+        if (this.state.previewData.length === 0) return []
+        var row = Object.values(this.state.previewData[i])
+        return (
+            row.map((data, index) => {
+                return <Col key={index} style={{ display: 'inline-block', width: '150px', borderBottom: '1px solid #adb2ba', wordWrap: 'break-word' }} xs ><p style={{ whiteSpace: 'normal' }}>{data}</p></Col>
+            })
+        )
 
+    }
+    handleOkPreview = (e) => {
+        this.setState({
+            preview: false,
+        });
+    }
+
+    previewTable() {
+        return (
+            <Modal
+                title="Preview"
+                visible={this.state.preview}
+                onCancel={this.handleOkPreview}
+                width={1000}
+                footer={<div><Button type="primary" onClick={this.handleOkPreview}>Close</Button></div>}
+            >
+                <Grid fluid style={{ overflowX: 'scroll', display: 'block', width: '900px', whiteSpace: 'nowrap' }} className="scrollbar" id="style-2">
+                    <div style={{ display: 'block' }}>
+                        <Row style={{ borderBottom: '1px solid #adb2ba', display: 'inline-block', backgroundColor: '#fafafa' }}>
+                            {this.state.table.map((name, index) => {
+                                return <Col key={index} style={{ display: 'inline-block', width: '150px', wordWrap: 'break-word' }} xs ><h4 style={{ whiteSpace: 'normal' }}>{name.property}</h4></Col>
+                            })}
+                        </Row>
+                    </div>
+                    {this.state.previewData.map((data, index) => {
+                        return (
+                            <div style={{ display: 'block' }}>.
+                            <Row style={{ display: 'inline-block' }}>
+                                    {this.previewRow(index)}
+                                </Row>
+                            </div>
+                        )
+                    })}
+                </Grid>
+            </Modal>
+        )
+    }
     render() {
         return (
             <div  >
@@ -304,6 +364,9 @@ class DataManagement extends Component {
                         <Row >
                             <Col >
                                 <h2 style={{ marginLeft: '16px' }}>Maping Data Fields</h2>
+                            </Col>
+                            <Col >
+                                <Button style={{ position: 'absolute', right: '175px' }} type="default" onClick={this.showPreview}>Show Preview</Button>
                             </Col>
                             <Col >
                                 <Button style={{ position: 'absolute', right: '32px' }} type="default" icon="plus" onClick={this.showModal}>Data Type</Button>
@@ -318,13 +381,11 @@ class DataManagement extends Component {
                                 </div>
                             }
                             {this.header()}
-
                             {this.state.table.length > 0 &&
                                 this.state.table.map((data, index) => {
                                     return this.tableRow(this.handleSelection, data, index);
                                 })
                             }
-
                             <Row xs={24} style={{ marginRight: '16px' }}>
                                 <FormItem
                                     {...formItemLayout}
@@ -383,6 +444,7 @@ class DataManagement extends Component {
                                             </Col>
                                         </Row>
                                     </Modal>
+                                    {this.previewTable()}
                                     <p style={{ color: 'red', fontWeight: 'bold', marginLeft: '16px' }}>{this.state.pointError}</p>
                                 </Row>
                             </div>
