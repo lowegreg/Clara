@@ -8,7 +8,7 @@ var conTest = mysql.createConnection({
     host: 'db-l5jpoe4odyyvypgiwexyddrqfu.clhelwr0pylt.ca-central-1.rds.amazonaws.com',
     user: 'Clara',
     password: 'T1meMachine',
-    database: 'ClaraTest'
+    database: 'Clara'
 });
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -27,16 +27,15 @@ var startDate
 var max
 function checkIfItsTime(updateTime) {
 
-    // if (startDate.getHours() === 1 && updateTime === 'daily') {//1am daily && startDate.getMinutes()<45
-    //     return true
-    // } else if (startDate.getDay() === 1 && startDate.getHours() === 1 && startDate.getMinutes() < 30 && (updateTime === 'weekly' || updateTime === '')) { //sunday 1am weekly
-    //     return true
-    // } else if (startDate.getMinutes() === 0 && updateTime === 'hourly') {// hourly
-    //     return true
-    // } else {
-    //     return false
-    // }
-    return true
+    if (startDate.getHours() === 1 && updateTime === 'daily') {//1am daily && startDate.getMinutes()<45
+        return true
+    } else if (startDate.getDay() === 1 && startDate.getHours() === 1 && startDate.getMinutes() < 30 && (updateTime === 'weekly' || updateTime === '')) { //sunday 1am weekly
+        return true
+    } else if (startDate.getMinutes() === 0 && updateTime === 'hourly') {// hourly
+        return true
+    } else {
+        return false
+    }
 
 }
 
@@ -46,9 +45,7 @@ async function start() {
     //get API.json
     var APIList = require('./openData.json');
     //loop APIList
-    // for (var i = 0; i < APIList.length; i++) {
-
-    var i=9
+    for (var i = 0; i < APIList.length; i++) {
         //data=Call API
         console.log(APIList[i].Title)
         getMax(APIList[i].Title)
@@ -71,7 +68,7 @@ async function start() {
         }
         console.log('done')
 
-    // }
+    }
     APIList = null
 
     return
@@ -137,7 +134,6 @@ function createSQLStatement(title) {
 }
 
 function insertIntoClaraDB(sql) {
-    console.log(sql)
     conTest.query(sql, function (err, rows) {
 
         if (err) {
@@ -165,11 +161,11 @@ function getMax(title) {
 
 }
 
-//var myInt = setInterval(function () {
+var myInt = setInterval(function () {
     startDate = new Date();
     start()
 
-//}, 86400000);//1 day
+}, 86400000);//1 day
 
 
 
