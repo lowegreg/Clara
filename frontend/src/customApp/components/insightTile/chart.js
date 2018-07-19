@@ -23,7 +23,14 @@ export class Chart extends Component {
         <Row justify="center" style={{height: '80px'}} >
           <Col md={24} xs={24}  >
             <h4>Description:</h4>
-            <p>{this.props.table.description} </p>
+            {this.props.table.description}
+            {this.props.table.edit &&
+              this.props.table.edit.map((x,key) => (
+                <Row key={key}> 
+                <p>{x}</p>
+                </Row>
+              ))
+            }
           </Col>
           <Col md={24} xs={24} >
             <h4>Tags:</h4>

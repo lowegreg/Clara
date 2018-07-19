@@ -157,7 +157,7 @@ function createCompare(type, value, fin, date, loc, dim, hours, rank) {
     if (loc.length !== 0) {
         loc.forEach((input, index) => {
             if (value.length !== 0) {
-                compare = objectMaker(input, value, 'heatMap', compare, 'loc', 'value');
+                compare = objectMaker(input, value, 'line', compare, 'loc', 'value');
             }
 
             if (date.length !== 0) {
@@ -254,10 +254,10 @@ function getDescripton(x, y, graph) {
             description = 'Comparing the top 10, sum of ' + y + ' per ' + x + '  type (or less then top 10)'
             break;
         case 'line':
-            description = 'Compareing ' + x + ' to ' + y + ' avg by month over years'
+            description = 'Comparing ' + x + ' to ' + y + ' avg by month over years'
             break;
         case 'fillLine':
-            description = 'Compareing ' + x + ' to ' + y + ' by month'
+            description = 'Comparing ' + x + ' to ' + y + ' by month'
             break;
         case 'circleBar':
             description = 'Comparing the top 7, number of  ' + y + ' per ' + x + '  type (or less then top 7)'
