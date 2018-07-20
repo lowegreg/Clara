@@ -146,7 +146,7 @@ export class Reports extends Component {
         if (dash && typeof dash[0].tiles === 'string') {
           dash[0].tiles = JSON.parse(dash[0].tiles)
         }
-        this.setState({ table: { value: dash[0].title, label: dash[0].title }, tileArray: dash[0].tiles, activeTile: -1, tile: null, showTiles: true })
+        this.setState({ table: { value: dash[0].title, label: dash[0].title }, tileArray: dash[0].tiles, tile: null, showTiles: true })
       } else {
         this.setState({
           tileArray: [],
@@ -181,7 +181,8 @@ export class Reports extends Component {
         tileDataArray: [],
         showTiles: false,
         loading: 0,
-        tile:null
+        tile:null,
+        table:null
       })
     }
   }
@@ -195,7 +196,6 @@ export class Reports extends Component {
       else {
         this.setState({ tile: { value: event.value, label: event.label }, graph: this.state.tileDataArray[event.value], update: true })
       }
-      return
     }
   }
   hintText = () => {
@@ -238,11 +238,7 @@ export class Reports extends Component {
   }
   setUpdate = (update) => {
     this.setState({ update: update })
-    if (update === false) {
-      this.interval = setTimeout(() => this.setState({ update: true }), 10);
-    } else {
-      clearInterval();
-    }
+    this.interval = setTimeout(() => this.setState({ update: true }), 10);
   }
   componentWillUnmount() {
     clearInterval();

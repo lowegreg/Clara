@@ -34,7 +34,7 @@ export default class Export extends Component {
       .then((canvas) => {
         const imgData = canvas.toDataURL('image/png');
         const pdf = new jsPDF('p', 'pt');
-        pdf.addImage(imgData, 'JPEG', 0, 0);
+        pdf.addImage(imgData, 'JPEG', 0, 0, 590, 480);
         pdf.autoTable(table.columns, firstPage,
           {
             margin: { top: 480 },
@@ -127,7 +127,7 @@ export default class Export extends Component {
         }
         dataSource.push(data)
       }
-    } else if (tile.graph.indexOf('line') > -1) {
+    } else if (tile.graph === 'fillLine' || tile.graph === 'line') {
       for (let i = 0; i < tile.options.xAxis.data.length; i++) {
         dataSource.push({
           [columns[0].title]: tile.options.xAxis.data[i],
@@ -202,12 +202,12 @@ export default class Export extends Component {
               <Row id="divToPrint" style={{ padding: '30px' }}>
                 <p style={{ paddingLeft: '20px', paddingBottom: '10px' }}><font size="3"><b>{this.props.tile.title}</b></font></p>
                 <div style={{ borderStyle: 'solid', padding: '15px', alignContent: 'left', justifyContent: 'left' }}>
-                  <Chart table={this.props.tile} eChartStyle={{ width: 700, height: 400 }} />
+                  <Chart table={this.props.tile} eChartStyle={{ width: 700, height: 420 }} />
                 </div>
               </Row>
             }
             {this.state.table &&
-              <Row style={{ padding: '30px', height: '130' }}>
+              <Row style={{ paddingLeft: '30px',paddingRight: '30px', height: '128' }}>
                 <Table columns={table.columns} dataSource={table.data} pagination={false} style={{ width: '100%' }} />
               </Row>
             }
