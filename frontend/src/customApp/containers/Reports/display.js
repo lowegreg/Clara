@@ -125,7 +125,7 @@ export class Display extends Component {
       } else {
         var startDate = originalTile.options.xAxis.data[0].split(" ");
         range.date = originalTile.options.xAxis.data[0];
-        range.month = this.convertMonth(startDate[0]);
+        range.month = (moment().month(startDate[0]).format("M"))-1;
         range.year = parseInt(startDate[2], 10);
       }
     }
@@ -155,8 +155,8 @@ export class Display extends Component {
         options.series[0].data[i] = this.inRange(originalTile.options.xAxis.data[i], originalTile.options.series[0].data[i], slider[0])
       }
       if (dates) {
-        const end = String(dates.end._d).substring(4, 15)+' 00:00:00 GMT';
-        const start = String(dates.start._d).substring(4, 15)+' 00:00:00 GMT';
+        const end = String(dates.end._d.toISOString()).substring(0,10)
+        const start = String(dates.start._d.toISOString()).substring(0,10);
         for (const i in originalTile.options.xAxis.data) {
           if(!moment(originalTile.options.xAxis.data[i]).isBetween(start,end,null,[])){
             options.series[0].data[i] = null;
@@ -251,34 +251,6 @@ export class Display extends Component {
   }
   onSelect = (dates) => {
     this.setState({ dates })
-  }
-  convertMonth = (month) => {
-    switch (month) {
-      case 'Jan':
-        return 0;
-      case 'Feb':
-        return 1;
-      case 'Mar':
-        return 2;
-      case 'Apr':
-        return 3;
-      case 'May':
-        return 4;
-      case 'Jun':
-        return 5;
-      case 'Jul':
-        return 6;
-      case 'Aug':
-        return 7;
-      case 'Sep':
-        return 8;
-      case 'Oct':
-        return 9;
-      case 'Nov':
-        return 10;
-      default:
-        return 11;
-    }
   }
 
   render() {
