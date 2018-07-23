@@ -37,7 +37,6 @@ export class Reports extends Component {
     };
   }
   selectCategory = (event) => {
-    console.log('select category')
     this.setState({
       activeCategory: event,
       props: null,
@@ -140,8 +139,6 @@ export class Reports extends Component {
     return titles
   }
   selectTable = (event) => {
-    console.log('select table')
-    console.log(event)
     if (event) {
       if (this.state.activeCategory === 1 && event.value !== event.label) {
         const dash = this.state.tableArray.filter(data => data._id === event.value);
@@ -198,8 +195,6 @@ export class Reports extends Component {
   }
 
   selectTile = (event) => {
-    console.log('here')
-    console.log(event)
     if (event) {
       if (this.state.activeCategory === 1) {
         const tile = this.state.tileArray[event.value]
@@ -221,8 +216,6 @@ export class Reports extends Component {
     }
   }
   renderTableSelectField = () => {
-    console.log('render table')
-    console.log(this.state)
     if (this.state.tableArray.length === 0) { return this.state.tableArray }
     var value = 'name'
     var label = 'name'
@@ -232,13 +225,11 @@ export class Reports extends Component {
     }
     return (
       this.state.tableArray.map((data, index) => {
-        console.log(data[value])
         return <div key={index} value={data[value]} label={data[label]}>{data[label]}</div>
       }))
 
   }
   renderTileSelectField = () => {
-    console.log('render tile')
     if (this.state.tileArray.length === 0) {
       return this.state.tileArray
     }
