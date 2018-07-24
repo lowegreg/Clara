@@ -44,7 +44,7 @@ export class Reports extends Component {
       tile: null,
       table: null,
       graph: null,
-      showTiles: false, 
+      showTiles: false,
       typeArray: [],
       tableArray: [],
       tileArray: [],
@@ -72,12 +72,12 @@ export class Reports extends Component {
         .catch((error) => {
           console.error(error);
         });
-    }else{
+    } else {
       this.setState({
         tileArray: [],
         tileDataArray: [],
-        tableArray:[],
-        table:null,
+        tableArray: [],
+        table: null,
         showTiles: false,
         loading: 0,
       })
@@ -137,17 +137,16 @@ export class Reports extends Component {
       titles.splice(i, 1, { name: `${graphObject[i].x} Vs.  ${graphObject[i].y}`, value: i })
     }
     return titles
-
   }
   selectTable = (event) => {
     if (event) {
-      if (this.state.activeCategory === 1) {
+      if (this.state.activeCategory === 1 && event.value !== event.label) {
         const dash = this.state.tableArray.filter(data => data._id === event.value);
         if (dash && typeof dash[0].tiles === 'string') {
           dash[0].tiles = JSON.parse(dash[0].tiles)
         }
         this.setState({ table: { value: dash[0].title, label: dash[0].title }, tileArray: dash[0].tiles, tile: null, showTiles: true })
-      } else {
+      } else if (this.state.activeCategory !== 1) {
         this.setState({
           tileArray: [],
           tileDataArray: [],
@@ -160,7 +159,7 @@ export class Reports extends Component {
           .then(responseJson => {
             var props = func.catPropsFunction(responseJson.id)
             var possibleTiles = this.generateTitles(props)
-           
+
             for (var i = 0; i < props.length; i++) {
               var url = 'http://35.182.224.114:3000/selectGraphData?tableName=' + event.value + '&x=' + props[i].x + '&y=' + props[i].y + '&xType=' + props[i].xType + '&yType=' + props[i].yType
               this.fetchData(url, i, possibleTiles[i], props)
@@ -173,22 +172,30 @@ export class Reports extends Component {
           .catch((error) => {
             console.error(error);
           })
-
+      } else {
+        this.setState({
+          tileArray: [],
+          tileDataArray: [],
+          showTiles: false,
+          loading: 0,
+          tile: null,
+          table: null
+        })
       }
-    }else{
+    } else {
       this.setState({
         tileArray: [],
         tileDataArray: [],
         showTiles: false,
         loading: 0,
-        tile:null,
-        table:null
+        tile: null,
+        table: null
       })
     }
   }
 
   selectTile = (event) => {
-    if (event) {
+    if (event && event.value !== undefined) {
       if (this.state.activeCategory === 1) {
         const tile = this.state.tileArray[event.value]
         this.setState({ tile: { value: tile.value, label: tile.title }, graph: tile, update: true })
@@ -304,10 +311,7 @@ export class Reports extends Component {
                 onChange={this.selectTile}
                 style={{ minWidth: 250, margin: 10 }}
               >
-
-                {this.state.showTiles === true &&
-                  this.renderTileSelectField()
-                }
+                {this.renderTileSelectField()}
               </SuperSelectField>
             </MuiThemeProvider>
             <p style={{ paddingRight: '20px', paddingTop: '12px' }} >{this.state.message}</p>

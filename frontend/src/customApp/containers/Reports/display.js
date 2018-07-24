@@ -37,14 +37,13 @@ export class Display extends Component {
         var data = x.data.filter(function (object) {
           return object !== null && object !== undefined;
         })
-
         slider.push({
           name: x.name,
           max: Math.round(Math.max(...originalTile.options.series[i].data)),
           min: Math.round(Math.min(...originalTile.options.series[i].data)),
           value: [
-            Math.min(...data) === Infinity ? Math.round(Math.min(...originalTile.options.series[i].data)) : Math.min(...data),
-            Math.max(...data) === -Infinity ? Math.round(Math.max(...originalTile.options.series[i].data)) : Math.max(...data),
+            Math.min(...data) === Infinity ? 0 : Math.min(...data),
+            Math.max(...data) === -Infinity ? 0 : Math.max(...data),
           ],
           marks: {
             [Math.round(Math.max(...originalTile.options.series[i].data))]: `${Math.round(Math.max(...originalTile.options.series[i].data))}`,
@@ -92,7 +91,7 @@ export class Display extends Component {
     if (tile.graph === 'pie') {
       for (const i in tile.options.series[0].data) {
         if (originalTile.options.series[0].data[i]) {
-          options.push(originalTile.options.series[0].data[i]);
+          options.push(originalTile.options.series[0].data[i].name);
         } else {
           options.push('null');
         }
@@ -125,7 +124,7 @@ export class Display extends Component {
       } else {
         var startDate = originalTile.options.xAxis.data[0].split(" ");
         range.date = originalTile.options.xAxis.data[0];
-        range.month = (moment().month(startDate[0]).format("M"))-1;
+        range.month = (moment().month(startDate[0]).format("M")) - 1;
         range.year = parseInt(startDate[2], 10);
       }
     }
@@ -151,15 +150,19 @@ export class Display extends Component {
         options.series[i].data = this.inRange(slider[i].name, originalTile.options.series[i].data, slider[i])
       }
     } else if (tile.graph === 'line' || tile.graph === 'fillLine') {
-      for (const i in options.xAxis.data) {
+      for (const i in originalTile.options.xAxis.data) {
         options.series[0].data[i] = this.inRange(originalTile.options.xAxis.data[i], originalTile.options.series[0].data[i], slider[0])
+        options.xAxis.data[i] = originalTile.options.xAxis.data[i];
       }
       if (dates) {
-        const end = String(dates.end._d.toISOString()).substring(0,10)
-        const start = String(dates.start._d.toISOString()).substring(0,10);
+        const end = String(dates.end._d.toISOString()).substring(0, 10)
+        const start = String(dates.start._d.toISOString()).substring(0, 10);
         for (const i in originalTile.options.xAxis.data) {
-          if(!moment(originalTile.options.xAxis.data[i]).isBetween(start,end,null,[])){
+          if (!moment(originalTile.options.xAxis.data[i]).isBetween(start, end, null, [])) {
             options.series[0].data[i] = null;
+          } else {
+            options.series[0].data[i] = originalTile.options.series[0].data[i]
+            options.xAxis.data[i] = originalTile.options.xAxis.data[i]
           }
         }
       }
@@ -199,7 +202,7 @@ export class Display extends Component {
       descrip[editCount] = `Date Range: ${String(dates.start._d).substring(4, 15)} to ${String(dates.end._d).substring(4, 15)}`
     }
     tile.edit = descrip;
-    this.setState({ tile, edit: false, update: true, descrip, })
+    this.setState({ tile, edit: false, update: true, descrip })
   }
   inRange = (name, data, slider) => {
     const { originalTile } = this.state;
@@ -249,7 +252,7 @@ export class Display extends Component {
       this.props.setUpdate(false)
     }
   }
-  onSelect = (dates) => {
+  selectDates = (dates) => {
     this.setState({ dates })
   }
 
@@ -291,7 +294,7 @@ export class Display extends Component {
                   Range: <br />
                   <div>
                     <DateRangePicker
-                      onSelect={this.onSelect}
+                      onSelect={this.selectDates}
                       value={this.state.dates}
                       numberOfCalendars={2}
                       minimumDate={(moment(range.date, 'MMM DD YYYY')._d)}
