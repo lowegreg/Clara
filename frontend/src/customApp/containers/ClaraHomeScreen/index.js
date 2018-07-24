@@ -89,13 +89,13 @@ export class Dashboard extends Component {
           } else {
             // displays server error
             this.setState({ error: 2, confirmLoading: false })
-            console.log(responseJson.message)
+            console.error(responseJson.message)
           }
         })
         .catch((error) => {
           // displays server error
           this.setState({ error: 2, confirmLoading: false })
-          console.log(error);
+          console.error(error);
         });
 
     } else {
@@ -148,12 +148,12 @@ export class Dashboard extends Component {
           localStorage.setItem('profile', JSON.stringify(updatedProfile))
         } else {
           //displays server errors
-          console.log(responseJson.message)
+          console.error(responseJson.message)
         }
       })
       .catch(error => {
         //displays server error
-        console.log(error)
+        console.error(error)
       })
   }
 
