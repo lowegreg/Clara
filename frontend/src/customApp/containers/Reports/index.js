@@ -195,7 +195,7 @@ export class Reports extends Component {
   }
 
   selectTile = (event) => {
-    if (event) {
+    if (event && event.value !== undefined) {
       if (this.state.activeCategory === 1) {
         const tile = this.state.tileArray[event.value]
         this.setState({ tile: { value: tile.value, label: tile.title }, graph: tile, update: true })
@@ -311,7 +311,7 @@ export class Reports extends Component {
                 onChange={this.selectTile}
                 style={{ minWidth: 250, margin: 10 }}
               >
-              {this.renderTileSelectField()}
+                {this.renderTileSelectField()}
               </SuperSelectField>
             </MuiThemeProvider>
             <p style={{ paddingRight: '20px', paddingTop: '12px' }} >{this.state.message}</p>

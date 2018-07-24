@@ -25,16 +25,16 @@ const formItemLayout = {
   },
 };
 const error = [
-  {validateStatus: '', help: ''},
-  {validateStatus: 'error', help: 'Please enter title'},
-  {validateStatus: 'warning', help: 'The server is down, please try again later'},
+  { validateStatus: '', help: '' },
+  { validateStatus: 'error', help: 'Please enter title' },
+  { validateStatus: 'warning', help: 'The server is down, please try again later' },
 ]
 
 export class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showWelcome: true,
+      showWelcome: JSON.parse(localStorage.getItem('welcomeCard')),
       visible: false,
       confirmLoading: false,
       title: '',
@@ -47,10 +47,11 @@ export class Dashboard extends Component {
   }
 
   // removes the welcome card from the screen
-  clickHandler(event) {
+  clickHandler() {
     this.setState({
       showWelcome: false
     })
+    localStorage.setItem('welcomeCard', JSON.parse(false))
   }
 
   showModal = () => {
@@ -74,32 +75,32 @@ export class Dashboard extends Component {
         method: "POST",
         body: `user=${this.props.profile.userId}&title=${this.state.title}`,
       })
-      .then((response) =>  response.json())
-      .then(responseJson=> {
-        //if a new dashboard is created correctly it will add it to the user's dashboard list
-        if(!responseJson.message){
-          var dashboards = this.state.dashboards;      
-          dashboards.push(responseJson)
-          if(dashboards.length === 1){
-            this.setState({activeKey: dashboards[0]._id})
+        .then((response) => response.json())
+        .then(responseJson => {
+          //if a new dashboard is created correctly it will add it to the user's dashboard list
+          if (!responseJson.message) {
+            var dashboards = this.state.dashboards;
+            dashboards.push(responseJson)
+            if (dashboards.length === 1) {
+              this.setState({ activeKey: dashboards[0]._id })
+            }
+            this.setState({ error: 0, title: '', confirmLoading: false, visible: false, dashboards: dashboards })
+            this.props.updateUser()
+          } else {
+            // displays server error
+            this.setState({ error: 2, confirmLoading: false })
+            console.log(responseJson.message)
           }
-          this.setState({error: 0, title: '', confirmLoading:false, visible:false, dashboards: dashboards })        
-          this.props.updateUser()
-        } else {
+        })
+        .catch((error) => {
           // displays server error
-          this.setState({error: 2, confirmLoading: false})
-          console.log(responseJson.message)
-        }
-      })
-      .catch((error) => {
-        // displays server error
-        this.setState({error: 2, confirmLoading: false})
-        console.log(error);
-      });
+          this.setState({ error: 2, confirmLoading: false })
+          console.log(error);
+        });
 
     } else {
       this.setState({
-        error : 1,
+        error: 1,
         visible: true,
         confirmLoading: false
       });
@@ -110,16 +111,16 @@ export class Dashboard extends Component {
       visible: false,
     });
   }
-  onChange(event) {  
-    this.setState({title: event.target.value});
+  onChange(event) {
+    this.setState({ title: event.target.value });
   }
   onTabClick = (activeKey) => {
-    this.setState({activeKey: activeKey});
+    this.setState({ activeKey: activeKey });
   }
-  
+
   // deletes dashboard from user's dashboard list
   onDelete = (targetKey) => {
-    fetch(`http://35.182.255.76/dashboard/${targetKey}`,{
+    fetch(`http://35.182.255.76/dashboard/${targetKey}`, {
       headers: {
         'Accept': 'application/x-www-form-urlencoded',
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -127,65 +128,62 @@ export class Dashboard extends Component {
       },
       method: "DELETE",
     })
-    .then(response => response.json())
-    .then(responseJson => {
-      if (!responseJson.message) {
-        var dashboards = this.state.dashboards.filter(dashboard => dashboard._id !== targetKey)
-        //Determines the next active key if the user deletes the current dashboard
-        if (targetKey === this.state.activeKey) {
-          var index = this.state.dashboards.findIndex(x => x._id===targetKey);
-          if (index === 0) {
-            dashboards.length === 0 ? this.setState({activeKey: ''}) : this.setState({activeKey : dashboards[0]._id}) 
-          } else {
-            this.setState({activeKey: this.state.dashboards[index-1]._id})
+      .then(response => response.json())
+      .then(responseJson => {
+        if (!responseJson.message) {
+          var dashboards = this.state.dashboards.filter(dashboard => dashboard._id !== targetKey)
+          //Determines the next active key if the user deletes the current dashboard
+          if (targetKey === this.state.activeKey) {
+            var index = this.state.dashboards.findIndex(x => x._id === targetKey);
+            if (index === 0) {
+              dashboards.length === 0 ? this.setState({ activeKey: '' }) : this.setState({ activeKey: dashboards[0]._id })
+            } else {
+              this.setState({ activeKey: this.state.dashboards[index - 1]._id })
+            }
           }
+          this.setState({ dashboards: dashboards });
+          this.props.updateUser();
+          var updatedProfile = this.props.profile;
+          updatedProfile.dashboards = dashboards;
+          localStorage.setItem('profile', JSON.stringify(updatedProfile))
+        } else {
+          //displays server errors
+          console.log(responseJson.message)
         }
-        this.setState({dashboards: dashboards});
-        this.props.updateUser();
-        var updatedProfile = this.props.profile;
-        updatedProfile.dashboards = dashboards;
-        localStorage.setItem('profile', JSON.stringify(updatedProfile))
-      } else {
-        //displays server errors
-        console.log(responseJson.message)
-      }
-    })
-    .catch(error =>{
-      //displays server error
-      console.log(error)
-    })
+      })
+      .catch(error => {
+        //displays server error
+        console.log(error)
+      })
   }
-  
+
   // displays the content of the active dashboard
-  renderDashboard = (dashboard)=> {
-    if((typeof dashboard.tiles) === 'string'){
+  renderDashboard = (dashboard) => {
+    if ((typeof dashboard.tiles) === 'string') {
       dashboard.tiles = JSON.parse(dashboard.tiles);
     }
     if (dashboard.tiles && dashboard.tiles.length !== 0) {
-      return(
+      return (
         <div>
           <InsightPage allData={dashboard.tiles} dashboard={dashboard} />
         </div>)
     }
-      return (<p style={{textAlign:'center'}}>You have no pins saved to this dashboard</p>)
+    return (<p style={{ textAlign: 'center' }}>You have no pins saved to this dashboard</p>)
 
   }
   render() {
-    var welcomeCard = null
-    if (this.state.showWelcome) {
-      welcomeCard = <WelcomeCard clickHandler={this.clickHandler} />
-    } else {
-      welcomeCard = null
-    }
+    const { showWelcome } = this.state;
     return (
       <div >
-        {welcomeCard}
-        <Weather/>
-        <LayoutContentWrapper style={{paddingTop: '20px'}} >
-          <h1 style={{paddingBottom: '5px'}} >My Dashboards</h1>
-          <div style={{ marginLeft:'auto', marginRight:'0', marginTop:'5px'}}>
+        {showWelcome &&
+          <WelcomeCard clickHandler={this.clickHandler} />
+        }
+        <Weather />
+        <LayoutContentWrapper style={{ paddingTop: '20px' }} >
+          <h1 style={{ paddingBottom: '5px' }} >My Dashboards</h1>
+          <div style={{ marginLeft: 'auto', marginRight: '0', marginTop: '5px' }}>
             <Button type='primary' size='small' onClick={this.showModal}>New Dashboard</Button>
-            <Modal 
+            <Modal
               wrapClassName="vertical-center-modal"
               title="Create New Dashboard"
               visible={this.state.visible}
@@ -194,31 +192,31 @@ export class Dashboard extends Component {
               onCancel={this.handleCancel}
             >
               <Form>
-                <FormItem {...formItemLayout} label="Title" validateStatus={error[this.state.error].validateStatus} help={error[this.state.error].help} > 
+                <FormItem {...formItemLayout} label="Title" validateStatus={error[this.state.error].validateStatus} help={error[this.state.error].help} >
                   <Input id="title" onChange={this.onChange} value={this.state.title} />
                 </FormItem>
               </Form>
             </Modal>
           </div>
           <TableStyle className="isoLayoutContent">
-            <Tabs className="isoTableDisplayTab" 
-            hideAdd
-            onChange={this.onTabClick}
-            activeKey={this.state.activeKey}
-            type="editable-card"
-            onEdit={this.onDelete}>
+            <Tabs className="isoTableDisplayTab"
+              hideAdd
+              onChange={this.onTabClick}
+              activeKey={this.state.activeKey}
+              type="editable-card"
+              onEdit={this.onDelete}>
               {this.state.dashboards.map(dashboard => (
                 <TabPane tab={dashboard.title} key={dashboard._id}>
                   {//display pin
                     this.renderDashboard(dashboard)
                   }
-                                
+
                 </TabPane>
               ))}
             </Tabs>
           </TableStyle>
         </LayoutContentWrapper>
-      </div>      
+      </div>
     );
   }
 }
