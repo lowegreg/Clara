@@ -255,6 +255,13 @@ export class Display extends Component {
   selectDates = (dates) => {
     this.setState({ dates })
   }
+  componentDidMount(){
+    var tile = this.state.tile;
+    if(tile.options.legend){
+      tile.options.legend.selectedMode = false;
+      this.setState({tile})
+    }
+  }
 
   render() {
     const { tile, slider, options, range } = this.state;
@@ -275,6 +282,7 @@ export class Display extends Component {
               onOk={this.handleOk}
               onCancel={() => this.setState({ edit: false })}
               width={700}
+              maskClosable={false}
             >
               {slider.map((x, key) => (
                 <Col key={key}>
