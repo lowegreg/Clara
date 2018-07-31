@@ -50,7 +50,7 @@ export class Tile extends Component {
             (i !== tileIndex) && newTileList.push(tileList[i]);
         }
 
-        fetch(`http://35.182.255.76/dashboard/${dashboard._id}`, {
+        fetch(`http://localhost:1337/dashboard/${dashboard._id}`, {
             headers: {
                 'Accept': 'application/x-www-form-urlencoded',
                 'Content-Type': 'application/x-www-form-urlencoded',

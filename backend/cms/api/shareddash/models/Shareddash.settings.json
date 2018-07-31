@@ -1,0 +1,25 @@
+{
+  "connection": "default",
+  "collectionName": "departmentdash",
+  "info": {
+    "name": "sharedDash",
+    "description": ""
+  },
+  "options": {
+    "timestamps": true
+  },
+  "attributes": {
+    "pins": {
+      "multiple": false,
+      "type": "json"
+    },
+    "department": {
+      "model": "department",
+      "via": "dashboard"
+    },
+    "title": {
+      "multiple": false,
+      "type": "string"
+    }
+  }
+}

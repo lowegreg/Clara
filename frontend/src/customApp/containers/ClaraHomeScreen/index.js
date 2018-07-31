@@ -7,10 +7,14 @@ import LayoutContentWrapper from '../../../components/utility/layoutWrapper';
 import TableStyle from './tableStyle';
 import Input from '../../../components/uielements/input';
 import Form from '../../../components/uielements/form';
-import { Modal } from 'antd';
+import { Modal, Checkbox, Icon } from 'antd';
 import authAction from '../../../redux/auth/actions';
 import InsightPage from '../insightPages';
 import Weather from '../../components/weatherCard';
+import Dropdown from '../../../components/uielements/dropdown';
+import Menu from '../../../components/uielements/menu';
+import Fullscreen from "react-full-screen";
+ 
 
 const { updateUser } = authAction;
 const FormItem = Form.Item;
@@ -36,7 +40,9 @@ export class Dashboard extends Component {
     this.state = {
       showWelcome: JSON.parse(localStorage.getItem('welcomeCard')),
       visible: false,
+      isFull: false,
       confirmLoading: false,
+      departDash: false,
       title: '',
       error: 0,
       dashboards: this.props.profile.dashboards,
@@ -54,26 +60,28 @@ export class Dashboard extends Component {
     localStorage.setItem('welcomeCard', JSON.parse(false))
   }
 
-  showModal = () => {
+  add = () => {
     this.setState({
-      visible: true,
+      visible: true, departDash: false
     });
   }
   // Creates and addes a new dashboard to a the current user
   handleOk = () => {
+    const { title, departDash } = this.state;
+    const { jwt, profile } = this.props;
     this.setState({
       confirmLoading: true,
     });
     //Checks if the user entered a title for their new dashboard
-    if (this.state.title) {
-      fetch('http://35.182.255.76/dashboard', {
+    if (title && !departDash) {
+      fetch('http://localhost:1337/dashboard', {
         headers: {
           'Accept': 'application/x-www-form-urlencoded',
           'Content-Type': 'application/x-www-form-urlencoded',
-          'Authorization': `Bearer ${this.props.jwt}`
+          'Authorization': `Bearer ${jwt}`
         },
         method: "POST",
-        body: `user=${this.props.profile.userId}&title=${this.state.title}`,
+        body: `user=${profile.userId}&title=${title}`,
       })
         .then((response) => response.json())
         .then(responseJson => {
@@ -98,6 +106,41 @@ export class Dashboard extends Component {
           console.error(error);
         });
 
+    } else if (title && departDash) {
+      fetch('http://localhost:1337/sharedDash', {
+        headers: {
+          'Accept': 'application/x-www-form-urlencoded',
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': `Bearer ${jwt}`
+        },
+        method: "POST",
+        body: `department=${profile.departmentId}&title=${title}`,
+      })
+        .then((response) => response.json())
+        .then(responseJson => {
+          //if a new dashboard is created correctly it will add it to the user's dashboard list
+          if (!responseJson.message) {
+            var dashboards = this.state.dashboards;
+            const index = dashboards.findIndex((dash) => { return dash.user })
+            responseJson.department = this.props.profile.department;
+            console.log(index)
+            dashboards.splice(index, 0, responseJson)
+            if (dashboards.length === 1) {
+              this.setState({ activeKey: dashboards[0]._id })
+            }
+            this.setState({ error: 0, title: '', confirmLoading: false, visible: false, dashboards: dashboards })
+            this.props.updateUser()
+          } else {
+            // displays server error
+            this.setState({ error: 2, confirmLoading: false })
+            console.error(responseJson.message)
+          }
+        })
+        .catch((error) => {
+          // displays server error
+          this.setState({ error: 2, confirmLoading: false })
+          console.error(error);
+        });
     } else {
       this.setState({
         error: 1,
@@ -119,42 +162,89 @@ export class Dashboard extends Component {
   }
 
   // deletes dashboard from user's dashboard list
-  onDelete = (targetKey) => {
-    fetch(`http://35.182.255.76/dashboard/${targetKey}`, {
-      headers: {
-        'Accept': 'application/x-www-form-urlencoded',
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': `Bearer ${this.props.jwt}`
-      },
-      method: "DELETE",
+  remove = (targetKey) => {
+    var dashboards = this.state.dashboards;
+    const dash = dashboards.find((dashboard) => {
+      return dashboard._id === targetKey
     })
-      .then(response => response.json())
-      .then(responseJson => {
-        if (!responseJson.message) {
-          var dashboards = this.state.dashboards.filter(dashboard => dashboard._id !== targetKey)
-          //Determines the next active key if the user deletes the current dashboard
-          if (targetKey === this.state.activeKey) {
-            var index = this.state.dashboards.findIndex(x => x._id === targetKey);
-            if (index === 0) {
-              dashboards.length === 0 ? this.setState({ activeKey: '' }) : this.setState({ activeKey: dashboards[0]._id })
-            } else {
-              this.setState({ activeKey: this.state.dashboards[index - 1]._id })
+    if (!dash.department) {
+      fetch(`http://localhost:1337/dashboard/${targetKey}`, {
+        headers: {
+          'Accept': 'application/x-www-form-urlencoded',
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': `Bearer ${this.props.jwt}`
+        },
+        method: "DELETE",
+      })
+        .then(response => response.json())
+        .then(responseJson => {
+          if (!responseJson.message) {
+            var dashboards = this.state.dashboards.filter(dashboard => dashboard._id !== targetKey)
+            //Determines the next active key if the user deletes the current dashboard
+            if (targetKey === this.state.activeKey) {
+              var index = this.state.dashboards.findIndex(x => x._id === targetKey);
+              if (index === 0) {
+                dashboards.length === 0 ? this.setState({ activeKey: '' }) : this.setState({ activeKey: dashboards[0]._id })
+              } else {
+                this.setState({ activeKey: this.state.dashboards[index - 1]._id })
+              }
             }
+            this.setState({ dashboards: dashboards });
+            this.props.updateUser();
+            var updatedProfile = this.props.profile;
+            updatedProfile.dashboards = dashboards;
+            localStorage.setItem('profile', JSON.stringify(updatedProfile))
+          } else {
+            //displays server errors
+            console.error(responseJson.message)
           }
-          this.setState({ dashboards: dashboards });
-          this.props.updateUser();
-          var updatedProfile = this.props.profile;
-          updatedProfile.dashboards = dashboards;
-          localStorage.setItem('profile', JSON.stringify(updatedProfile))
-        } else {
-          //displays server errors
-          console.error(responseJson.message)
-        }
+        })
+        .catch(error => {
+          //displays server error
+          console.error(error)
+        })
+    } else {
+      fetch(`http://localhost:1337/sharedDash/${targetKey}`, {
+        headers: {
+          'Accept': 'application/x-www-form-urlencoded',
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': `Bearer ${this.props.jwt}`
+        },
+        method: "DELETE",
       })
-      .catch(error => {
-        //displays server error
-        console.error(error)
-      })
+        .then(response => response.json())
+        .then(responseJson => {
+          if (!responseJson.message) {
+            var dashboards = this.state.dashboards.filter(dashboard => dashboard._id !== targetKey)
+            //Determines the next active key if the user deletes the current dashboard
+            if (targetKey === this.state.activeKey) {
+              var index = this.state.dashboards.findIndex(x => x._id === targetKey);
+              if (index === 0) {
+                dashboards.length === 0 ? this.setState({ activeKey: '' }) : this.setState({ activeKey: dashboards[0]._id })
+              } else {
+                this.setState({ activeKey: this.state.dashboards[index - 1]._id })
+              }
+            }
+            this.setState({ dashboards: dashboards });
+            this.props.updateUser();
+            var updatedProfile = this.props.profile;
+            updatedProfile.dashboards = dashboards;
+            localStorage.setItem('profile', JSON.stringify(updatedProfile))
+          } else {
+            //displays server errors
+            console.error(responseJson.message)
+          }
+        })
+        .catch(error => {
+          //displays server error
+          console.error(error)
+        })
+    }
+
+  }
+
+  onEdit = (targetKey, action) => {
+    this[action](targetKey)
   }
 
   // displays the content of the active dashboard
@@ -165,14 +255,47 @@ export class Dashboard extends Component {
     if (dashboard.tiles && dashboard.tiles.length !== 0) {
       return (
         <div>
+          <Fullscreen enabled={this.state.isFull}  onChange={isFull => this.setState({isFull})} >
           <InsightPage allData={dashboard.tiles} dashboard={dashboard} />
+          </Fullscreen>
         </div>)
     }
     return (<p style={{ textAlign: 'center' }}>You have no pins saved to this dashboard</p>)
 
   }
+  renderTabPlane = (dashboard, profile) => {
+    if (dashboard.department && profile.role === 'Administrator') {
+      return (<TabPane tab={<span><Icon type="team" />{dashboard.title}</span>} key={dashboard._id} >
+        {//display pin
+          this.renderDashboard(dashboard)
+        }
+      </TabPane>)
+    } else if (dashboard.department) {
+      return (<TabPane tab={dashboard.title} key={dashboard._id} closable={false}>
+        {//display pin
+          this.renderDashboard(dashboard)
+        }
+      </TabPane>)
+
+    } else {
+      return (<TabPane tab={dashboard.title} key={dashboard._id}>
+        {//display pin
+          this.renderDashboard(dashboard)
+        }
+      </TabPane>)
+    }
+  }
+  onClick = (event) => {
+    if (event.key === 'expand') {
+      this.setState({isFull: true})
+    } else {
+      console.log(event.key)
+    }
+  }
   render() {
-    const { showWelcome } = this.state;
+    const { showWelcome, dashboards } = this.state;
+    const { profile } = this.props;
+    console.log(dashboards)
     return (
       <div >
         {showWelcome &&
@@ -182,7 +305,15 @@ export class Dashboard extends Component {
         <LayoutContentWrapper style={{ paddingTop: '20px' }} >
           <h1 style={{ paddingBottom: '5px' }} >My Dashboards</h1>
           <div style={{ marginLeft: 'auto', marginRight: '0', marginTop: '5px' }}>
-            <Button type='primary' size='small' onClick={this.showModal}>New Dashboard</Button>
+            <Dropdown trigger={['click']} overlay={
+              <Menu onClick={this.onClick}>
+                <Menu.Item key='expand'> Expand </Menu.Item>
+                <Menu.Item key='addCard'> Add Card </Menu.Item>
+                <Menu.Item key='edeit'> Edit </Menu.Item>
+              </Menu>
+            }>
+              <Button type='primary' size='small'>More</Button>
+            </Dropdown>
             <Modal
               wrapClassName="vertical-center-modal"
               title="Create New Dashboard"
@@ -194,24 +325,19 @@ export class Dashboard extends Component {
               <Form>
                 <FormItem {...formItemLayout} label="Title" validateStatus={error[this.state.error].validateStatus} help={error[this.state.error].help} >
                   <Input id="title" onChange={this.onChange} value={this.state.title} />
+                  <Checkbox onChange={() => { this.setState({ departDash: true }) }}>Set as Department Dashboard</Checkbox>
                 </FormItem>
               </Form>
             </Modal>
           </div>
           <TableStyle className="isoLayoutContent">
             <Tabs className="isoTableDisplayTab"
-              hideAdd
               onChange={this.onTabClick}
               activeKey={this.state.activeKey}
               type="editable-card"
-              onEdit={this.onDelete}>
+              onEdit={this.onEdit}>
               {this.state.dashboards.map(dashboard => (
-                <TabPane tab={dashboard.title} key={dashboard._id}>
-                  {//display pin
-                    this.renderDashboard(dashboard)
-                  }
-
-                </TabPane>
+                this.renderTabPlane(dashboard, profile)
               ))}
             </Tabs>
           </TableStyle>

@@ -121,7 +121,7 @@ export class Settings extends Component {
     } else if (state.newPassword.length < 6) {
       this.setState({ error: 4 });
     } else {
-      fetch('http://35.182.255.76/auth/local', {
+      fetch('http://localhost:1337/auth/local', {
         headers: {
           'Accept': 'application/x-www-form-urlencoded',
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -143,7 +143,7 @@ export class Settings extends Component {
   // changes the password in the database
   changePassword = () => {
     const state = this.state;
-    fetch(`http://35.182.255.76/user/${state.profile.userId}`, {
+    fetch(`http://localhost:1337/user/${state.profile.userId}`, {
       headers: {
         'Accept': 'application/x-www-form-urlencoded',
         'Content-Type': 'application/x-www-form-urlencoded',

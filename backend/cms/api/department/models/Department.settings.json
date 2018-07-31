@@ -17,6 +17,10 @@
       "collection": "user",
       "via": "department",
       "plugin": "users-permissions"
+    },
+    "dashboard": {
+      "collection": "shareddash",
+      "via": "department"
     }
   }
 }

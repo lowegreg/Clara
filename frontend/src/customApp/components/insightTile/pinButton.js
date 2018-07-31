@@ -62,7 +62,7 @@ export class PinButton extends Component {
       tile.type = this.props.type;
       tileList.push(tile);
 
-      fetch('http://35.182.255.76/dashboard', {
+      fetch('http://localhost:1337/dashboard', {
         headers: {
           'Accept': 'application/x-www-form-urlencoded',
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -127,7 +127,7 @@ export class PinButton extends Component {
   }
 
   addPin = (dashboard, tileList, index) => {
-    fetch(`http://35.182.255.76/dashboard/${dashboard._id}`, {
+    fetch(`http://localhost:1337/dashboard/${dashboard._id}`, {
       headers: {
         'Accept': 'application/x-www-form-urlencoded',
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -152,10 +152,11 @@ export class PinButton extends Component {
   }
 
   // saves pins to dashboard, by editing the tile section
-  handleSavePinOk = (event) => {
+  handleSavePinOk = () => {
     var tileList;
     var tile = Object.assign(this.props.table);
     tile.type = this.props.type;
+    console.log( this.props.type)
     if (this.state.dashboardIndex !== -1) {
       const dashboardIndex = this.state.dashboardIndex;
       var dashboard = this.state.dashboards[dashboardIndex];
@@ -232,7 +233,7 @@ export class PinButton extends Component {
               <Menu.Item key='all'> All Dashboards </Menu.Item>}
             <Menu.Item key='new'> Create New Dashboard </Menu.Item>
           </Menu>
-        } >
+        } trigger={['click']} >
           <Button icon="pushpin" type="button" ghost />
         </Dropdown>
 

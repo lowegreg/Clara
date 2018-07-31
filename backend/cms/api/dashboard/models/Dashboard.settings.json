@@ -18,7 +18,7 @@
       "via": "dashboards",
       "plugin": "users-permissions"
     },
-    "tiles": {
+    "content": {
       "multiple": false,
       "type": "json"
     }

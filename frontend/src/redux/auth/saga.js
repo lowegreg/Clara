@@ -2,7 +2,7 @@ import { all, takeEvery, put, fork, select, call } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
 import { getToken, clearToken, getProfile } from '../../helpers/utility';
 import actions from './actions';
-import { loginAPI, getDashboards, getUser } from './helper'
+import { loginAPI, getDashboards, getUser, getSharedDash } from './helper'
 
 export function* loginRequest() {
   yield takeEvery('LOGIN_REQUEST', function* () {
@@ -13,15 +13,20 @@ export function* loginRequest() {
       var responseBody = yield call(loginAPI, credentials.identifier, credentials.password)
       if (responseBody.jwt) {
         var user = yield call(getUser, responseBody.user._id, responseBody.jwt)
+        var dash = yield call(getSharedDash, user.department._id, responseBody.jwt)
+        for (const i in user.dashboards) {
+          dash.push(user.dashboards[i]);
+        }
         var profile = {
           userId: user._id,
           username: user.username,
           email: user.email,
           role: user.role.name,
-          dashboards: user.dashboards,
+          dashboards: dash,
           firstName: user['first name'] ? user['first name'] : 'empty',
           lastName: user['last name'] ? user['last name'] : 'empty',
           department: user.department ? user.department.name : 'empty',
+          departmentId: user.department ? user.department._id : 'empty',
           employeeId: user.employeeId ? user.employeeId : 0,
         };
 
@@ -83,9 +88,14 @@ export function* updateUser() {
     //array of the inital state fronm reducer
     const params = state.Auth._root.entries;
     var dashboards = yield call(getDashboards, params[3][1].userId, params[0][1])
-    if (!dashboards.error) {
+    var dash = yield call(getSharedDash, params[3][1].departmentId,  params[0][1])
+   
+    if (!dashboards.error && !dash.error) {
+      for (const i in dashboards) {
+        dash.push(dashboards[i]);
+      }
       var updateProfile = getProfile().get('profile');
-      updateProfile.dashboards = dashboards;
+      updateProfile.dashboards = dash;
       yield localStorage.setItem('profile', JSON.stringify(updateProfile));
       updateProfile = getProfile().get('profile');
     }
