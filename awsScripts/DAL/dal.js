@@ -8,7 +8,7 @@ var conTest = mysql.createConnection({
     host: 'db-l5jpoe4odyyvypgiwexyddrqfu.clhelwr0pylt.ca-central-1.rds.amazonaws.com',
     user: 'Clara',
     password: 'T1meMachine',
-    database: 'Clara'
+    database: 'ClaraTest'
 });
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -36,7 +36,7 @@ function checkIfItsTime(updateTime) {
     } else {
         return false
     }
-
+    
 }
 
 
@@ -45,7 +45,8 @@ async function start() {
     //get API.json
     var APIList = require('./openData.json');
     //loop APIList
-    for (var i = 0; i < APIList.length; i++) {
+    for (var i = 0; i < APIList.length; i++) {// APIList.length
+       
         //data=Call API
         console.log(APIList[i].Title)
         getMax(APIList[i].Title)
@@ -56,13 +57,15 @@ async function start() {
             for (var j = 0; j < allData.length; j++) {
                 if (APIList[i].API.indexOf('opendata.arcgis.com') !== -1) {
                     currentData = allData[j].properties
-                } else {
+                } else if(APIList[i].API.indexOf('services1.arcgis.com') !== -1){
+                    currentData = allData[j].attributes
+                }else {
                     currentData = allData
                 }
-                if (currentData.OBJECTID > max) {
-
-                    insertIntoClaraDB(createSQLStatement(APIList[i].Title))// insert into clara db (only if it does not exist)
-                }
+                
+               //if (currentData.OBJECTID > max) {
+                    insertIntoClaraDB(createSQLStatement(APIList[i].Title),j )// insert into clara db (only if it does not exist)
+                //}
                 currentData = null
             }
         }
@@ -79,7 +82,7 @@ async function callAPI(route) {
     await fetch(route, { method: 'GET', mode: 'cors' })
         .then((response) => response.json())
         .then(responseJson => {
-            if (route.indexOf('opendata.arcgis.com') !== -1) {
+            if (route.indexOf('opendata.arcgis.com') !== -1||route.indexOf('services1.arcgis.com') !== -1) {
                 allData = responseJson.features
             } else {
                 allData = responseJson
@@ -115,32 +118,29 @@ function createSQLStatement(title) {
         var isNum = /^\d+$/.test(val) || /^\d*\.?\d*$/.test(val) || /^-?[0-9]\d*(\.\d+)?$/.test(val);
         try {
             if (val !== null && !isNum) {
-                val = val.replace('\'', '\\\'')  // formating ' in strings
+                val = val.replace(/\'/g, '\\\'')  // formating ' in strings
             }
         } catch (error) {
-            console.log('here', val)
         }
 
         sql = sql + '\'' + val + '\''
         if (i + 1 < valuesArray.length) {
             sql = sql + ' , '
         }
-
+        
     }
     sql = sql + ' )'
     valuesArray = null
     keyArray = null
     return sql
 }
-
-function insertIntoClaraDB(sql) {
+function insertIntoClaraDB(sql,num) {
     conTest.query(sql, function (err, rows) {
-
         if (err) {
-            if (err.sqlMessage.indexOf("Duplicate") === -1) {
-                console.log(err.sqlMessage, err.sqlMessage.indexOf("Duplicate"))
+            if (err.sqlMessage.indexOf("Duplicate") === -1) {  
+               console.log(err.sqlMessage)    
             }
-
+            
         } else {
             // console.log({ "Error": false, "Message": "Success", "tableId": rows });
             console.log('new')
@@ -164,6 +164,7 @@ function getMax(title) {
 var myInt = setInterval(function () {
     startDate = new Date();
     start()
+    
 
 }, 86400000);//1 day
 

@@ -79,7 +79,8 @@ export default class extends Component {
 		var url = 'http://35.182.224.114:3000/dataManagement/getProps?tableName=' + this.state.tableName
 		fetch(url, { method: 'GET', mode: 'cors' })
 			.then((response) => response.json())
-			.then(responseJson => {this.createGraphType(responseJson.id);this.setGraphs();})
+			.then(responseJson => {
+				this.createGraphType(responseJson.id);this.setGraphs();})
 			.catch((error) => {
 				console.error(error);
 			});

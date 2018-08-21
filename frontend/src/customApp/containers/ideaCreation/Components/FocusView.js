@@ -505,6 +505,7 @@ class FocusView extends React.Component {
                     anchorEl={this.state.menuAnchorEl}
                     open={this.state.menuOpen}
                     //onRequestClose={this.handleRequestClose}
+                    onClose={this.handleRequestClose}
                     style={{ marginTop: 35, marginLeft: -25, padding: '0px' }}
                 >
                     <MenuItem style={{ fontSize: 14, paddingTop: 6, paddingBottom: 6 }} onClick={this.handleDelete}>Delete</MenuItem>
@@ -512,10 +513,10 @@ class FocusView extends React.Component {
             </div>
         );
         if (this.state.status !== 'inReview' && this.state.status !== 'inProgress' && this.state.status !== 'Completed') {
-            if (this.props.profile.employeeId === this.state.empID || UserProfile.getView() === 'admin' || UserProfile.getView() === 'lab') {
+            if (this.props.profile.employeeId === this.state.empID ||  this.props.profile.role==='Administrator') {
                 menuButton = button;
             }
-        } else if (UserProfile.getView() === 'admin' || UserProfile.getView() === 'lab') {
+        } else if ( this.props.profile.role==='Administrator'|| this.props.profile.employeeId === this.state.empID ) {
             menuButton = button;
         }
 

@@ -37,33 +37,30 @@ class Sidebar extends Component {
       statsArray: [
         {
           title: 'Total number of data sets being used',
-          value: 20,
-          total: 300
+          value:  0,
+          total: 0 
         },
         {
           title: 'Total number of open data sets being used',
-          value: 80,
-          total: 100
+          value: 0,
+          total: 0
         },
         {
-          title: 'Total number of third party data sets being use',
-          value: 120,
-          total: 200
+          title: 'Total number of live data sets being use',
+          value: 0,
+          total:0
         },
       ]
     }
   }
   setArray(data) {
-    var totalOpen = data.filter(value => value.statusId === 'accepted').length
-    var totalAll = totalOpen + 3
-    var totalThird = totalOpen + 1
     var statsArray = this.state.statsArray
-    statsArray[0].value = totalAll
+    statsArray[0].value =  data.filter(value => value.statusId === 'accepted' ).length
     statsArray[0].total = data.length
-    statsArray[1].value = totalOpen
-    statsArray[1].total = data.length
-    statsArray[2].value = totalThird
-    statsArray[2].total = data.length - 23
+    statsArray[1].value =  data.filter(value => value.statusId === 'accepted' && value.sourceType==='open').length
+    statsArray[1].total = data.filter(value => value.sourceType==='open').length
+    statsArray[2].value =  data.filter(value => value.statusId === 'accepted' && value.sourceType==='live').length
+    statsArray[2].total =  data.filter(value =>  value.sourceType==='live').length
     this.setState({
       statsArray: statsArray
     })
@@ -148,19 +145,15 @@ class Sidebar extends Component {
     };
     const scrollheight = app.height;
     const styling = {
-      // backgroundColor: customizedTheme.backgroundColor,
       height: scrollheight-100, overflow: 'auto', overflowX: 'hidden'
     };
     const styling2 = {
-      // backgroundColor: customizedTheme.backgroundColor,
       height: scrollheight, overflow: 'hidden'
     };
     const submenuStyle = {
       backgroundColor: 'rgba(0,0,0,0.3)',
-      // color: customizedTheme.textColor
     };
     const submenuColor = {
-      // color: customizedTheme.textColor
     };
     return (
       <SidebarWrapper>

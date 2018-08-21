@@ -287,7 +287,7 @@ export class Reports extends Component {
           }
 
           <Row style={{ paddingLeft: '20px' }}>
-            <p style={{ paddingRight: '20px', paddingTop: '12px' }} >Table:</p>
+            <p style={{ paddingRight: '16px', paddingTop: '12px' }} >Table:</p>
             <MuiThemeProvider>
               <SuperSelectField
                 name={'Table'}
@@ -302,7 +302,7 @@ export class Reports extends Component {
           </Row>
 
           <Row style={{ paddingLeft: '20px' }}>
-            <p style={{ paddingRight: '23px', paddingTop: '12px' }} >Tile:</p>
+            <p style={{ paddingRight: '28px', paddingTop: '12px' }} >Tile:</p>
             <MuiThemeProvider>
               <SuperSelectField
                 name={'Tile'}
@@ -311,6 +311,10 @@ export class Reports extends Component {
                 onChange={this.selectTile}
                 style={{ minWidth: 250, margin: 10 }}
               >
+<<<<<<< HEAD
+
+=======
+>>>>>>> 06c21c5bb7f347dfd93e4feed6b5c6ffa56a53ae
                 {this.renderTileSelectField()}
               </SuperSelectField>
             </MuiThemeProvider>

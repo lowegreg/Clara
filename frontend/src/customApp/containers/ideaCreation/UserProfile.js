@@ -6,7 +6,7 @@ var UserProfile = (function () {
   var lastName = "Gordon";
   //var database = "http://ec2-35-182-65-42.ca-central-1.compute.amazonaws.com/";
   //API Gateway
-  var database = "http://35.182.224.114:3000/";//"http://localhost:3001/";
+  var database = "http://35.182.224.114:3000/";//"http://35.182.224.114:3000/";
   var email = "erickgordon96@gmail.com";
   var depOnly = true;
 

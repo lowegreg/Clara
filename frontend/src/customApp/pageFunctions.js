@@ -254,7 +254,11 @@ function getDescripton(x, y, graph) {
             description = 'Comparing the top 10, sum of ' + y + ' per ' + x + '  type (or less then top 10)'
             break;
         case 'line':
+<<<<<<< HEAD
+            description = 'Compareing ' + x + ' to ' + y + ' avg for the day'
+=======
             description = 'Comparing ' + x + ' to ' + y + ' avg by month over years'
+>>>>>>> 06c21c5bb7f347dfd93e4feed6b5c6ffa56a53ae
             break;
         case 'fillLine':
             description = 'Comparing ' + x + ' to ' + y + ' by month'
@@ -644,6 +648,10 @@ function multiBarGraph(xData, yData, zData) {
     var lengthY = yUnique.length
     var interval = 0
     if (lengthY > 9) interval = 1
+    if (lengthY > 19) interval = 2
+    if (lengthY > 29) interval = 3
+    if (lengthY > 39) interval = 4
+    if (lengthY > 100) interval = 10
     var option = {
         tooltip: {
             trigger: 'axis',

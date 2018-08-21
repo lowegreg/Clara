@@ -78,6 +78,7 @@ class IdeaCard extends React.Component {
 		this.handleDelete = this.handleDelete.bind(this);
 		this.handleFlag = this.handleFlag.bind(this);
 		this.handleStatus = this.handleStatus.bind(this);
+		this.handleExpandDesc =this.handleExpandDesc.bind(this);
 	}
 	componentDidMount() {
 

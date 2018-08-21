@@ -126,6 +126,9 @@ export default class extends Component {
         var data = 'dataSet1Array'
         if (name === 'typeData1') {
             form.d1.typeData = values
+            if (form.d1.property){
+                this.state.form.tag.splice(this.state.form.tag.indexOf(form.d1.property.label), 1);
+            }
             form.d1.dataSet = null
             form.d1.property = null
             this.setState({
@@ -135,6 +138,9 @@ export default class extends Component {
         } else {
             data = 'dataSet2Array'
             form.d2.typeData = values
+            if (form.d2.property){
+                this.state.form.tag.splice(this.state.form.tag.indexOf(form.d2.property.label), 1);
+            }
             form.d2.dataSet = null
             form.d2.property = null
             this.setState({
@@ -158,6 +164,9 @@ export default class extends Component {
         var hardCode = false
         if (name === 'dataSet1') {
             form.d1.dataSet = values
+            if (form.d1.property){
+                this.state.form.tag.splice(this.state.form.tag.indexOf(form.d1.property.label), 1);
+            }
             form.d1.property = null
             this.setState({
                 property1Array: []
@@ -168,6 +177,9 @@ export default class extends Component {
         } else {
             prop = 'property2Array'
             form.d2.dataSet = values
+            if (form.d2.property){
+                this.state.form.tag.splice(this.state.form.tag.indexOf(form.d2.property.label), 1);
+            }
             form.d2.property = null
             this.setState({
                 property2Array: []

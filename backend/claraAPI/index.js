@@ -264,10 +264,12 @@ app.get('/selectGraphData', function (req, res) {
     sql='Select count(main.`' + req.query.x + '`) as z,main.`' + req.query.x + '` as x ,  main.`' + req.query.y + '` as y from  `' + req.query.tableName + '`   main inner join  (select `' + req.query.x + '` as s1 from   `' + req.query.tableName + '` group by `' + req.query.x + '` order by count(`' + req.query.x + '` ) desc limit 7 ) as filter on main.`' + req.query.x + '`= filter.s1  inner join ( select `' + req.query.y + '` as s2 from   `' + req.query.tableName + '` group by `' + req.query.y + '` order by count(`' + req.query.y + '` ) desc limit 7 )as filter2 on main.`' + req.query.y + '`= filter2.s2 where ( select count(*) from (select count(`' + req.query.y + '`) as length from  `' + req.query.tableName + '` as t1 group by `' + req.query.y + '`)  as t2)>1   and ( select count(*) from (select count(`' + req.query.x + '`) as length from `' + req.query.tableName + '` as t3 group by `' + req.query.x + '`)  as t4)>1   group by  main.`' + req.query.x + '` ,main.`' + req.query.y + '`order by y,x'
   } else if (req.query.xType === 'date' && req.query.yType === 'value') {
     sql = 'Select sum(' + req.query.y + ') as y, DATE_FORMAT( DATE(`' + req.query.x + '`), "%b %Y") as x from `' + req.query.tableName + '` where ( select count(*) from (select count(' + req.query.y + ') as length from `' + req.query.tableName + '` as t1 group by ' + req.query.y + ')  as t2)>1 and ( select count(*) from (select count(`' + req.query.x + '`) as length from `' + req.query.tableName + '` as t3 group by ' + req.query.x + ')  as t4)>1  group by DATE_FORMAT( DATE(`' + req.query.x + '`), "%b %Y")   order by sum(' + req.query.y + ') desc limit 10'
+  }else if (req.query.xType === 'hours' && req.query.yType === 'value') {
+    sql= 'select   DATE_FORMAT( `' + req.query.x + '`, "%H:%i:%s") as x, `' + req.query.y + '` as y from `' + req.query.tableName + '`'
   } else if (req.query.yType === 'value') {
     sql = 'select * from (Select sum(' + req.query.y + ') as y, ' + req.query.x + ' as x from `' + req.query.tableName + '` where ( select count(*) from (select count(' + req.query.y + ') as length from `' + req.query.tableName + '` as t1 group by ' + req.query.y + ')  as t2)>1 and ( select count(*) from (select count(`' + req.query.x + '`) as length from `' + req.query.tableName + '` as t3 group by ' + req.query.x + ')  as t4)>1  group by (' + req.query.x + ')   order by sum(' + req.query.y + ') desc limit 10 ) as inside where y>0'
   }else if (req.query.xType === 'date' && req.query.yType === 'fin'){
-    sql = 'select round(avg(y)) as y ,x from (Select sum(' + req.query.y + ') as y, DATE_FORMAT( DATE(`' + req.query.x + '`), "%b %Y") as x , year(' + req.query.x + ') as year, ' + req.query.x + ' from `' + req.query.tableName + '` where ( select count(*) from (select count(' + req.query.y + ') as length from `' + req.query.tableName + '` as t1 group by `Fee`)  as t2)>1  and ( select count(*) from (select count(' + req.query.x + ') as length from `' + req.query.tableName + '` as t3 group by ' + req.query.x + ')  as t4)>1 group by DATE_FORMAT( DATE(`' + req.query.x + '`), "%b %Y") as search group by x order by DATE_FORMAT( DATE(`' + req.query.x + '`), "%b %Y")'
+    sql = 'select round(avg(y)) as y ,x from (Select sum(' + req.query.y + ') as y, DATE_FORMAT( DATE(`' + req.query.x + '`), "%b %Y") as x , year(' + req.query.x + ') as year, ' + req.query.x + ' from `' + req.query.tableName + '` where ( select count(*) from (select count(' + req.query.y + ') as length from `' + req.query.tableName + '` as t1 group by `Fee`)  as t2)>1  and ( select count(*) from (select count(' + req.query.x + ') as length from `' + req.query.tableName + '` as t3 group by ' + req.query.x + ')  as t4)>1 group by DATE_FORMAT( DATE(`' + req.query.x + '`), "%b %Y")) as search group by x order by DATE_FORMAT( DATE(`' + req.query.x + '`), "%b %Y")'
   }else if (req.query.xType === 'date' ) {
     sql = 'Select COUNT(`' + req.query.y + '`) as y, DATE_FORMAT( DATE(`' + req.query.x + '`), "%b %Y") as x from `' + req.query.tableName + '` where ( select count(*) from (select count(`' + req.query.y + '`) as length from `' + req.query.tableName + '` as t1 group by `' + req.query.y + '`)  as t2)>1 and ( select count(*) from (select count(`' + req.query.x + '`) as length from `' + req.query.tableName + '` as t3 group by `' + req.query.x + '`)  as t4)>1 group by DATE_FORMAT( DATE(`' + req.query.x + '`), "%b %Y") '
   } else if (req.query.xType === 'hours' && req.query.yType === 'rank') {
@@ -275,7 +277,7 @@ app.get('/selectGraphData', function (req, res) {
   } else if (req.query.xType === 'type' && req.query.yType === 'rank') {
     sql = 'Select avg(`' + req.query.y + '`) as y, `' + req.query.x + '` as x from `' + req.query.tableName + '` group by `' + req.query.x + '`  order by avg(`' + req.query.y + '`) desc limit 10'
   }
-
+  
   con.query(sql, function (err, rows) {
     if (err) {
       res.json({ "Error": true, "Message": err });
@@ -408,6 +410,9 @@ app.post('/posts/UpdatePostHistory', function (req, res) {
   var today = d.getFullYear() + '-' + month + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
   var message = req.body.message || null
   var sql
+  if (req.body.new==='deleted'){
+    message= 'Post was deleted.'
+  }
   if (message === null) {
     sql = 'insert ideasHistory (postID, empID, type, previous, new, date, message) values (' + req.body.postID + ',' + req.body.empID + ',\'' + req.body.type + '\',\'' + req.body.previous + '\',\'' + req.body.new + '\',\'' + today + '\' , ' + message + ') '
   } else {
@@ -466,7 +471,7 @@ app.post('/posts', function (req, res) {
 })
 
 app.post('/posts/deletePostByStatus', function (req, res) {
-  var sql = 'update ideas set  status= \'deleted\' where postID=' + req.body.postID;
+  var sql = 'update ideas set  status= \'deleted\'  where postID=' + req.body.postID ;
 
   conTest.query(sql, function (err, rows) {
     if (err) {
@@ -679,10 +684,10 @@ app.post('/postOrder/news', function (req, res) {
   *\
   from ideas\
   where postID in (\
-  SELECT  distinct (ideasHistory.postID) FROM ideasHistory  left join ideas on ideasHistory.postID= ideas.postID   order by ideasHistory.date\
+  SELECT  distinct (ideasHistory.postID) FROM ideasHistory  left join ideas on ideasHistory.postID= ideas.postID  where  status!=\'deleted\'  order by ideasHistory.date\
   )\
   limit 4'
-
+  
   conTest.query(sql, function (err, rows) {
     if (err) {
       res.json({ "Error": true, "Message": err });
@@ -699,7 +704,7 @@ app.post('/postOrder/meLatest', function (req, res) {
   where postID in (\
   SELECT  distinct (ideasHistory.postID) FROM ideasHistory  left join ideas on ideasHistory.postID= ideas.postID   order by ideasHistory.date\
   )\
-  and empId='+ req.body.empID + '\
+  and empId='+ req.body.empID + ' and status!=\'deleted\'\
   limit 4'
 
   conTest.query(sql, function (err, rows) {

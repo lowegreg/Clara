@@ -32,6 +32,14 @@ CREATE TABLE `tableLookUp` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
+CREATE TABLE `dataTypes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `category` varchar(50) DEFAULT NULL,
+  `dataType` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
+
+
 
 
 CREATE TABLE `notifications` (
