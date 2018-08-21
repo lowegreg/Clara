@@ -9,7 +9,7 @@ var connection = mysql.createConnection({
   host: 'db-l5jpoe4odyyvypgiwexyddrqfu.clhelwr0pylt.ca-central-1.rds.amazonaws.com',
   user: 'Clara',
   password: 'T1meMachine',
-  database: 'Clara'
+  database: 'ClaraTest'
 });
 function formatWeather(data) {
   var date = timestamp.toDate(timestamp.now() - 14400)

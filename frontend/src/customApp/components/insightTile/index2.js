@@ -106,8 +106,12 @@ export class Tile extends Component {
     }
     popUP() {
         if (this.state.popUpvisible) {
-            if (this.props.table.graph === 'multiBar') {
+            if (this.props.table.graph === 'multiBar' && this.props.table.options.xAxis[0].data.length < 30) {
                 this.props.table.options.xAxis[0].axisLabel.interval = 0
+            } else if (this.props.table.graph === 'multiBar' && this.props.table.options.xAxis[0].data.length > 30 && this.props.table.options.xAxis[0].data.length < 100) {
+                this.props.table.options.xAxis[0].axisLabel.interval = 1
+            } else if (this.props.table.graph === 'multiBar' && this.props.table.options.xAxis[0].data.length > 100) {
+                this.props.table.options.xAxis[0].axisLabel.interval = 5
             }
         }
 

@@ -146,7 +146,7 @@ export class Reports extends Component {
         if (dash && typeof dash[0].tiles === 'string') {
           dash[0].tiles = JSON.parse(dash[0].tiles)
         }
-        this.setState({ table: { value: dash[0].title, label: dash[0].title }, tileArray: dash[0].tiles, activeTile: -1, tile: null, showTiles: true })
+        this.setState({ table: { value: dash[0].title, label: dash[0].title }, tileArray: dash[0].tiles, tile: null, showTiles: true })
       } else {
         this.setState({
           tileArray: [],
@@ -284,7 +284,7 @@ export class Reports extends Component {
           }
 
           <Row style={{ paddingLeft: '20px' }}>
-            <p style={{ paddingRight: '20px', paddingTop: '12px' }} >Table:</p>
+            <p style={{ paddingRight: '16px', paddingTop: '12px' }} >Table:</p>
             <MuiThemeProvider>
               <SuperSelectField
                 name={'Table'}
@@ -299,7 +299,7 @@ export class Reports extends Component {
           </Row>
 
           <Row style={{ paddingLeft: '20px' }}>
-            <p style={{ paddingRight: '23px', paddingTop: '12px' }} >Tile:</p>
+            <p style={{ paddingRight: '28px', paddingTop: '12px' }} >Tile:</p>
             <MuiThemeProvider>
               <SuperSelectField
                 name={'Tile'}
@@ -309,9 +309,7 @@ export class Reports extends Component {
                 style={{ minWidth: 250, margin: 10 }}
               >
 
-                {this.state.showTiles === true &&
-                  this.renderTileSelectField()
-                }
+                {this.renderTileSelectField()}
               </SuperSelectField>
             </MuiThemeProvider>
             <p style={{ paddingRight: '20px', paddingTop: '12px' }} >{this.state.message}</p>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js" integrity="sha384-THVO/sM0mFD9h7dfSndI6TS0PgAGavwKvB5hAxRRvc0o9cPLohB0wb/PTA7LdUHs"
+        crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="./backend2.js"> </script>
+
+    <style>
+        table {
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            text-align: center;
+
+        }
+
+        /* table, td, th {
+            border: 1px solid black;
+        } */
+    </style>
+
+</head>
+
+<body>
+
+    <div id='info00'>
+        Authorized:
+
+        <input type="text" id='manager' value='Karl Allen-Muncey'>
+        <br/>
+        <br/> Dropdown:
+
+        <select autofocus id='list'>
+
+        </select>
+        <br/>
+        <br/> Default Hours:
+        <input type='number' id='hours' value='7.00'>
+        <br/>
+        <br/> Week:
+
+        <select autofocus id='week'>
+            <option value="now">This Week</option>
+            <option value="last">Last Week</option>
+            <option value="next">Next Week</option>
+        </select>
+
+        <br/>
+        <br/>
+
+        <input type="checkbox" id="mon" name="days" value="mon" checked />
+        <label for="mon">Mons</label>
+        <input type="checkbox" id="tue" name="days" value="tue" checked />
+        <label for="tue">Tues</label>
+        <input type="checkbox" id="wed" name="days" value="wed" checked />
+        <label for="wed">Wed</label>
+        <input type="checkbox" id="thur" name="days" value="thur" checked />
+        <label for="thur">Thurs</label>
+        <input type="checkbox" id="fri" name="days" value="fri" checked />
+        <label for="fri">Fri</label>
+        <br>
+        <button type="button" onclick="preview()"> Preview </button>
+        <button type="button" onclick="pdf()"> PDF </button>
+        <br/>
+        <br/>
+    </div>
+
+    <table id='weekoutput'></table>
+
+    <table id='empInfo'></table>
+    <table id='fullTable'></table>
+
+
+
+
+</body>
+
+</html>

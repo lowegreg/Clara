@@ -157,7 +157,7 @@ function createCompare(type, value, fin, date, loc, dim, hours, rank) {
     if (loc.length !== 0) {
         loc.forEach((input, index) => {
             if (value.length !== 0) {
-                compare = objectMaker(input, value, 'heatMap', compare, 'loc', 'value');
+                compare = objectMaker(input, value, 'line', compare, 'loc', 'value');
             }
 
             if (date.length !== 0) {
@@ -254,7 +254,7 @@ function getDescripton(x, y, graph) {
             description = 'Comparing the top 10, sum of ' + y + ' per ' + x + '  type (or less then top 10)'
             break;
         case 'line':
-            description = 'Compareing ' + x + ' to ' + y + ' avg by month over years'
+            description = 'Compareing ' + x + ' to ' + y + ' avg for the day'
             break;
         case 'fillLine':
             description = 'Compareing ' + x + ' to ' + y + ' by month'
@@ -644,6 +644,10 @@ function multiBarGraph(xData, yData, zData) {
     var lengthY = yUnique.length
     var interval = 0
     if (lengthY > 9) interval = 1
+    if (lengthY > 19) interval = 2
+    if (lengthY > 29) interval = 3
+    if (lengthY > 39) interval = 4
+    if (lengthY > 100) interval = 10
     var option = {
         tooltip: {
             trigger: 'axis',

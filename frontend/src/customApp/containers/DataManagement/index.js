@@ -47,7 +47,8 @@ class DataManagement extends Component {
             dataTypeInput: '', // the value of datatype text box from module popup
             feedback: '', // the reason the data maping was rejected by an admin  
             preview: false, // the status if the preview module is open or not
-            previewData: [] // object full of 4 rows of the dataset
+            previewData: [], // object full of 4 rows of the dataset
+            previewHeaders:[]
         }
     };
     showModal = () => {
@@ -60,7 +61,7 @@ class DataManagement extends Component {
         fetch(query, { method: 'GET', mode: 'cors' })
             .then((response) => response.json())
             .then(responseJson => {
-                this.setState({ preview: true, previewData: responseJson.rows })
+                this.setState({ preview: true, previewData: responseJson.rows, previewHeaders: Object.keys(responseJson.rows[0]) })
             })
             .catch((error) => {
                 console.error(error);
@@ -161,7 +162,11 @@ class DataManagement extends Component {
         query = 'http://35.182.224.114:3000/tableLookUp?tableName=' + this.state.tableName + '&sourceType=open'
         fetch(query, { method: 'GET', mode: 'cors' })
             .then((response) => response.json())
-            .then(responseJson => this.setState({ feedback: responseJson.tableId[0].feedback }))
+            .then(responseJson =>{
+                var feedback= ''
+                if (responseJson.tableId[0]) feedback= responseJson.tableId[0].feedback
+                this.setState({ feedback: feedback })
+            } )
             .catch((error) => {
                 console.error(error);
             });
@@ -338,15 +343,15 @@ class DataManagement extends Component {
                 <Grid fluid style={{ overflowX: 'scroll', display: 'block', width: '900px', whiteSpace: 'nowrap' }} className="scrollbar" id="style-2">
                     <div style={{ display: 'block' }}>
                         <Row style={{ borderBottom: '1px solid #adb2ba', display: 'inline-block', backgroundColor: '#fafafa' }}>
-                            {this.state.table.map((name, index) => {
-                                return <Col key={index} style={{ display: 'inline-block', width: '150px', wordWrap: 'break-word' }} xs ><h4 style={{ whiteSpace: 'normal' }}>{name.property}</h4></Col>
+                            {this.state.previewHeaders.map((name, index) => {
+                                return <Col key={index} style={{ display: 'inline-block', width: '150px', wordWrap: 'break-word' }} xs ><h4 style={{ whiteSpace: 'normal' }}>{name}</h4></Col>
                             })}
                         </Row>
                     </div>
                     {this.state.previewData.map((data, index) => {
                         return (
-                            <div style={{ display: 'block' }}>.
-                            <Row style={{ display: 'inline-block' }}>
+                            <div key={index}style={{ display: 'block' }}>.
+                            <Row key={index} style={{ display: 'inline-block' }}>
                                     {this.previewRow(index)}
                                 </Row>
                             </div>

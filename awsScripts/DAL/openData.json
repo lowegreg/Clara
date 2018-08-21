@@ -21,15 +21,8 @@
     "Description": "Points that represent the locations of all valid addresses in the City of Kitchener. All points are positioned within the land parcel and when possible on top of the building footprint to which they apply. Some properties have more than one address."
   },
   {
-    "Title": "All Way Stop Intersection",
-    "API": "https://opendata.arcgis.com/datasets/c81e86bc04c3444e9b6f44fdf6eb0000_18.geojson",
-    "Category": "R&T",
-    "Update": "",
-    "Description": "Intersections with all way stop signs."
-  },
-  {
     "Title": "Arenas and Outdoor Ice Rinks",
-    "API": "https://opendata.arcgis.com/datasets/ccfc9baba7074501a99ae74bafb9a72b_0.geojson",
+    "API": "https://services1.arcgis.com/qAo1OsXi67t7XgmS/arcgis/rest/services/Arenas_and_Outdoor_Ice_Rinks/FeatureServer/0/query?where=1%3D1&outFields=OBJECTID,LANDMARKID,LANDMARK,CATEGORY,SUBCATEGORY,PROPERTYUNITID,CIVIC_NO,STREET,STATUS,STATUS_DATE,MUNICIPAL_FACILITY,COMMON_LOCATION_REFERENCE,LOCATION_DESCRIPTION,ON_CALL,DIVISION_RESPONSIBLE,OWNERSHIP,ASSOCIATED_LAND_AREA,CONSTRUCTION_YEAR,CREATE_DATE,CREATE_BY,UPDATE_DATE,UPDATE_BY,SOURCE,SOURCE_DATE,RINK_SHACK_BUILDINGID&outSR=4326&f=json",
     "Category": "P&OA",
     "Update": "",
     "Description": "Sports arena locations, owned by City of Kitchener or private ownership."
@@ -92,7 +85,7 @@
   },
   {
     "Title": "Business Directory",
-    "API": "https://opendata.arcgis.com/datasets/9b9c871eafce491da8a3d926a8a44ef2_0.geojson",
+    "API": "https://services1.arcgis.com/qAo1OsXi67t7XgmS/arcgis/rest/services/Business_Directory/FeatureServer/0/query?where=1%3D1&outFields=NAME_SUFFIX,STREET_NUMBER,STREET_NAME,UNIT,POSTAL_CODE,BUSINESS_PARKBIA,IN_CIP,DOWNTOWN,DOWNTOWN_PLANNING_DISTRICT,SPACE_SIZE_SQFT,TOTAL_EMPLOYEES,PROFILE,PRIMARY_NAICS,PRIMARY_NAICS_SECTOR,PRIMARY_NAICS_DESCRIPTION,SECONDARY_NAICS,YEAR_ESTABLISHED_ORIGINALLY,EXPORTING,PHONE,TOLL_FREE,EMAIL,WEBSITE,FIRST_NAME_1,LAST_NAME_1,TITLE_1,FIRST_NAME_2,LAST_NAME_2,TITLE_2,OBJECTID,ID,COMPANY_NAME&outSR=4326&f=json",
     "Category": "Other",
     "Update": "",
     "Description": "List of businesses currently operating in the City of Kitchener. "
@@ -120,7 +113,7 @@
   },
   {
     "Title": "Community Gardens",
-    "API": "https://opendata.arcgis.com/datasets/b35d2d768bbb4abb84bf4cef61e43e2c_0.geojson",
+    "API": "https://services1.arcgis.com/qAo1OsXi67t7XgmS/arcgis/rest/services/Community_Gardens/FeatureServer/0/query?where=1%3D1&outFields=OBJECTID,COMMUNITYGARDENID,CREATE_DATE,UPDATE_DATE,STATUS,STATUS_DATE,SOURCE,SOURCE_DATE,ADDRESS,COMMUNITY,CATEGORY,NUMBER_OF_PLOTS,OWNERSHIP,INDEX_NUMBER&outSR=4326&f=json",
     "Category": "P&OA",
     "Update": "",
     "Description": "Locations of community gardens in the City of Kitchener."
@@ -218,7 +211,7 @@
   },
   {
     "Title": "Libraries",
-    "API": "https://opendata.arcgis.com/datasets/413adeea9c9543b68a0fb8d3b6a059c8_0.geojson",
+    "API": "https://services1.arcgis.com/qAo1OsXi67t7XgmS/arcgis/rest/services/Libraries/FeatureServer/0/query?where=1%3D1&outFields=OBJECTID,LANDMARKID,LANDMARK,CATEGORY,SUBCATEGORY,CIVIC_NO,STREET,STATUS,STATUS_DATE,MUNICIPAL_FACILITY,COMMON_LOCATION_REFERENCE,LOCATION_DESCRIPTION,ON_CALL,DIVISION_RESPONSIBLE,OWNERSHIP,ASSOCIATED_LAND_AREA,CONSTRUCTION_YEAR,CREATE_DATE,UPDATE_DATE,SOURCE,SOURCE_DATE&outSR=4326&f=json",
     "Category": "Facilities",
     "Update": "",
     "Description": "Kitchener Public Library (KPL) is the place where community connects. With five library branches conveniently located throughout the city, there are lots of places for you to explore, learn and share. Library cards are free to everyone who lives or owns property in the City of Kitchener. A free reciprocal library card is also available to all residents and property owners living anywhere within the Region of Waterloo"
@@ -302,7 +295,7 @@
   },
   {
     "Title": "Plow Priority by Address",
-    "API": "https://opendata.arcgis.com/datasets/d46ddc398e7c49f4b80b52b0397deb49_0.geojson",
+    "API": "https://services1.arcgis.com/qAo1OsXi67t7XgmS/arcgis/rest/services/Plow_Priority_by_Address/FeatureServer/0/query?where=1%3D1&outFields=OBJECTID,PROPERTY_UNIT_ID,FULL_ADDRESS,ROADSEGMENTID,PLOW_PRIORITY,PLOW_ROUTE,SALT_ROUTE,OPERATIONS_CLASS,ROAD_TYPES,TEXT1,TEXT2,TEXT3,TEXT4&outSR=4326&f=json",
     "Category": "Fleet",
     "Update": "",
     "Description": ""
@@ -316,7 +309,7 @@
   },
   {
     "Title": "Pools and Splash pad",
-    "API": "https://opendata.arcgis.com/datasets/69498d7dcd0449d2981a609fdccef556_0.geojson",
+    "API": "https://services1.arcgis.com/qAo1OsXi67t7XgmS/arcgis/rest/services/Pools_and_Spash_Pads/FeatureServer/0/query?where=1%3D1&outFields=OBJECTID,LANDMARKID,LANDMARK,CATEGORY,SUBCATEGORY,PROPERTYUNITID,CIVIC_NO,STREET,STATUS,STATUS_DATE,MUNICIPAL_FACILITY,COMMON_LOCATION_REFERENCE,LOCATION_DESCRIPTION,ON_CALL,DIVISION_RESPONSIBLE,OWNERSHIP,ASSOCIATED_LAND_AREA,CONSTRUCTION_YEAR,CREATE_DATE,CREATE_BY,UPDATE_DATE,UPDATE_BY,SOURCE,SOURCE_DATE&outSR=4326&f=json",
     "Category": "P&OA",
     "Update": "",
     "Description": ""
@@ -442,7 +435,7 @@
   },
   {
     "Title": "Storm Catchbasins",
-    "API": "https://opendata.arcgis.com/datasets/29ed04d8444248449a610c7b39044635_0.geojson",
+    "API": "https://services1.arcgis.com/qAo1OsXi67t7XgmS/arcgis/rest/services/Storm_Catchbasins/FeatureServer/0/query?where=1%3D1&outFields=OBJECTID,STMCATCHBASINID,STATUS,ROADSEGMENTID,CATEGORY,OWNERSHIP,DEPTH,SUMP,COVER_SHAPE,COVER_TYPE,LOCK_TYPE,SUBDRAIN,LEAD_INVERT,SAFETY_DEVICE,FLOW_CONTROL_DEVICE,ELEVATION_TOP,INSTALLATION_YEAR,SAN_SUB_DRAINAGE_AREA,CLEANOUT_CATEGORY&outSR=4326&f=json",
     "Category": "SWU",
     "Update": "",
     "Description": ""
@@ -491,7 +484,7 @@
   },
   {
     "Title": "Storm Service Pipes",
-    "API": "https://opendata.arcgis.com/datasets/c346ff0ccc51492288e40eb68ac94b8d_0.geojson",
+    "API": "https://services1.arcgis.com/qAo1OsXi67t7XgmS/arcgis/rest/services/Storm_Service_Pipes/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json",
     "Category": "SWU",
     "Update": "",
     "Description": ""
@@ -547,21 +540,21 @@
   },
   {
     "Title": "Traffic Collisions",
-    "API": "https://opendata.arcgis.com/datasets/75fa68b17e5b421d9d881f987c2d43fc_0.geojson",
+    "API": "https://services1.arcgis.com/qAo1OsXi67t7XgmS/arcgis/rest/services/Traffic_Collisions/FeatureServer/0/query?where=1%3D1&outFields=OBJECTID,ACCIDENTNUM,ACCIDENTDATE,LOCATION,ACCIDENT_LOCATION,IMPACT_LOCATION,ENVIRONMENT_CONDITION,LIGHT,COLLISION_TYPE,TRAFFICCOLLISIONSID&outSR=4326&f=json",
     "Category": "R&T",
     "Update": "daily",
     "Description": ""
   },
   {
     "Title": "Traffic Crossing Guards",
-    "API": "https://opendata.arcgis.com/datasets/b9874d92c93a47ea8dd0840ac364e828_0.geojson",
+    "API": "https://services1.arcgis.com/qAo1OsXi67t7XgmS/arcgis/rest/services/Traffic_Crossing_Guards/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json",
     "Category": "R&T",
     "Update": "",
     "Description": ""
   },
   {
     "Title": "Traffic Lights",
-    "API": "https://opendata.arcgis.com/datasets/b5a0a56f6aa649d092095b0624ce46f4_0.geojson",
+    "API": "https://services1.arcgis.com/qAo1OsXi67t7XgmS/arcgis/rest/services/Traffic_Lights/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json",
     "Category": "R&T",
     "Update": "",
     "Description": ""
@@ -652,21 +645,21 @@
   },
   {
     "Title": "Water Main",
-    "API": "https://opendata.arcgis.com/datasets/550dc7b12e3143bf96900841ef01efea_0.geojson",
+    "API": "https://services1.arcgis.com/qAo1OsXi67t7XgmS/arcgis/rest/services/Water_Mains/FeatureServer/0/query?where=1%3D1&outFields=OBJECTID,WATMAINID,CREATE_BY,CREATE_DATE,UPDATE_BY,UPDATE_DATE,STATUS,STATUS_DATE,SOURCE,SOURCE_DATE,PARENTID,PRESSURE_ZONE,ROADSEGMENTID,MAP_LABEL,CATEGORY,PIPE_SIZE,OVERSIZED_DIAMETER,MATERIAL,LINED,LINED_DATE,LINED_MATERIAL,INSTALLATION_DATE,ACQUISITION,CONSULTANT,OWNERSHIP,BRIDGE_MAIN,BRIDGE_DETAILS,CRITICALITY,Shape__Length&outSR=4326&f=json",
     "Category": "WU",
     "Update": "",
     "Description": ""
   },
   {
     "Title": "Water Main Break",
-    "API": "https://opendata.arcgis.com/datasets/4b805dc0bc194809a7dc6cf49707288f_0.geojson",
+    "API": "https://services1.arcgis.com/qAo1OsXi67t7XgmS/arcgis/rest/services/Water_Main_Break/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json",
     "Category": "WU",
     "Update": "daily",
     "Description": ""
   },
   {
     "Title": "Water Valve",
-    "API": "https://opendata.arcgis.com/datasets/ffb30245f5d8478f9c84414dda1eca64_0.geojson",
+    "API": "https://services1.arcgis.com/qAo1OsXi67t7XgmS/arcgis/rest/services/Water_Valve/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json",
     "Category": "WU",
     "Update": "",
     "Description": ""
