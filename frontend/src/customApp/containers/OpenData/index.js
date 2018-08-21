@@ -31,7 +31,6 @@ export default class OpenDataTable extends React.Component {
     fetch('http://35.182.224.114:3000/tableLookUp?sourceType=' + this.state.pageType, { method: 'GET', mode: 'cors' })
       .then((response) => response.json())
       .then(responseJson => {
-        console.log(responseJson)
         responseJson.tableId.forEach(function (obj) { obj.key = responseJson.tableId });
         this.setState({ tables: responseJson.tableId, filterTables: responseJson.tableId })
 

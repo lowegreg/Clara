@@ -13,7 +13,6 @@ Sandbox.define('/form', 'POST', function(req, res){
     if (req.body.payload) {
     
         var temp = JSON.parse(req.body.payload)
-            // console.log('ln 4',temp.actions[0].selected_options[0].value)
     
         if (temp.actions[0].name === 'employee') {
             
@@ -259,7 +258,6 @@ Sandbox.define('/form', 'POST', function(req, res){
           
         }     
     } else if (req.body.text===''){
-        console.log(req.body.text)
         return res.json({
             "text": "Making a timesheet",
             "response_type": "ephemeral ", //in_channel
