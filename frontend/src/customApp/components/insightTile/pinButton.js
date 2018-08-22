@@ -62,14 +62,14 @@ export class PinButton extends Component {
       tile.type = this.props.type;
       tileList.push(tile);
 
-      fetch('http://localhost:1337/dashboard', {
+      fetch('http://35.182.255.76/dashboard', {
         headers: {
           'Accept': 'application/x-www-form-urlencoded',
           'Content-Type': 'application/x-www-form-urlencoded',
           'Authorization': `Bearer ${this.props.jwt}`
         },
         method: "POST",
-        body: `user=${this.props.profile.userId}&title=${this.state.title}&tiles=${JSON.stringify(tileList)}`,
+        body: `user=${this.props.profile.userId}&title=${this.state.title}&content=${JSON.stringify(tileList)}`,
       })
         .then((response) => response.json())
         .then(responseJson => {
@@ -127,20 +127,22 @@ export class PinButton extends Component {
   }
 
   addPin = (dashboard, tileList, index) => {
-    fetch(`http://localhost:1337/dashboard/${dashboard._id}`, {
+    var api = 'http://35.182.255.76/' + (dashboard.department ? 'sharedDash/' : 'dashboard/') + dashboard._id
+    console.log(api)
+    fetch(api, {
       headers: {
         'Accept': 'application/x-www-form-urlencoded',
         'Content-Type': 'application/x-www-form-urlencoded',
         'Authorization': `Bearer ${this.props.jwt}`
       },
       method: "PUT",
-      body: `tiles=${JSON.stringify(tileList)}`,
+      body: `content=${JSON.stringify(tileList)}`,
     })
       .then((response) => response.json())
       .then(responseJson => {
         if (responseJson.n === 1 && responseJson.nModified === 1 && responseJson.ok === 1) {
           var newDashboards = this.state.dashboards
-          newDashboards[index].tiles = tileList;
+          newDashboards[index].content = tileList;
           this.setState({ dashboards: newDashboards, savePinPopup: false })
           this.props.updateUser()
         }
@@ -155,14 +157,13 @@ export class PinButton extends Component {
   handleSavePinOk = () => {
     var tileList;
     var tile = Object.assign(this.props.table);
-    tile.type = this.props.type;
-    console.log( this.props.type)
+    tile.contentType = 'tile';
     if (this.state.dashboardIndex !== -1) {
       const dashboardIndex = this.state.dashboardIndex;
       var dashboard = this.state.dashboards[dashboardIndex];
-
-      if (dashboard.tiles) {
-        tileList = (typeof dashboard.tiles === 'string') ? JSON.parse(dashboard.tiles) : dashboard.tiles;
+      // Checks if the tile is being saved to one or all dashboards
+      if (dashboard.content) {
+        tileList = (typeof dashboard.content === 'string') ? JSON.parse(dashboard.content) : dashboard.content;
       } else {
         tileList = [];
       }
@@ -171,8 +172,8 @@ export class PinButton extends Component {
     } else {
       for (let i = 0; i < this.state.dashboards.length; i++) {
         const dashboard = this.state.dashboards[i];
-        if (dashboard.tiles) {
-          tileList = (typeof dashboard.tiles === 'string') ? JSON.parse(dashboard.tiles) : dashboard.tiles;
+        if (dashboard.content) {
+          tileList = (typeof dashboard.content === 'string') ? JSON.parse(dashboard.content) : dashboard.content;
         } else {
           tileList = [];
         }
@@ -207,6 +208,14 @@ export class PinButton extends Component {
       return (
         <Button icon="close" type="button" onClick={this.removePin} ghost />
       )
+    }
+  }
+  componentDidMount() {
+    const { profile } = this.props
+    // var dashboards = profile.splice
+    if (profile.role !== 'Administrator') {
+      const index = profile.dashboards.findIndex((dash) => { return dash.user })
+      this.setState({ dashboards: profile.dashboards.slice(index) })
     }
   }
   componentWillUnmount() {

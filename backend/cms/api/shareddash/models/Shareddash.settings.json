@@ -9,7 +9,7 @@
     "timestamps": true
   },
   "attributes": {
-    "pins": {
+    "content": {
       "multiple": false,
       "type": "json"
     },
