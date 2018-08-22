@@ -88,7 +88,6 @@ module.exports = {
       return ctx.notFound();
     }
     const data = await strapi.services.shareddash.fetchDepartment(ctx.params);
-    console.log(data)
     // Send 200 `ok`
     ctx.send(data);
   }

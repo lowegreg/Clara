@@ -40,7 +40,6 @@ export function getUser(userId, jwt) {
 }
 // gets dashboards that are shared amongst the department
 export function getSharedDash(departmentId, jwt) {
-  console.log(departmentId)
   return fetch(`http://35.182.255.76/shareddash/department/${departmentId}`, {
     headers: {
       'Accept': 'application/x-www-form-urlencoded',

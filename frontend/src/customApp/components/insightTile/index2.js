@@ -69,10 +69,6 @@ export class Tile extends Component {
           this.props.updateDash(newTileList, dashboardIndex);
         }
       })
-      .catch((error) => {
-        // displays server error
-        console.log(error);
-      })
   }
   // determines which type of button (and functionality) to an insight tile based on where it is being rendered
   renderType = () => {

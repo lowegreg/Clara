@@ -123,7 +123,7 @@ export default class extends Component {
       var left = temp.evenArr;
       var right = temp.oddArr;
     }
-    // console.log(this.props.isFull)
+
     return (
       <div style={{ alignContent: 'center', alignItems: 'ceter', marginLeft: '16px', marginTop: '16px', marginRight: '16px' }}>
         {(this.state.loading === 0 && !this.state.update) &&

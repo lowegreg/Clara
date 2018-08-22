@@ -86,13 +86,11 @@ export class PinButton extends Component {
           } else {
             // displays server error
             this.setState({ error: 2, confirmLoading: false })
-            console.log(responseJson.message)
           }
         })
         .catch((error) => {
           // displays server error
           this.setState({ error: 2, confirmLoading: false })
-          console.log(error);
         });
 
     } else {
@@ -128,7 +126,6 @@ export class PinButton extends Component {
 
   addPin = (dashboard, tileList, index) => {
     var api = 'http://35.182.255.76/' + (dashboard.department ? 'sharedDash/' : 'dashboard/') + dashboard._id
-    console.log(api)
     fetch(api, {
       headers: {
         'Accept': 'application/x-www-form-urlencoded',
