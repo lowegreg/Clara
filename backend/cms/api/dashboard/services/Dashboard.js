@@ -117,7 +117,7 @@ module.exports = {
   save: async (params, values) => {
     await strapi.hook.mongoose.manageRelations('dashboard', _.merge(_.clone(params), { values }));
     return Dashboard
-    .update(params,{ '$addToSet': {'tiles' : values.tile}}, { multi: true });
+    .update(params,{ '$addToSet': {'content' : values.content}}, { multi: true });
   },
   
   /**
@@ -129,6 +129,6 @@ module.exports = {
  delete: async (params, values) => {
    await strapi.hook.mongoose.manageRelations('dashboard', _.merge(_.clone(params), { values }));
    return Dashboard
-   .update({'_id' : params},{ '$pull': {'tiles' : values}}, { multi: true })
+   .update({'_id' : params},{ '$pull': {'content' : values}}, { multi: true })
  }
 };

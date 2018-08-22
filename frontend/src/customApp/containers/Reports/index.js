@@ -142,10 +142,16 @@ export class Reports extends Component {
     if (event) {
       if (this.state.activeCategory === 1 && event.value !== event.label) {
         const dash = this.state.tableArray.filter(data => data._id === event.value);
-        if (dash && typeof dash[0].tiles === 'string') {
-          dash[0].tiles = JSON.parse(dash[0].tiles)
+        if (dash && typeof dash[0].content === 'string') {
+          dash[0].content = JSON.parse(dash[0].content)
         }
-        this.setState({ table: { value: dash[0].title, label: dash[0].title }, tileArray: dash[0].tiles, tile: null, showTiles: true })
+        var tiles;
+        if (dash[0].content) {
+          tiles = dash[0].content.filter(data => data.contentType !== 'card')
+        } else {
+          tiles = []
+        }
+        this.setState({ table: { value: dash[0].title, label: dash[0].title }, tileArray: tiles, tile: null, showTiles: true })
       } else if (this.state.activeCategory !== 1) {
         this.setState({
           tileArray: [],
@@ -311,10 +317,6 @@ export class Reports extends Component {
                 onChange={this.selectTile}
                 style={{ minWidth: 250, margin: 10 }}
               >
-<<<<<<< HEAD
-
-=======
->>>>>>> 06c21c5bb7f347dfd93e4feed6b5c6ffa56a53ae
                 {this.renderTileSelectField()}
               </SuperSelectField>
             </MuiThemeProvider>

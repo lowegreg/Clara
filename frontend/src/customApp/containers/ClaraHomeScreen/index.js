@@ -7,10 +7,17 @@ import LayoutContentWrapper from '../../../components/utility/layoutWrapper';
 import TableStyle from './tableStyle';
 import Input from '../../../components/uielements/input';
 import Form from '../../../components/uielements/form';
-import { Modal } from 'antd';
+import { Modal, Checkbox, Icon, Carousel } from 'antd';
 import authAction from '../../../redux/auth/actions';
 import InsightPage from '../insightPages';
+// import FullScreenDashboard from '../../components/dashboards/fullScreen'
 import Weather from '../../components/weatherCard';
+import Dropdown from '../../../components/uielements/dropdown';
+import Menu from '../../../components/uielements/menu';
+import Fullscreen from "react-full-screen";
+import { Col, Row } from 'react-flexbox-grid';
+import { FullScreenDashboard } from '../../components/dashboards/fullScreen';
+
 
 const { updateUser } = authAction;
 const FormItem = Form.Item;
@@ -36,7 +43,10 @@ export class Dashboard extends Component {
     this.state = {
       showWelcome: JSON.parse(localStorage.getItem('welcomeCard')),
       visible: false,
+      isFull: false,
+      fullScreenDash: [],
       confirmLoading: false,
+      departDash: false,
       title: '',
       error: 0,
       dashboards: this.props.profile.dashboards,
@@ -54,33 +64,44 @@ export class Dashboard extends Component {
     localStorage.setItem('welcomeCard', JSON.parse(false))
   }
 
-  showModal = () => {
+  add = () => {
     this.setState({
-      visible: true,
+      visible: true, departDash: false
     });
   }
   // Creates and addes a new dashboard to a the current user
   handleOk = () => {
+    const { title, departDash } = this.state;
+    const { jwt, profile } = this.props;
     this.setState({
       confirmLoading: true,
     });
     //Checks if the user entered a title for their new dashboard
-    if (this.state.title) {
-      fetch('http://35.182.255.76/dashboard', {
+    if (title) {
+
+      var api = 'http://35.182.255.76/' + (departDash ? 'sharedDash/' : 'dashboard/');
+      var body = (departDash ? `department=${profile.departmentId}` : `user=${profile.userId}`) + '&title=' + title
+      fetch(api, {
         headers: {
           'Accept': 'application/x-www-form-urlencoded',
           'Content-Type': 'application/x-www-form-urlencoded',
-          'Authorization': `Bearer ${this.props.jwt}`
+          'Authorization': `Bearer ${jwt}`
         },
         method: "POST",
-        body: `user=${this.props.profile.userId}&title=${this.state.title}`,
+        body: body,
       })
         .then((response) => response.json())
         .then(responseJson => {
           //if a new dashboard is created correctly it will add it to the user's dashboard list
           if (!responseJson.message) {
             var dashboards = this.state.dashboards;
-            dashboards.push(responseJson)
+            if (departDash) {
+              const index = dashboards.findIndex((dash) => { return dash.user })
+              responseJson.department = this.props.profile.department;
+              dashboards.splice(index, 0, responseJson)
+            } else {
+              dashboards.push(responseJson)
+            }
             if (dashboards.length === 1) {
               this.setState({ activeKey: dashboards[0]._id })
             }
@@ -119,8 +140,14 @@ export class Dashboard extends Component {
   }
 
   // deletes dashboard from user's dashboard list
-  onDelete = (targetKey) => {
-    fetch(`http://35.182.255.76/dashboard/${targetKey}`, {
+  remove = (targetKey) => {
+    var dashboards = this.state.dashboards;
+
+    const dash = dashboards.find((dashboard) => {
+      return dashboard._id === targetKey
+    })
+    var api = 'http://35.182.255.76/' + (dash.department ? 'sharedDash/' : 'dashboard/') + targetKey;
+    fetch(api, {
       headers: {
         'Accept': 'application/x-www-form-urlencoded',
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -157,22 +184,66 @@ export class Dashboard extends Component {
       })
   }
 
+  onEdit = (targetKey, action) => {
+    this[action](targetKey)
+  }
+
   // displays the content of the active dashboard
-  renderDashboard = (dashboard) => {
-    if ((typeof dashboard.tiles) === 'string') {
-      dashboard.tiles = JSON.parse(dashboard.tiles);
+  renderDashboard = (dashboard, isFull) => {
+    if ((typeof dashboard.content) === 'string') {
+      dashboard.content = JSON.parse(dashboard.content);
     }
-    if (dashboard.tiles && dashboard.tiles.length !== 0) {
-      return (
-        <div>
-          <InsightPage allData={dashboard.tiles} dashboard={dashboard} />
-        </div>)
+    if (dashboard.content && dashboard.content.length !== 0) {
+      return (<div>
+        <InsightPage allData={dashboard.content} dashboard={dashboard} isFull={isFull} />
+      </div>)
     }
     return (<p style={{ textAlign: 'center' }}>You have no pins saved to this dashboard</p>)
-
   }
+  getFullScreenDashboard = (dashboard) => {
+    var fullScreenDash = [];
+    for (let i = 0; i < Math.ceil(dashboard.content.length / 4); i++) {
+      fullScreenDash.push(
+        dashboard.content.slice((4 * i), (4 * i) + 4)
+      )
+    }
+    return fullScreenDash;
+  }
+  renderTabPlane = (dashboard, profile) => {
+    const { isFull } = this.state
+    if (dashboard.department && profile.role === 'Administrator') {
+      return (<TabPane tab={<span><Icon type="team" />{dashboard.title}</span>} key={dashboard._id} >
+        {this.renderDashboard(dashboard, isFull)}
+      </TabPane>)
+    } else if (dashboard.department) {
+      return (<TabPane tab={dashboard.title} key={dashboard._id} closable={false} >
+        {//display pin
+          this.renderDashboard(dashboard, isFull)
+        }
+      </TabPane>)
+    } else {
+      return (<TabPane tab={dashboard.title} key={dashboard._id}>
+        {//display pin
+          this.renderDashboard(dashboard, isFull)
+        }
+      </TabPane>)
+    }
+  }
+  onClick = (event) => {
+    if (event.key === 'expand') {
+      const { dashboards, activeKey } = this.state;
+      var index = dashboards.findIndex((dash) => { return activeKey === dash._id })
+      var dash = dashboards[index]
+      var fullScreenDash = this.getFullScreenDashboard(dash);
+      this.setState({ isFull: true, fullScreenDash })
+    } else {
+      console.log(event.key)
+    }
+  }
+
   render() {
-    const { showWelcome } = this.state;
+    const { showWelcome, isFull, fullScreenDash} = this.state;
+    const { profile } = this.props;
     return (
       <div >
         {showWelcome &&
@@ -180,42 +251,69 @@ export class Dashboard extends Component {
         }
         <Weather />
         <LayoutContentWrapper style={{ paddingTop: '20px' }} >
-          <h1 style={{ paddingBottom: '5px' }} >My Dashboards</h1>
-          <div style={{ marginLeft: 'auto', marginRight: '0', marginTop: '5px' }}>
-            <Button type='primary' size='small' onClick={this.showModal}>New Dashboard</Button>
-            <Modal
-              wrapClassName="vertical-center-modal"
-              title="Create New Dashboard"
-              visible={this.state.visible}
-              onOk={this.handleOk}
-              confirmLoading={this.state.confirmLoading}
-              onCancel={this.handleCancel}
-            >
-              <Form>
-                <FormItem {...formItemLayout} label="Title" validateStatus={error[this.state.error].validateStatus} help={error[this.state.error].help} >
-                  <Input id="title" onChange={this.onChange} value={this.state.title} />
-                </FormItem>
-              </Form>
-            </Modal>
-          </div>
-          <TableStyle className="isoLayoutContent">
-            <Tabs className="isoTableDisplayTab"
-              hideAdd
-              onChange={this.onTabClick}
-              activeKey={this.state.activeKey}
-              type="editable-card"
-              onEdit={this.onDelete}>
-              {this.state.dashboards.map(dashboard => (
-                <TabPane tab={dashboard.title} key={dashboard._id}>
-                  {//display pin
-                    this.renderDashboard(dashboard)
-                  }
-
-                </TabPane>
-              ))}
-            </Tabs>
-          </TableStyle>
+          <Col style={{ padding: '20px', width: '100%' }}>
+            <Row style={{}}>
+              <h1 style={{ paddingBottom: '5px' }} >My Dashboards</h1>
+              <div style={{ marginLeft: 'auto', marginRight: '0', marginTop: '5px' }}>
+                <Dropdown trigger={['click']} overlay={
+                  <Menu onClick={this.onClick}>
+                    <Menu.Item key='expand'> Expand </Menu.Item>
+                    <Menu.Item key='addCard'> Add Card </Menu.Item>
+                    <Menu.Item key='edeit'> Edit </Menu.Item>
+                  </Menu>
+                }>
+                  <Button type='primary' size='small'>More</Button>
+                </Dropdown>
+              </div>
+            </Row>
+            <Fullscreen enabled={isFull} onChange={isFull => this.setState({ isFull })}>
+              <Row >
+                {isFull ?
+                  <Col style={{ marginLeft: '15px', background: '#f3f3f3', width: window.innerWidth, height: window.innerHeight }}>
+                    <div>
+                      <Carousel 
+                      autoplay={fullScreenDash.length>4? true : false}
+                      >
+                        {this.state.fullScreenDash.map((page,key) => ( 
+                           <div key={key} style={{ background: '#f3f3f3', width: window.innerWidth, height: '99', marginLeft: '15px' }}>
+                          <FullScreenDashboard style={{width: window.innerWidth, height: window.innerHeight }} allData={page} dashboard={fullScreenDash} isFull={isFull} />    
+                          </div>
+                        ))}
+                      </Carousel>
+                    </div>
+                  </Col>
+                  :
+                  <TableStyle className="isoLayoutContent" >
+                    <Tabs className="isoTableDisplayTab"
+                      onChange={this.onTabClick}
+                      activeKey={this.state.activeKey}
+                      type="editable-card"
+                      style={{ width: '100%' }}
+                      onEdit={this.onEdit}>
+                      {this.state.dashboards.map(dashboard => (
+                        this.renderTabPlane(dashboard, profile)
+                      ))}
+                    </Tabs>
+                  </TableStyle>}
+              </Row>
+            </Fullscreen>
+          </Col>
         </LayoutContentWrapper>
+        <Modal
+          wrapClassName="vertical-center-modal"
+          title="Create New Dashboard"
+          visible={this.state.visible}
+          onOk={this.handleOk}
+          confirmLoading={this.state.confirmLoading}
+          onCancel={this.handleCancel}
+        >
+          <Form>
+            <FormItem {...formItemLayout} label="Title" validateStatus={error[this.state.error].validateStatus} help={error[this.state.error].help} >
+              <Input id="title" onChange={this.onChange} value={this.state.title} />
+              <Checkbox onChange={() => { this.setState({ departDash: true }) }}>Set as Department Dashboard</Checkbox>
+            </FormItem>
+          </Form>
+        </Modal>
       </div>
     );
   }

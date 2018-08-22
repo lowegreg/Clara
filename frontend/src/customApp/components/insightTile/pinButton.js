@@ -69,7 +69,7 @@ export class PinButton extends Component {
           'Authorization': `Bearer ${this.props.jwt}`
         },
         method: "POST",
-        body: `user=${this.props.profile.userId}&title=${this.state.title}&tiles=${JSON.stringify(tileList)}`,
+        body: `user=${this.props.profile.userId}&title=${this.state.title}&content=${JSON.stringify(tileList)}`,
       })
         .then((response) => response.json())
         .then(responseJson => {
@@ -86,13 +86,11 @@ export class PinButton extends Component {
           } else {
             // displays server error
             this.setState({ error: 2, confirmLoading: false })
-            console.log(responseJson.message)
           }
         })
         .catch((error) => {
           // displays server error
           this.setState({ error: 2, confirmLoading: false })
-          console.log(error);
         });
 
     } else {
@@ -127,20 +125,21 @@ export class PinButton extends Component {
   }
 
   addPin = (dashboard, tileList, index) => {
-    fetch(`http://35.182.255.76/dashboard/${dashboard._id}`, {
+    var api = 'http://35.182.255.76/' + (dashboard.department ? 'sharedDash/' : 'dashboard/') + dashboard._id
+    fetch(api, {
       headers: {
         'Accept': 'application/x-www-form-urlencoded',
         'Content-Type': 'application/x-www-form-urlencoded',
         'Authorization': `Bearer ${this.props.jwt}`
       },
       method: "PUT",
-      body: `tiles=${JSON.stringify(tileList)}`,
+      body: `content=${JSON.stringify(tileList)}`,
     })
       .then((response) => response.json())
       .then(responseJson => {
         if (responseJson.n === 1 && responseJson.nModified === 1 && responseJson.ok === 1) {
           var newDashboards = this.state.dashboards
-          newDashboards[index].tiles = tileList;
+          newDashboards[index].content = tileList;
           this.setState({ dashboards: newDashboards, savePinPopup: false })
           this.props.updateUser()
         }
@@ -152,16 +151,16 @@ export class PinButton extends Component {
   }
 
   // saves pins to dashboard, by editing the tile section
-  handleSavePinOk = (event) => {
+  handleSavePinOk = () => {
     var tileList;
     var tile = Object.assign(this.props.table);
-    tile.type = this.props.type;
+    tile.contentType = 'tile';
     if (this.state.dashboardIndex !== -1) {
       const dashboardIndex = this.state.dashboardIndex;
       var dashboard = this.state.dashboards[dashboardIndex];
-
-      if (dashboard.tiles) {
-        tileList = (typeof dashboard.tiles === 'string') ? JSON.parse(dashboard.tiles) : dashboard.tiles;
+      // Checks if the tile is being saved to one or all dashboards
+      if (dashboard.content) {
+        tileList = (typeof dashboard.content === 'string') ? JSON.parse(dashboard.content) : dashboard.content;
       } else {
         tileList = [];
       }
@@ -170,8 +169,8 @@ export class PinButton extends Component {
     } else {
       for (let i = 0; i < this.state.dashboards.length; i++) {
         const dashboard = this.state.dashboards[i];
-        if (dashboard.tiles) {
-          tileList = (typeof dashboard.tiles === 'string') ? JSON.parse(dashboard.tiles) : dashboard.tiles;
+        if (dashboard.content) {
+          tileList = (typeof dashboard.content === 'string') ? JSON.parse(dashboard.content) : dashboard.content;
         } else {
           tileList = [];
         }
@@ -208,6 +207,14 @@ export class PinButton extends Component {
       )
     }
   }
+  componentDidMount() {
+    const { profile } = this.props
+    // var dashboards = profile.splice
+    if (profile.role !== 'Administrator') {
+      const index = profile.dashboards.findIndex((dash) => { return dash.user })
+      this.setState({ dashboards: profile.dashboards.slice(index) })
+    }
+  }
   componentWillUnmount() {
     this.setState({
       visible: false,
@@ -232,7 +239,7 @@ export class PinButton extends Component {
               <Menu.Item key='all'> All Dashboards </Menu.Item>}
             <Menu.Item key='new'> Create New Dashboard </Menu.Item>
           </Menu>
-        } >
+        } trigger={['click']} >
           <Button icon="pushpin" type="button" ghost />
         </Dropdown>
 

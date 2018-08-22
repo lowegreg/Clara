@@ -4,6 +4,7 @@ import { palette } from 'styled-theme';
 const TableStyle = styled.div`
   .ant-tabs-content {
     margin-top: 40px;
+    width: 100%;
   }
 
   .ant-tabs-nav {
