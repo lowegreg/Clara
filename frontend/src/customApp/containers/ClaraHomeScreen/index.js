@@ -272,11 +272,12 @@ export class Dashboard extends Component {
                   <Col style={{ marginLeft: '15px', background: '#f3f3f3', width: window.innerWidth, height: window.innerHeight }}>
                     <div>
                       <Carousel 
-                      autoplay={fullScreenDash.length>4? true : false}
+                      autoplay
+                      autoplaySpeed={3000}
                       >
                         {this.state.fullScreenDash.map((page,key) => ( 
                            <div key={key} style={{ background: '#f3f3f3', width: window.innerWidth, height: '99', marginLeft: '15px' }}>
-                          <FullScreenDashboard style={{width: window.innerWidth, height: window.innerHeight }} allData={page} dashboard={fullScreenDash} isFull={isFull} />    
+                          <FullScreenDashboard style={{width: window.innerWidth, height: window.innerHeight, cursor: 'none' }} allData={page} dashboard={fullScreenDash} isFull={isFull} />    
                           </div>
                         ))}
                       </Carousel>
@@ -310,7 +311,9 @@ export class Dashboard extends Component {
           <Form>
             <FormItem {...formItemLayout} label="Title" validateStatus={error[this.state.error].validateStatus} help={error[this.state.error].help} >
               <Input id="title" onChange={this.onChange} value={this.state.title} />
+              {profile.role === 'Administrator' &&
               <Checkbox onChange={() => { this.setState({ departDash: true }) }}>Set as Department Dashboard</Checkbox>
+              }
             </FormItem>
           </Form>
         </Modal>
