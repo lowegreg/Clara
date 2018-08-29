@@ -1,0 +1,68 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/dashboard",
+      "handler": "Dashboard.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/dashboard/:_id",
+      "handler": "Dashboard.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/dashboard",
+      "handler": "Dashboard.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/dashboard/:_id",
+      "handler": "Dashboard.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/dashboard/:_id",
+      "handler": "Dashboard.destroy",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/dashboard/user/:_id",
+      "handler": "Dashboard.userDash",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/dashboard/:_id/tile",
+      "handler": "Dashboard.saveTile",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/dashboard/:_id/tile/:tile",
+      "handler": "Dashboard.deleteTile",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

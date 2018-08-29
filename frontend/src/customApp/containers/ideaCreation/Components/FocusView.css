@@ -1,0 +1,162 @@
+.deep-dive-background {
+    top: 0px;
+    bottom: 0;
+    width: 100%;
+    z-index: 800;
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.deep-dive {
+    margin: auto;
+    margin-top: 100px;
+    padding: 24px;
+    width: 60%;
+    background: white;
+    box-shadow: 2px 3px 16px 2px #242424;
+    font-family: "Lato";
+    font-size: 20px;
+    outline: none;
+}
+
+.deep-dive-row {
+    display: flex;
+    justify-content: space-between;
+    vertical-align: middle;
+    margin: 0px 0px;
+    padding: 0px 0px;
+}
+
+
+h1.deep-dive-title {
+    color: rgb(39, 39, 39);
+    font-size: 24px;
+    font-weight: bolder;
+    text-align: left;
+    margin: 0px 0px;
+    padding: 0px 0px;
+    padding-right: 16px;
+}
+
+h2.deep-dive-date {
+    color: rgb(153, 153, 153);
+    font-size: 18px;
+    font-weight: 400;
+    margin: 0px 0px;
+    margin-right: 16px;
+    padding: 0px 0px;
+    text-align: right;
+}
+
+p.deep-dive-body {
+    text-align: left;
+    margin: 6px 0px 0px;
+    padding: 0px 0px;
+    font-weight: 300;
+    line-height: 1.3em;
+    white-space: pre-wrap;
+    /* font-family: "Nunito"; */
+}
+
+.deep-dive-interactions {
+    display: flex;
+    vertical-align: middle;
+}
+
+.deep-dive-interaction-false {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    margin: 0px 64px 0px 0px;
+    padding: 0px;
+    color: rgb(152, 152, 152);
+} .deep-dive-interaction-false:hover {
+    cursor: pointer;
+    color: rgb(112, 112, 112);
+}
+
+.deep-dive-interaction-true {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    margin: 0px 64px 0px 0px;
+    padding: 0px;
+    color: #4482ff;
+} .deep-dive-interaction-true:hover {
+    cursor: pointer;
+    color: #4482ff;
+}
+
+h2.deep-dive-interaction-num {
+    font-size: 16px;
+    margin: 0px;
+    padding: 0px 0px 0px 48px;
+    position: absolute;
+}
+
+h2.deep-dive-author {
+    display: flex;
+    color: rgb(153, 153, 153);
+    text-align: right;
+    font-size: 16px;
+    font-weight: 400;
+    margin-right: 16px;
+}
+
+.deep-dive-status-row {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    margin: 0px -24px;
+    padding: 12px 24px;
+}
+
+.deep-dive-status {
+    text-align: left;
+    font-weight: 300;
+    padding: 0px;
+    margin: 0px 4px;
+}
+
+textarea.deep-dive-comment {
+    width: 75%;
+}
+
+.status-update {
+    margin-top: 16px;
+    max-height: 312px;
+    overflow-y: scroll;
+}
+
+.status-update h1 {
+    margin: 0px;
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.update-item {
+    margin: 16px;
+    padding: 0px;
+    text-align: left;
+}
+
+p.update-desc {
+    margin: 0px;
+    font-size: 18px;
+    font-weight: 300;
+}
+
+p.update-desc span {
+    font-weight: 400;
+}
+
+p.update-date {
+    margin: 0px;
+    font-size: 16px;
+    font-weight: 300;
+    color: grey;
+}

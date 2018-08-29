@@ -1,0 +1,20 @@
+{
+  "name": "3rdparty",
+  "version": "1.0.0",
+  "description": "",
+  "main": "3rdParty.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "csvtojson": "^2.0.4",
+    "fetch": "^1.1.0",
+    "kelvin-to-celsius": "^1.1.0",
+    "mysql": "^2.15.0",
+    "node-fetch": "^2.1.2",
+    "readline-sync": "^1.4.9",
+    "unix-timestamp": "^0.2.0"
+  }
+}

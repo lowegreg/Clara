@@ -1,0 +1,73 @@
+.settings-page {
+    margin: 0 auto;
+    padding-top: 80px;
+    margin-bottom: 20px;
+    width: 1132px;
+}
+
+.settings-component {
+    margin-top: 20px;
+    width: 536px;
+    height: auto;
+    border-radius: 5px;
+    background-color: white;
+    border-radius: 3px;
+    box-shadow: 0px 2px 6px -2px black;
+    font-family: "Lato";
+    float: left;
+    padding: 10px;
+}
+
+.setting-title {
+    text-align: left;
+    font-size: 28px;
+    margin: 0;
+    color: rgba(0, 157, 60, 0.4);
+}
+
+.setting-menu-title {
+    font-size: 28px;
+    margin: 10px auto;
+    color: rgba(0, 157, 60, 0.4);
+}
+
+.settings-menu {
+    width: 248px;
+    height: auto;
+    min-height: 600px;
+    margin: 20px;
+    background-color: white;
+    border-radius: 3px;
+    box-shadow: 0px 2px 6px -2px black;
+    font-family: "Lato";
+    float: left;
+  }
+
+.settings-menu-option {
+    width: auto;
+    padding: 20px 0 20px 20px;
+    text-align: left;
+    cursor: pointer;
+}
+.settings-menu-option:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+.selected-setting {
+    background-color: #009d3a85 !important;
+}
+
+.settings-spinner {
+    size: 40px;
+    margin: 92px auto;
+}
+
+.setting-success-icon {
+    height: 40px;
+    display: block;
+    margin: 10px auto;
+}
+
+.setting-subheading {
+    font-size: 20px;
+    margin: 8px 0;
+}

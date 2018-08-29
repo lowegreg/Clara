@@ -1,0 +1,44 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/department",
+      "handler": "Department.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/department/:_id",
+      "handler": "Department.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/department",
+      "handler": "Department.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/department/:_id",
+      "handler": "Department.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/department/:_id",
+      "handler": "Department.destroy",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}
