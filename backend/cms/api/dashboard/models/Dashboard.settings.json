@@ -1,0 +1,26 @@
+{
+  "connection": "default",
+  "collectionName": "dashboard",
+  "info": {
+    "name": "dashboard",
+    "description": ""
+  },
+  "options": {
+    "timestamps": true
+  },
+  "attributes": {
+    "title": {
+      "multiple": false,
+      "type": "string"
+    },
+    "user": {
+      "model": "user",
+      "via": "dashboards",
+      "plugin": "users-permissions"
+    },
+    "content": {
+      "multiple": false,
+      "type": "json"
+    }
+  }
+}

@@ -1,0 +1,131 @@
+.list-view {
+    margin-bottom: 32px;
+}
+
+.list-view-control {
+    background-color: white;
+    margin: 16px 0px 8px;
+    padding: 0px 12px 0px 8px;
+    position: relative;
+    display: flex;
+    /* justify-content: flex-start; */
+    justify-content: space-between;
+    border-radius: 4px;
+    /* opacity: 0.7; */
+} .list-view-control:hover {
+    /* opacity: 0.9; */
+}
+
+.banana {
+    fill: #009d3c !important;
+
+}
+
+.secondary {
+    border-radius: 4px 4px 0px 0px;
+    box-shadow: 0px 1px 4px 0px rgb(207, 207, 207);
+}
+
+.lvc-disabled {
+    opacity: 0.6;
+    cursor: crosshair;
+}
+
+.list-view-tabs {
+    display: flex;
+}
+
+.list-view-tab-false {
+    display: flex;
+    align-items: center;
+    margin: 0px 4px;
+    padding: 12px 8px 10px;
+    color: rgb(24, 24, 24);
+    font-weight:300;
+    border-bottom: 2px solid white;
+} .list-view-tab-false:hover {
+    cursor: pointer;
+    color: rgb(168, 168, 168);
+}
+
+.list-view-tab-true {
+    display: flex;
+    align-items: center;
+    margin: 0px 4px;
+    padding: 12px 6px 10px;
+    color: rgb(94, 94, 94);
+    /* color: #009d3c; */
+    border-bottom: 2px solid rgb(184, 184, 184);
+} .list-view-tab-true:hover {
+    cursor: pointer;
+}
+
+.asdf1 {
+    border-bottom: 2px solid rgb(231, 111, 133);
+}
+
+.asdf2 {
+    border-bottom: 2px solid orange;
+}
+
+.asdf3 {
+    border-bottom: 2px solid #4482ff;
+}
+
+.list-view-sort {
+    margin: 0px;
+    padding: 12px 4px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    font-weight: 300;
+} .list-view-sort:hover {
+    /* cursor: pointer; */
+}
+
+.list-view-sort span {
+    color: #3669d1;
+    display: flex;
+    align-items: center;
+    font-weight: 400;
+} .list-view-sort span:hover {
+    color: #4482ff;
+    cursor: pointer;
+}
+
+.list-view-sort-menu {
+    background-color: white;
+    position: absolute;
+    margin-top: 39px;
+    /* left: 80px; */
+    right: 24px;
+    width: 110px;
+    z-index: 2;
+    text-align: left;
+    box-shadow: 2px 2px 12px 1px rgb(182, 182, 182);
+    outline: none;
+}
+
+.list-view-sort-menu p {
+    margin: 0px;
+    padding: 6px 8px;
+    font-weight: 300;
+    border-bottom: 1px solid rgb(224, 224, 224);
+} .list-view-sort-menu p:hover {
+    cursor: pointer;
+    background-color: rgb(226, 226, 226);
+    font-weight: 400;
+}
+
+.list-view-secondary-control {
+    background-color: white;
+    margin: -8px 0px 8px;
+    padding: 0px 20px 0px 20px;
+    display: flex;
+    /* justify-content: flex-start; */
+    /* justify-content: space-between; */
+    border-radius: 0px 0px 4px 4px;
+    /* opacity: 0.7; */
+} .list-view-control:hover {
+    /* opacity: 0.9; */
+}

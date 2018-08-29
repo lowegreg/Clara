@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/shareddash",
+      "handler": "Shareddash.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/shareddash/:_id",
+      "handler": "Shareddash.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/shareddash",
+      "handler": "Shareddash.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/shareddash/:_id",
+      "handler": "Shareddash.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/shareddash/:_id",
+      "handler": "Shareddash.destroy",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/shareddash/department/:_id",
+      "handler": "Shareddash.findDepartment",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

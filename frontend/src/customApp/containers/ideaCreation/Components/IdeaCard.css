@@ -1,0 +1,311 @@
+.disabled-button {
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    opacity: 1;
+    z-index: 400;
+
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+    background: #616161;
+    color: #ffffff;
+    font-family: Lato;
+    font-size: 14px;
+    margin: 0px 0px;
+    opacity: 0.9;
+    padding: 7.5px 15px;
+    position: absolute;
+    top: 100%;
+    left: -50%;
+    z-index: 100;
+    border-radius: 2px;
+    visibility: hidden;
+    text-align: center;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+#follow-snackbar, #unfollow-snackbar {
+    top: 75px;
+}
+
+#follow-snackbar > * {
+    color: #4482ff !important;
+    background-color: #eeeeee !important;
+    font-size: 1rem;
+}
+
+#unfollow-snackbar > * {
+    color: orange !important;
+    background-color: #eeeeee !important;
+    font-size: 1rem;
+}
+
+.Card {
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 16px 24px 6px;
+    width: auto;
+    background: white;
+    /* box-shadow: 0px 2px 6px -2px grey; */
+    font-family: "Lato";
+}
+
+.Card-row {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    vertical-align: top;
+    margin: 0px;
+    padding: 0px;
+}
+
+.Card-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+}
+
+h1.Card-title {
+    color: rgb(4, 0, 17);
+    font-size: 16px;
+    text-align: left;
+    margin: 0px 0px 3px;
+    padding: 0px 16px 0px 0px;
+    cursor: pointer;
+    font-weight: 400;
+}
+
+h2.Card-date {
+    color: rgb(153, 153, 153);
+    font-size: 14px;
+    font-weight: 400;
+    text-align: right;
+    margin: 0px;
+    padding: 0px 0px 0px 8px;
+}
+
+p.Card-body {
+    text-align: left;
+    line-height: 1.3em;
+    font-size: 16px;
+    font-weight: 300;
+    margin: 6px 0px 0px;
+    white-space: pre-wrap;
+    cursor: pointer;
+}
+
+.Card-interaction-false {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    margin: 0px 64px 0px 0px;
+    padding: 0px;
+    color: rgb(152, 152, 152);
+} .Card-interaction-false:hover {
+    cursor: pointer;
+    color: rgb(112, 112, 112);
+}
+
+.Card-interaction-true {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    margin: 0px 64px 0px 0px;
+    padding: 0px;
+    color: #4482ff;
+} .Card-interaction-true:hover {
+    cursor: pointer;
+    color: #387aff;
+}
+
+h2.Card-interaction-num {
+    font-size: 14px;
+    margin: 0px;
+    padding: 0px 0px 0px 48px;
+    position: absolute;
+}
+h2.Card-interaction-num-stay {
+    font-size: 14px;
+    margin: 0px;
+    padding: 0px 0px 0px 12px;
+    /* position: absolute; */
+}
+
+.interaction-tooltip {
+    display: flex !important;
+}
+
+h2.author {
+    color: rgb(153, 153, 153);
+    text-align: right;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 400;
+    display: flex;
+    /* margin-right: 16px; */
+}
+
+.rating {
+    display: flex;
+    float: left;
+    vertical-align: middle;
+    margin-top: 0px;
+}
+
+.flag-icon-false {
+    color: rgb(192, 192, 192);
+}
+
+.flag-icon-true {
+    color: red;
+}
+
+.flag-icon {
+    height: 12px;
+}
+
+.admin-menu-list-item {
+    display: flex;
+    justify-content: space-between;
+}
+
+#user-card-menu > div > ul {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+#clickable {
+    cursor: pointer;
+}
+
+.update-popover-background {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(51, 51, 51, 0.4);
+    z-index: 800;
+}
+
+.status-update-popover {
+    width: 312px;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(255, 255, 255);
+    /* left: 50%;
+    transform: translateX(-50%); */
+    padding: 16px;
+    margin-top: 36px;
+    /* box-shadow: 1px 1px 12px 1px rgb(121, 121, 121); */
+    outline: none;
+    margin-bottom: 128px;
+    z-index: 800;
+}
+
+.status-update-popover-header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    margin: 0px 0px 12px;
+}
+
+.update-popover-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0px;
+    font-weight: 400;
+    font-size: 20px;
+}
+
+.update-popover-close {
+    color: grey;
+} .update-popover-close:hover {
+    cursor: pointer;
+    color: rgb(112, 112, 112);
+}
+
+.update-popover-idea-title {
+    margin: 0px 0px 24px;
+    font-weight: 300;
+}
+
+.status-update-popover-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin: 0px 0px 16px;
+}
+
+.update-popover-select {
+    /* display: block !important;
+    margin: auto !important; */
+    width: 156px;
+    text-align: left;
+    /* margin-bottom: 24px !important; */
+}
+
+.status-list-item {
+    margin: 0px;
+    padding: 4px 8px !important;
+    /* font-family: "Lato" !important; */
+    /* font-weight: 400 !important; */
+}
+
+.submit-update-true {
+    margin-right: 16px;
+    color: #4482ff;
+} .submit-update-true:hover {
+    cursor: pointer;
+    color: #2d5ab5;
+}
+
+.submit-update-false {
+    margin-right: 16px;
+    color: rgba(0, 157, 58, 0.4);
+}
+
+.MyLatestIdeaCard-Card {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 8px;
+    width: auto;
+    background: white;
+    /* box-shadow: 0px 1px 9px -2px grey; */
+    /* border-radius: 3px; */
+    border: 1px solid grey;
+    font-family: "Lato";
+    border-width: thin;
+    border-radius: 4px;
+}
+
+.MyLatestIdeaCard-title {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    max-height: 1.2rem;
+    text-align: left;
+    margin: 0px 4px 8px 0px;
+    font-size: 15px;
+    font-weight: 400;
+    overflow: none;
+}
