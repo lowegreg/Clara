@@ -202,10 +202,12 @@ export class Dashboard extends Component {
   }
   getFullScreenDashboard = (dashboard) => {
     var fullScreenDash = [];
-    for (let i = 0; i < Math.ceil(dashboard.content.length / 4); i++) {
-      fullScreenDash.push(
-        dashboard.content.slice((4 * i), (4 * i) + 4)
-      )
+    if (dashboard.content) {
+      for (let i = 0; i < Math.ceil(dashboard.content.length / 4); i++) {
+        fullScreenDash.push(
+          dashboard.content.slice((4 * i), (4 * i) + 4)
+        )
+      }
     }
     return fullScreenDash;
   }
@@ -242,7 +244,7 @@ export class Dashboard extends Component {
   }
 
   render() {
-    const { showWelcome, isFull, fullScreenDash} = this.state;
+    const { showWelcome, isFull, fullScreenDash } = this.state;
     const { profile } = this.props;
     return (
       <div >
@@ -271,13 +273,13 @@ export class Dashboard extends Component {
                 {isFull ?
                   <Col style={{ marginLeft: '15px', background: '#f3f3f3', width: window.innerWidth, height: window.innerHeight }}>
                     <div>
-                      <Carousel 
-                      autoplay
-                      autoplaySpeed={3000}
+                      <Carousel
+                        autoplay
+                        autoplaySpeed={3000}
                       >
-                        {this.state.fullScreenDash.map((page,key) => ( 
-                           <div key={key} style={{ background: '#f3f3f3', width: window.innerWidth, height: '99', marginLeft: '15px' }}>
-                          <FullScreenDashboard style={{width: window.innerWidth, height: window.innerHeight, cursor: 'none' }} allData={page} dashboard={fullScreenDash} isFull={isFull} />    
+                        {this.state.fullScreenDash.map((page, key) => (
+                          <div key={key} style={{ background: '#f3f3f3', width: window.innerWidth, height: window.innerHeight, marginLeft: '15px' }}>
+                            <FullScreenDashboard style={{ width: window.innerWidth, height: window.innerHeight, cursor: 'none' }} allData={page} dashboard={fullScreenDash} isFull={isFull} />
                           </div>
                         ))}
                       </Carousel>
@@ -312,7 +314,7 @@ export class Dashboard extends Component {
             <FormItem {...formItemLayout} label="Title" validateStatus={error[this.state.error].validateStatus} help={error[this.state.error].help} >
               <Input id="title" onChange={this.onChange} value={this.state.title} />
               {profile.role === 'Administrator' &&
-              <Checkbox onChange={() => { this.setState({ departDash: true }) }}>Set as Department Dashboard</Checkbox>
+                <Checkbox onChange={() => { this.setState({ departDash: true }) }}>Set as Department Dashboard</Checkbox>
               }
             </FormItem>
           </Form>
