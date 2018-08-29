@@ -245,11 +245,11 @@ export class Dashboard extends Component {
 
   render() {
     const { showWelcome, isFull, fullScreenDash } = this.state;
-    const { profile } = this.props;
+    const { profile, jwt } = this.props;
     return (
       <div >
         {showWelcome &&
-          <WelcomeCard clickHandler={this.clickHandler} />
+          <WelcomeCard clickHandler={this.clickHandler} jwt={jwt} />
         }
         <Weather />
         <LayoutContentWrapper style={{ paddingTop: '20px' }} >
