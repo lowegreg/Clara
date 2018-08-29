@@ -254,7 +254,7 @@ function getDescripton(x, y, graph) {
             description = 'Comparing the top 10, sum of ' + y + ' per ' + x + '  type (or less then top 10)'
             break;
         case 'line':
-            description = 'Compareing ' + x + ' to ' + y + ' avg for the day'
+            description = 'Comparing ' + x + ' to ' + y 
             break;
         case 'fillLine':
             description = 'Comparing ' + x + ' to ' + y + ' by month'
