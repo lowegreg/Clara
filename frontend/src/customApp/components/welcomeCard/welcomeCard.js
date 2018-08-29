@@ -24,7 +24,6 @@ export default class WelcomeCard extends Component {
     })
       .then(response => response.json())
       .then(responseJson => {
-        console.log(responseJson)
         this.setState({ title: responseJson.title, description: responseJson.description })
       })
       .catch(error => {
