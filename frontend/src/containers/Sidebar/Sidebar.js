@@ -46,7 +46,7 @@ class Sidebar extends Component {
           total: 0
         },
         {
-          title: 'Total number of live data sets being use',
+          title: 'Total number of live data sets being used',
           value: 0,
           total:0
         },
